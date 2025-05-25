@@ -22,7 +22,7 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git",
     "type": "directory",
-    "last_modified": "2025-05-24T19:05:18.137664"
+    "last_modified": "2025-05-24T19:05:19.029664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/to_abraxas",
@@ -117,8 +117,8 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/termux_filesystem_map.json",
     "type": "file",
-    "size": 59264,
-    "last_modified": "2025-05-24T19:05:18.681664"
+    "size": 123895,
+    "last_modified": "2025-05-24T19:05:18.857664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/termux_map_daemon.py",
@@ -213,8 +213,8 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/lilith_trade_log.txt",
     "type": "file",
-    "size": 1022,
-    "last_modified": "2025-05-24T19:05:17.957664"
+    "size": 1168,
+    "last_modified": "2025-05-24T19:05:19.217664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/igor_daemon.py",
@@ -292,13 +292,13 @@
     "path": "/data/data/com.termux/files/home/feralsys/lilith_core.lock",
     "type": "file",
     "size": 5,
-    "last_modified": "2025-05-24T19:05:16.969664"
+    "last_modified": "2025-05-24T19:05:19.277664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/lilith_heartbeat.txt",
     "type": "file",
     "size": 19,
-    "last_modified": "2025-05-24T19:05:16.969664"
+    "last_modified": "2025-05-24T19:05:19.281664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/glenn_daemon.py",
@@ -310,13 +310,13 @@
     "path": "/data/data/com.termux/files/home/feralsys/glenn.lock",
     "type": "file",
     "size": 5,
-    "last_modified": "2025-05-24T19:05:17.553664"
+    "last_modified": "2025-05-24T19:05:19.185664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/glenn_heartbeat.txt",
     "type": "file",
     "size": 19,
-    "last_modified": "2025-05-24T19:05:17.553664"
+    "last_modified": "2025-05-24T19:05:19.185664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/throckmorton_payloads.zip",
@@ -363,8 +363,8 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/lilith_inbox.log",
     "type": "file",
-    "size": 14433,
-    "last_modified": "2025-05-24T19:05:17.877664"
+    "size": 14501,
+    "last_modified": "2025-05-24T19:05:19.085664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/launch_feralsys_stack.py",
@@ -381,8 +381,8 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/telemetry_reporter.log",
     "type": "file",
-    "size": 525,
-    "last_modified": "2025-05-24T19:01:42.861664"
+    "size": 700,
+    "last_modified": "2025-05-24T19:05:18.877664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/github_token.txt",
@@ -423,8 +423,8 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/telegram_diag.log",
     "type": "file",
-    "size": 258,
-    "last_modified": "2025-05-24T19:05:18.413664"
+    "size": 329,
+    "last_modified": "2025-05-24T19:05:18.965664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/mutation_memory.json",
@@ -493,8 +493,8 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/igor_mapper.log",
     "type": "file",
-    "size": 964,
-    "last_modified": "2025-05-24T19:05:18.681664"
+    "size": 0,
+    "last_modified": "2025-05-24T19:05:18.933664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/igor_loop.log",
@@ -554,49 +554,49 @@
     "path": "/data/data/com.termux/files/home/feralsys/logs/trader.log",
     "type": "file",
     "size": 903,
-    "last_modified": "2025-05-24T19:05:17.561664"
+    "last_modified": "2025-05-24T19:05:19.413664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/lilith_vocal_diagnostics.log",
     "type": "file",
     "size": 0,
-    "last_modified": "2025-05-24T19:05:16.841664"
+    "last_modified": "2025-05-24T19:05:19.205664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/telegram_notifier.log",
     "type": "file",
     "size": 0,
-    "last_modified": "2025-05-24T19:05:16.897664"
+    "last_modified": "2025-05-24T19:05:19.189664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/lilith_core.log",
     "type": "file",
     "size": 0,
-    "last_modified": "2025-05-24T19:05:16.917664"
+    "last_modified": "2025-05-24T19:05:19.225664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/lilith_mind.log",
     "type": "file",
-    "size": 869,
-    "last_modified": "2025-05-24T19:05:17.545664"
+    "size": 0,
+    "last_modified": "2025-05-24T19:05:19.281664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/telegram_telemetry_reporter.log",
     "type": "file",
     "size": 0,
-    "last_modified": "2025-05-24T19:05:18.437664"
+    "last_modified": "2025-05-24T19:05:19.353664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/lilith_trade_loop.log",
     "type": "file",
     "size": 0,
-    "last_modified": "2025-05-24T19:05:17.197664"
+    "last_modified": "2025-05-24T19:05:19.389664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/igor_daemon.log",
     "type": "file",
-    "size": 908,
-    "last_modified": "2025-05-24T19:05:17.873664"
+    "size": 0,
+    "last_modified": "2025-05-24T19:05:19.393664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/forge_feather_113.log",
@@ -625,14 +625,14 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/igor_deadfile_sweep.log",
     "type": "file",
-    "size": 0,
-    "last_modified": "2025-05-24T19:05:17.533664"
+    "size": 9731,
+    "last_modified": "2025-05-24T19:05:19.045664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/glenn_daemon.log",
     "type": "file",
-    "size": 0,
-    "last_modified": "2025-05-24T19:05:18.505664"
+    "size": 864,
+    "last_modified": "2025-05-24T19:05:18.769664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/sync_time_dropper.log",
@@ -661,8 +661,8 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/launch_feralsys_stack.log",
     "type": "file",
-    "size": 379,
-    "last_modified": "2025-05-24T19:05:18.361664"
+    "size": 1211,
+    "last_modified": "2025-05-24T19:05:19.121664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/git_push_file.log",
@@ -685,56 +685,56 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/heartbeat_loop.log",
     "type": "file",
-    "size": 0,
-    "last_modified": "2025-05-24T19:05:18.629664"
+    "size": 503,
+    "last_modified": "2025-05-24T19:05:18.813664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/mutation_engine.log",
     "type": "file",
     "size": 0,
-    "last_modified": "2025-05-24T19:05:18.485664"
+    "last_modified": "2025-05-24T19:05:19.385664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/dependency_checker.log",
     "type": "file",
-    "size": 0,
-    "last_modified": "2025-05-24T19:05:18.581664"
+    "size": 876,
+    "last_modified": "2025-05-24T19:05:18.833664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/mutation_memory.log",
     "type": "file",
-    "size": 0,
-    "last_modified": "2025-05-24T19:05:18.721664"
+    "size": 912,
+    "last_modified": "2025-05-24T19:05:19.093664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/dex_watcher.log",
     "type": "file",
     "size": 514,
-    "last_modified": "2025-05-24T19:05:17.097664"
+    "last_modified": "2025-05-24T19:05:19.397664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/collections.log",
     "type": "file",
     "size": 0,
-    "last_modified": "2025-05-24T19:05:17.017664"
+    "last_modified": "2025-05-24T19:05:18.929664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/mutation_evaluator.log",
     "type": "file",
-    "size": 915,
-    "last_modified": "2025-05-24T19:05:17.353664"
+    "size": 0,
+    "last_modified": "2025-05-24T19:05:18.997663"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/abraxas_core.log",
     "type": "file",
     "size": 870,
-    "last_modified": "2025-05-24T19:05:17.321664"
+    "last_modified": "2025-05-24T19:05:19.361664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/trade_executor.log",
     "type": "file",
-    "size": 911,
-    "last_modified": "2025-05-24T19:05:17.833664"
+    "size": 0,
+    "last_modified": "2025-05-24T19:05:19.393664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/live_price_fetcher.log",
@@ -817,8 +817,8 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/humor_recursion_loop_nohup.log",
     "type": "file",
-    "size": 0,
-    "last_modified": "2025-05-24T19:05:18.285664"
+    "size": 923,
+    "last_modified": "2025-05-24T19:05:18.781664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/lexicon.log",
@@ -829,80 +829,80 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/value_decoder.log",
     "type": "file",
-    "size": 507,
-    "last_modified": "2025-05-24T19:05:18.741664"
+    "size": 910,
+    "last_modified": "2025-05-24T19:05:18.749664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/syntaxjanitor.log",
     "type": "file",
-    "size": 0,
-    "last_modified": "2025-05-24T19:05:18.577664"
+    "size": 751,
+    "last_modified": "2025-05-24T19:05:18.861664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/janitor_hive.log",
     "type": "file",
-    "size": 0,
-    "last_modified": "2025-05-24T19:05:18.685664"
+    "size": 870,
+    "last_modified": "2025-05-24T19:05:19.217664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/portfolio_tracker.log",
     "type": "file",
-    "size": 0,
-    "last_modified": "2025-05-24T19:05:18.729664"
+    "size": 914,
+    "last_modified": "2025-05-24T19:05:18.869664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/sc.log",
     "type": "file",
-    "size": 1062,
-    "last_modified": "2025-05-24T19:01:43.853663"
+    "size": 1058,
+    "last_modified": "2025-05-24T19:05:19.053664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/learned_patterns.log",
     "type": "file",
-    "size": 917,
-    "last_modified": "2025-05-24T19:01:43.885664"
+    "size": 913,
+    "last_modified": "2025-05-24T19:05:19.065664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/sc_scraper.log",
     "type": "file",
-    "size": 1098,
-    "last_modified": "2025-05-24T19:01:43.885664"
+    "size": 1094,
+    "last_modified": "2025-05-24T19:05:19.289664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/scraper.log",
     "type": "file",
-    "size": 1095,
-    "last_modified": "2025-05-24T19:01:43.937664"
+    "size": 0,
+    "last_modified": "2025-05-24T19:05:19.029664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/adaptive_thresholds.log",
     "type": "file",
-    "size": 920,
-    "last_modified": "2025-05-24T19:01:43.945663"
+    "size": 162,
+    "last_modified": "2025-05-24T19:05:19.393664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/reinforcement_engine.log",
     "type": "file",
-    "size": 921,
-    "last_modified": "2025-05-24T19:01:43.993664"
+    "size": 0,
+    "last_modified": "2025-05-24T19:05:19.241664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/black_swan_filter.log",
     "type": "file",
     "size": 0,
-    "last_modified": "2025-05-24T19:01:43.945663"
+    "last_modified": "2025-05-24T19:05:19.201664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/recursive_loop.log",
     "type": "file",
-    "size": 505,
-    "last_modified": "2025-05-24T19:01:44.005663"
+    "size": 0,
+    "last_modified": "2025-05-24T19:05:19.277664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/validate_lexicon.log",
     "type": "file",
-    "size": 917,
-    "last_modified": "2025-05-24T19:01:44.049664"
+    "size": 0,
+    "last_modified": "2025-05-24T19:05:19.277664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/simulation_planner.log",
@@ -1147,14 +1147,14 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/watch_inbox.log",
     "type": "file",
-    "size": 863,
-    "last_modified": "2025-05-24T19:05:17.957664"
+    "size": 0,
+    "last_modified": "2025-05-24T19:05:19.373664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/termux_map_daemon.log",
     "type": "file",
     "size": 0,
-    "last_modified": "2025-05-24T19:05:16.805664"
+    "last_modified": "2025-05-24T19:05:19.101664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/logs/launch_all_daemons.log",
@@ -1264,8 +1264,8 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/inbox/processed/blind_reboot_process.json",
     "type": "file",
-    "size": 65701,
-    "last_modified": "2025-05-24T19:05:17.717664"
+    "size": 123895,
+    "last_modified": "2025-05-24T19:05:18.889664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/inbox/processed/dependency_checker.py",
@@ -3148,7 +3148,7 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/objects",
     "type": "directory",
-    "last_modified": "2025-05-24T19:05:18.209664"
+    "last_modified": "2025-05-24T19:05:19.097664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/logs",
@@ -3177,13 +3177,13 @@
     "path": "/data/data/com.termux/files/home/feralsys/.git/COMMIT_EDITMSG",
     "type": "file",
     "size": 71,
-    "last_modified": "2025-05-24T19:05:18.117664"
+    "last_modified": "2025-05-24T19:05:19.029664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/index",
     "type": "file",
     "size": 447,
-    "last_modified": "2025-05-24T19:05:18.117664"
+    "last_modified": "2025-05-24T19:05:19.021664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/FETCH_HEAD",
@@ -3290,7 +3290,7 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/refs/heads",
     "type": "directory",
-    "last_modified": "2025-05-24T19:05:18.137664"
+    "last_modified": "2025-05-24T19:05:19.029664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/refs/tags",
@@ -3306,7 +3306,7 @@
     "path": "/data/data/com.termux/files/home/feralsys/.git/refs/heads/main",
     "type": "file",
     "size": 41,
-    "last_modified": "2025-05-24T19:05:18.137664"
+    "last_modified": "2025-05-24T19:05:19.029664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/refs/remotes/origin",
@@ -3513,6 +3513,21 @@
     "path": "/data/data/com.termux/files/home/feralsys/.git/objects/12",
     "type": "directory",
     "last_modified": "2025-05-24T19:05:18.137664"
+  },
+  {
+    "path": "/data/data/com.termux/files/home/feralsys/.git/objects/b3",
+    "type": "directory",
+    "last_modified": "2025-05-24T19:05:18.969664"
+  },
+  {
+    "path": "/data/data/com.termux/files/home/feralsys/.git/objects/61",
+    "type": "directory",
+    "last_modified": "2025-05-24T19:05:19.021664"
+  },
+  {
+    "path": "/data/data/com.termux/files/home/feralsys/.git/objects/06",
+    "type": "directory",
+    "last_modified": "2025-05-24T19:05:19.029664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/objects/e6/9de29bb2d1d6434b8b29ae775ad8c2e48c5391",
@@ -3749,6 +3764,24 @@
     "last_modified": "2025-05-24T19:05:18.137664"
   },
   {
+    "path": "/data/data/com.termux/files/home/feralsys/.git/objects/b3/6ad8df774e39d295dccd854e107baad8d87e0a",
+    "type": "file",
+    "size": 13957,
+    "last_modified": "2025-05-24T19:05:18.969664"
+  },
+  {
+    "path": "/data/data/com.termux/files/home/feralsys/.git/objects/61/5b93fb4e3e4b9fe73d1917bdaeab4c792e4ce4",
+    "type": "file",
+    "size": 190,
+    "last_modified": "2025-05-24T19:05:19.021664"
+  },
+  {
+    "path": "/data/data/com.termux/files/home/feralsys/.git/objects/06/6430a5efcde63964443fb7edbf5b542280fec0",
+    "type": "file",
+    "size": 204,
+    "last_modified": "2025-05-24T19:05:19.029664"
+  },
+  {
     "path": "/data/data/com.termux/files/home/feralsys/.git/logs/refs",
     "type": "directory",
     "last_modified": "2025-05-20T12:55:02.119591"
@@ -3756,8 +3789,8 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/logs/HEAD",
     "type": "file",
-    "size": 3151,
-    "last_modified": "2025-05-24T19:05:18.137664"
+    "size": 3353,
+    "last_modified": "2025-05-24T19:05:19.029664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/logs/refs/heads",
@@ -3772,8 +3805,8 @@
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/logs/refs/heads/main",
     "type": "file",
-    "size": 2572,
-    "last_modified": "2025-05-24T19:05:18.137664"
+    "size": 2774,
+    "last_modified": "2025-05-24T19:05:19.029664"
   },
   {
     "path": "/data/data/com.termux/files/home/feralsys/.git/logs/refs/remotes/origin",
