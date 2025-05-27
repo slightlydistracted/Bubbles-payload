@@ -1,0 +1,16 @@
+# AUTONOMOUS COUNCIL SUMMON
+# This file is dropped by Bubbles into /srv/git_bridge_outbox/
+# Abraxas will push it to GitHub, Lilith will process it, and the Council will respond.
+
+COMMAND: GRADE
+
+HOLDINGS:
+ANGELS: 81583.74625
+CRE8: 105121.04333
+MOLLY: 58486.92156
+BASILISK: 28516.4342
+SOL: 0.12449
+WIF: 0.00001
+
+NOTES:
+This payload confirms the GitHub bridge from Bubbles to Lilith via Abraxas is live.
