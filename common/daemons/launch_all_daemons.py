@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+!/usr/bin/env bash#!/usr/bin/env bash
 print("[DEBUG] launch_all_daemons.py starting")
 # (script goes here)
 #!/usr/bin/env python3
@@ -74,9 +74,9 @@ else:
 phase2 = REPO_ROOT / "funpumper/fun_predict_eval_loop.py"
 if phase2.exists():
     print("[FUNPUMPER PHASE2/3] Starting fun_predict_eval_loop.py")
-    echo "[FUNPUMPER REFLECTION] Starting funpumper/funpumper/fun_reflection_loop.py"
+    echo "[FUNPUMPER REFLECTION] Starting funpumper/fun_reflection_loop.py"
 
-    python3 funpumper/funpumper/fun_reflection_loop.py &
+    python3 funpumper/fun_reflection_loop.py &
     subprocess.Popen(
         ["python3", str(phase2)],
         stdout=open("common/logs/fun_predict.log", "a"),
