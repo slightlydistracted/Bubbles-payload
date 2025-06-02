@@ -75,3 +75,11 @@ Traceback (most recent call last):
   File "/data/data/com.termux/files/home/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 15, in <module>
     from common.config.oracle_config import ORACLE_SETTINGS
 ModuleNotFoundError: No module named 'common.config.oracle_config'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 14, in <module>
+    from telethon import TelegramClient, events
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 14, in <module>
+    from telethon import TelegramClient, events
+ModuleNotFoundError: No module named 'telethon'

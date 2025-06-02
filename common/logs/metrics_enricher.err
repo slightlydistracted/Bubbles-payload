@@ -23,3 +23,11 @@ Traceback (most recent call last):
     time.sleep(300)  # every 5 minutes
     ^^^^^^^^^^^^^^^
 KeyboardInterrupt
+  File "/root/projects/Bubbles-payload/funpumper/metrics_enricher_loop.py", line 17
+    HEL﻿IUS_RATE_LIMIT       = 2    # 2 requests per second
+       ^
+SyntaxError: invalid non-printable character U+FEFF
+  File "/root/projects/Bubbles-payload/funpumper/metrics_enricher_loop.py", line 17
+    HEL﻿IUS_RATE_LIMIT       = 2    # 2 requests per second
+       ^
+SyntaxError: invalid non-printable character U+FEFF

@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+import os, json, time
+from datetime import datetime
+import requests
+
+# === PATHS ===
+WEIGHTS_PATH       = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+ACCURACY_LOG_PATH  = "/srv/daemon-memory/funpumper/prediction_accuracy.json"
+PURGER_LOG         = "/srv/daemon-memory/funpumper/fun_purger.log"
+# windows in seconds to re-check
+INTERVALS = [30, 90, 300, 600, 1800, 3600, 10800, 21600, 32400, 43200]
+
+def log(msg):
+    ts = datetime.utcnow().isoformat()
+    line = f"[{ts}] {msg}"
+    with open(PURGER_LOG, "a") as f:
+        f.write(line + "\n")
+
+def load_json(path, default):
+    if not os.path.exists(path):
+        return default
+    try:
+        return json.load(open(path))
+    except Exception:
+        return default
+
+def save_json(path, data):
+    with open(path, "w") as f:
+        json.dump(data, f, indent=2)
+
+def fetch_price(mint):
+    # your existing helius_utils call or inline HTTP
+    from helius_utils import get_token_price
+    return get_token_price(mint)
+
+def record_accuracy(entry):
+    log_data = load_json(ACCURACY_LOG_PATH, [])
+    log_data.append(entry)
+    save_json(ACCURACY_LOG_PATH, log_data)
+
+def check_interval(logs, target_ts):
+    for ts, price in logs:
+        if abs(ts - target_ts) <= 30:
+            return price
+    return None
+
+def evaluate():
+    now = int(time.time())
+    data = load_json(WEIGHTS_PATH, {})
+    for mint, t in data.items():
+        price_log = t.get("price_log", [])
+        launch = t.get("mint_time", now)
+        for interval in INTERVALS:
+            # only check each window once
+            flag = f"checked_{interval}s"
+            if now - launch >= interval and not t.get(flag):
+                # pull fresh price
+                price = fetch_price(mint)
+                price_log.append([now, price or 0.0])
+                t["price_log"] = price_log
+
+                # did it survive? (price > 0) 
+                survived = bool(price and price > 0)
+                predicted = bool(t.get("predicted_moon", False))
+                correct = (survived == predicted)
+
+                # log delta if initial price exists
+                if price_log:
+                    initial = price_log[0][1] or 0.0
+                    delta = ((price - initial) / initial) if initial > 0 else 0.0
+                    log(f"[DELTA] {mint} @ {interval}s → {delta*100:.1f}%")
+                # record accuracy
+                record_accuracy({
+                    "timestamp": now,
+                    "mint": mint,
+                    "interval_s": interval,
+                    "predicted": predicted,
+                    "survived": survived,
+                    "correct": correct
+                })
+                log(f"[ACCURACY] {mint} @ {interval}s → {'✓' if correct else '✗'}")
+
+                t[flag] = True
+
+    save_json(WEIGHTS_PATH, data)
+
+def loop():
+    log("🗜️  FunPurger daemon activated.")
+    while True:
+        try:
+            evaluate()
+        except Exception as e:
+            log(f"[ERROR] {e}")
+        time.sleep(30)  # run twice a minute
+
+if __name__ == "__main__":
+    loop()

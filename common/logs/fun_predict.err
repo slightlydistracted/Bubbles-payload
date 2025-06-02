@@ -18,3 +18,13 @@ Traceback (most recent call last):
   File "/data/data/com.termux/files/home/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 6, in <module>
     from common.black_swan_agent.mutation_memory import load_memory, save_memory
 ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 64, in <module>
+    main()
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 61, in main
+    time.sleep(300)  # every 5 minutes
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 15, in <module>
+    from common.black_swan_agent.mutation_memory import load_memory, save_memory
+ModuleNotFoundError: No module named 'common'

@@ -1,0 +1,18 @@
+            }
+
+            results.append(result)
+            log(f"[EVALUATED] {mint}")
+        except Exception as e:
+            log(f"[Eval FAIL: {mint}] {str(e)}")
+
+    save_json(RESULT_PATH, results)
+
+# === MAIN LOOP ===
+def loop():
+    log("FunPumper activated.")
+    while True:
+        evaluate()
+        time.sleep(SLEEP_INTERVAL)
+
+if __name__ == "__main__":
+    loop()

@@ -1,0 +1,613 @@
+==> /srv/daemon-memory/funpumper/fix_funky_evals.py <==
+import json
+from pathlib import Path
+
+EVALS_PATH = Path("/srv/daemon-memory/funpumper/funpumper_evals.json")
+FIXED_PATH = Path("/srv/daemon-memory/funpumper/fixed_evals.json")
+
+def fix():
+    try:
+        raw = json.load(EVALS_PATH.open())
+        fixed = []
+
+        if isinstance(raw, dict):
+            for key, val in raw.items():
+                if isinstance(val, dict):
+                    entry = dict(val)
+                    entry["mint"] = entry.get("mint", key)
+                    entry["status"] = entry.get("status", "PENDING")
+                    fixed.append(entry)
+                elif isinstance(val, str):  # ultra broken
+                    fixed.append({
+
+==> /srv/daemon-memory/funpumper/fun_accuracy_reporter.py <==
+import os
+import json
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+REPORT_PATH = "/srv/daemon-memory/funpumper/fun_accuracy.log"
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(REPORT_PATH, "a") as f:
+        f.write(f"[{timestamp}] {message}\n")
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+
+==> /srv/daemon-memory/funpumper/fun_brain_loop.py <==
+import os
+import json
+import time
+from datetime import datetime
+from random import uniform
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/fun_brain_loop.log"
+PREDICTION_LOG = "/srv/daemon-memory/funpumper/fun_predictions.json"
+
+TRAIT_WEIGHTS = {
+    "age": 0.2,
+    "status": 0.3,
+    "price_log": 0.3,
+    "randomness": 0.2,
+}
+
+PREDICTION_THRESHOLD = 0.85
+
+def log(message):
+
+==> /srv/daemon-memory/funpumper/fun_brain_metrics.py <==
+import json
+import os
+
+BRAIN_PATH = "/srv/daemon-memory/funpumper/funpumper_brain.json"
+
+def load_brain():
+    if not os.path.exists(BRAIN_PATH):
+        return {}
+    with open(BRAIN_PATH, "r") as f:
+        return json.load(f)
+
+def print_report():
+    brain = load_brain()
+    correct = brain.get("correct", 0)
+    incorrect = brain.get("incorrect", 0)
+    accuracy = brain.get("accuracy", 0.0)
+    total = correct + incorrect
+
+    print("🧠 FUNPUMPER BRAIN STATUS")
+    print("--------------------------")
+
+==> /srv/daemon-memory/funpumper/fun_brain.py <==
+# /srv/daemon-memory/funpumper/fun_brain.py
+
+import os
+import json
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+BRAIN_LOG = "/srv/daemon-memory/funpumper/fun_brain.log"
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(BRAIN_LOG, "a") as f:
+        f.write(f"[{timestamp}] {message}\n")
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+        try:
+
+==> /srv/daemon-memory/funpumper/fun_brain_reporter.py <==
+import os
+import json
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/fun_brain_weights.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/fun_brain_report.log"
+
+def log(msg):
+    timestamp = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+        f.write(f"[{timestamp}] {msg}\n")
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+
+==> /srv/daemon-memory/funpumper/fun_brain_suggester.py <==
+import json
+import os
+import time
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+MAX_AGE_SECONDS = 12 * 3600  # 12 hours
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+        return json.load(f)
+
+def suggest_tokens(limit=10):
+    weights = load_weights()
+    now = int(time.time())
+    candidates = []
+
+    for mint, data in weights.items():
+        age = now - data.get("mint_time", now)
+
+==> /srv/daemon-memory/funpumper/fun_mutation_engine.py <==
+import os
+import json
+import random
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+FORK_HISTORY_PATH = "/srv/daemon-memory/funpumper/fork_history.json"
+MUTATION_LOG = "/srv/daemon-memory/funpumper/fun_mutation.log"
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(MUTATION_LOG, "a") as f:
+        f.write(f"[{timestamp}] {message}\n")
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+        try:
+
+==> /srv/daemon-memory/funpumper/fun_predict_eval_loop.py <==
+import json
+import os
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+BRAIN_PATH = "/srv/daemon-memory/funpumper/funpumper_brain.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/fun_predict_eval_loop.log"
+
+def log(msg):
+    timestamp = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+        f.write(f"[{timestamp}] {msg}\n")
+
+def load_json(path):
+    if not os.path.exists(path):
+        return {}
+    with open(path, "r") as f:
+        try:
+            return json.load(f)
+
+==> /srv/daemon-memory/funpumper/fun_predictor_loop.py <==
+import os
+import json
+import time
+from datetime import datetime
+from helius_utils import get_token_price  # Assumes you have a get_token_price function
+
+EVALS_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
+RESULTS_PATH = "/srv/daemon-memory/funpumper/funpumper_results.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/fun_predictor_loop.log"
+SLEEP_INTERVAL = 300  # 5 minutes
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+        f.write(f"[{timestamp}] {message}\n")
+
+def load_json(path, default):
+    if not os.path.exists(path):
+        return default
+    try:
+
+==> /srv/daemon-memory/funpumper/funpumper_github_sync.py <==
+import os
+import subprocess
+import time
+from datetime import datetime
+
+GITHUB_TOKEN = os.getenv("GITHUB_PAT", "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")
+CLONE_DIR = "/srv/daemon-memory/funpumper/github_repos"
+INTERVAL_HOURS = 6
+
+REPOS = [
+    "solsniperxyz/pumpfun-snipe-data",
+    "0xHanzo/pumpfun_tools",
+    "T4uru/pumpfun-analysis"
+]
+
+HEADERS = {
+    "Authorization": f"token {GITHUB_TOKEN}"
+}
+
+def log(msg):
+
+==> /srv/daemon-memory/funpumper/funpumper_loop.py <==
+import os
+import json
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+RESULTS_PATH = "/srv/daemon-memory/funpumper/funpumper_results.json"
+LOOP_LOG = "/srv/daemon-memory/funpumper/funpumper_loop.log"
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(LOOP_LOG, "a") as f:
+        f.write(f"[{timestamp}] {message}\n")
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+        try:
+            return json.load(f)
+
+==> /srv/daemon-memory/funpumper/funpumper.py <==
+import os, json, time
+from datetime import datetime
+
+# === PATHS ===
+BASE = "/srv/daemon-memory/funpumper"
+LOG_PATH = f"{BASE}/funpumper.log"
+DATA_PATH = f"{BASE}/live_ws_tokens.json"
+RESULT_PATH = f"{BASE}/funpumper_evals.json"
+os.makedirs(BASE, exist_ok=True)
+
+# === CONFIG ===
+PREDICTION_WINDOW = 12 * 60 * 60  # 12 hours
+SLEEP_INTERVAL = 600  # 10 minutes
+
+# === LOGGING ===
+def log(msg):
+    ts = datetime.utcnow().isoformat()
+    line = f"[{ts}] {msg}"
+    print(line)
+    with open(LOG_PATH, "a") as f:
+
+==> /srv/daemon-memory/funpumper/funpumper_weighter.py <==
+import json
+import os
+from datetime import datetime
+
+EVAL_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
+WEIGHT_OUT = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+
+def load_json(path, default=[]):
+    try:
+        with open(path) as f:
+            return json.load(f)
+    except:
+        return default
+
+def save_json(path, data):
+    with open(path, "w") as f:
+        json.dump(data, f, indent=2)
+
+def compute_weights(evals):
+    weights = {}
+
+==> /srv/daemon-memory/funpumper/funpumper_ws.py <==
+import json, asyncio, websockets
+from datetime import datetime
+
+PUMP_WS_URL = "wss://pumpportal.fun/api/data"
+LOG_PATH = "/srv/daemon-memory/funpumper/funpumper_ws.log"
+DATA_OUT = "/srv/daemon-memory/funpumper/live_ws_tokens.json"
+
+live_tokens = {}
+
+def log(msg):
+    ts = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+        f.write(f"[{ts}] {msg}\n")
+    print(f"[{ts}] {msg}")
+
+async def subscribe(websocket, method):
+    msg = {"method": method}
+    await websocket.send(json.dumps(msg))
+    log(f"[SUBSCRIBED] {method}")
+
+
+==> /srv/daemon-memory/funpumper/fun_purger_loop.py <==
+import time
+import json
+import os
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+PURGER_LOG = "/srv/daemon-memory/funpumper/fun_purger.log"
+
+def log(msg):
+    with open(PURGER_LOG, "a") as f:
+        f.write(f"[{datetime.utcnow().isoformat()}] {msg}\n")
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            log("[ERROR] Malformed weights file.")
+
+==> /srv/daemon-memory/funpumper/fun_reflection_loop.py <==
+import os
+import json
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+EVOLUTION_LOG = "/srv/daemon-memory/funpumper/fun_brain_evolution.log"
+PROFILE_PATH = "/srv/daemon-memory/funpumper/fun_scoring_profile.json"
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(EVOLUTION_LOG, "a") as f:
+        f.write(f"[{timestamp}] {message}\n")
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+        try:
+            return json.load(f)
+
+==> /srv/daemon-memory/funpumper/fun_tx_sniffer.py <==
+import os
+import json
+import time
+from datetime import datetime
+
+WS_LOG_PATH = "/srv/daemon-memory/funpumper/funpumper_ws.log"
+SNIFF_OUT = "/srv/daemon-memory/funpumper/sniffer_metrics.json"
+MAX_ENTRIES = 1000
+
+def log_event(event):
+    timestamp = datetime.utcnow().isoformat()
+    return {"timestamp": timestamp, **event}
+
+def tail_f(path):
+    with open(path, "rb") as f:
+        f.seek(0, os.SEEK_END)
+        while True:
+            line = f.readline()
+            if not line:
+                time.sleep(0.5)
+
+==> /srv/daemon-memory/funpumper/github_sync_funpumper.py <==
+#!/usr/bin/env python3
+import os
+import subprocess
+import time
+import logging
+
+REPOS = {
+    "pumpfun-history": "https://github.com/0xkhan/pumpfun-coin-history",
+    "pumpfinder": "https://github.com/optakt/pumpfinder",
+    "pumpfun-tracker": "https://github.com/Pump-Sniper/pumpfun-token-tracker",
+    "data-arena": "https://github.com/trader-arena/pumpfun-data-arena",
+}
+
+DEST_DIR = "/srv/daemon-memory/funpumper/github_data"
+SLEEP_INTERVAL = 3600  # sync every hour
+
+logging.basicConfig(
+    filename="/srv/daemon-memory/funpumper/github_sync.log",
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+
+==> /srv/daemon-memory/funpumper/helius_utils.py <==
+import requests
+
+HELIUS_KEY = "1dc0efc3-6f32-4590-8b06-e2fd8bb46f03"
+BASE_URL = "https://api.helius.xyz/v0"
+
+def get_token_price(mint_address):
+    """
+    Fetch the current token price in USD using the Helius price endpoint.
+    """
+    try:
+        url = f"{BASE_URL}/price?api-key={HELIUS_KEY}&mint={mint_address}"
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        data = response.json()
+        return float(data.get("price", 0.0))
+    except Exception as e:
+        print(f"[ERROR] Failed to fetch price for {mint_address}: {e}")
+        return 0.0
+
+==> /srv/daemon-memory/funpumper/metrics_enricher_loop.py <==
+import os
+import json
+import time
+import requests
+from datetime import datetime
+
+API_KEY = "1dc0efc3-6f32-4590-8b06-e2fd8bb46f03"
+EVALS_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/metrics_enricher.log"
+
+def log(message):
+    ts = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+        f.write(f"[{ts}] {message}\n")
+
+def get_price(mint):
+    try:
+        url = f"https://api.helius.xyz/v0/tokens/{mint}/price?api-key={API_KEY}"
+        r = requests.get(url)
+        j = r.json()
+
+==> /srv/daemon-memory/funpumper/mint_filter.py <==
+import os
+import json
+from datetime import datetime
+
+RAW_MINTS_PATH = "/srv/daemon-memory/funpumper/incoming_mints.json"
+FILTERED_MINTS_PATH = "/srv/daemon-memory/funpumper/filtered_mints.json"
+MINT_LOG = "/srv/daemon-memory/funpumper/mint_filter.log"
+
+BLACKLISTED_TERMS = ["scam", "rug", "test", "shit"]
+MIN_LIQUIDITY = 500  # adjust as needed
+
+def log(msg):
+    timestamp = datetime.utcnow().isoformat()
+    with open(MINT_LOG, "a") as f:
+        f.write(f"[{timestamp}] {msg}\n")
+
+def load_json(path):
+    if not os.path.exists(path):
+        return {}
+    with open(path, "r") as f:
+
+==> /srv/daemon-memory/funpumper/normalize_evals.py <==
+# normalize_evals.py
+import json
+import os
+
+SRC = "/srv/daemon-memory/funpumper/funpumper_evals.json"
+BACKUP = "/srv/daemon-memory/funpumper/funpumper_evals_list.json"
+
+with open(SRC, "r") as f:
+    data = json.load(f)
+
+if isinstance(data, list):
+    print(f"[NORMALIZE] Detected list format. Converting to dict...")
+    # Save backup
+    with open(BACKUP, "w") as f:
+        json.dump(data, f, indent=2)
+    # Normalize
+    normalized = {entry["mint"]: entry for entry in data}
+    with open(SRC, "w") as f:
+        json.dump(normalized, f, indent=2)
+    print("✅ Conversion complete. Canonical format = dict.")
+
+==> /srv/daemon-memory/funpumper/prediction_accuracy_tracker.py <==
+import os
+import json
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/fun_brain_weights.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/accuracy_tracker.log"
+
+def log(msg):
+    timestamp = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+        f.write(f"[{timestamp}] {msg}\n")
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+
+==> /srv/daemon-memory/funpumper/pump_scholar_loop.py <==
+import os, json, subprocess, time
+from datetime import datetime
+
+AGENT_PATH = "/data/data/com.termux/files/home/funpumper/agents/pump_scholar/"
+CONFIG_FILE = os.path.join(AGENT_PATH, "pump_scholar_agent.json")
+FINDINGS_FILE = os.path.join(AGENT_PATH, "findings.json")
+REPO_DIR = os.path.join(AGENT_PATH, "repos")
+LOGFILE = os.path.join(AGENT_PATH, "logs", "pump_scholar.log")
+
+def log(msg):
+    ts = datetime.utcnow().isoformat()
+    with open(LOGFILE, "a") as f:
+        f.write(f"[{ts}] {msg}\n")
+
+def clone_or_pull_repos(repos):
+    os.makedirs(REPO_DIR, exist_ok=True)
+    for url in repos:
+        name = url.split('/')[-1]
+        path = os.path.join(REPO_DIR, name)
+        if not os.path.exists(path):
+
+==> /srv/daemon-memory/funpumper/survivor_tracker.py <==
+import os
+import json
+import time
+from datetime import datetime
+from helius_utils import get_token_price
+
+EVALS_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
+PERF_LOG_PATH = "/srv/daemon-memory/funpumper/performance_log.json"
+TRACKER_LOG_PATH = "/srv/daemon-memory/funpumper/survivor_tracker.log"
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(TRACKER_LOG_PATH, "a") as f:
+        f.write(f"[{timestamp}] {message}\n")
+
+def load_json(path):
+    if not os.path.exists(path):
+        return []
+    with open(path, "r") as f:
+        try:
+
+==> /srv/daemon-memory/funpumper/token_history_logger.py <==
+import os
+import json
+import time
+from datetime import datetime
+
+from helius_tools import get_token_price  # Assumes you already have this module built
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/fun_brain_weights.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/token_history.log"
+
+def log(msg):
+    timestamp = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+        f.write(f"[{timestamp}] {msg}\n")
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+        try:
+
+==> /srv/daemon-memory/funpumper/weights_saver_loop.py <==
+import os
+import time
+import json
+from datetime import datetime
+
+BRAIN_WEIGHTS = "/srv/daemon-memory/funpumper/fun_brain_weights.json"
+WEIGHT_SNAPSHOTS = "/srv/daemon-memory/funpumper/weights_archive.json"
+WEIGHTS_LOG = "/srv/daemon-memory/funpumper/weights_saver.log"
+
+def log(msg):
+    timestamp = datetime.utcnow().isoformat()
+    with open(WEIGHTS_LOG, "a") as f:
+        f.write(f"[{timestamp}] {msg}\n")
+
+def load_json(path):
+    if not os.path.exists(path):
+        return {}
+    with open(path, "r") as f:
+        try:
+            return json.load(f)

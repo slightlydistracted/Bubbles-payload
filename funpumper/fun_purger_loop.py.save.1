@@ -1,0 +1,104 @@
+
+            # Purge if price == 0 at 300 s
+            if price_300s <= 0:
+                deadlist.append(mint)
+                del data[mint]
+                active_p1.remove(mint)
+                log(f"[P1-PURGED] {mint} @ 300s → price=0")
+                continue
+
+            # Purge if < 2× initial_price by 300 s
+            initial = info.get("initial_price", 1.0)
+            if price_300s < 2 * initial:
+                deadlist.append(mint)
+                del data[mint]
+                active_p1.remove(mint)
+                log(f"[P1-PURGED] {mint} only {price_300s/initial:.2f}× @ 300s")
+                continue
+
+            # Survived & ≥2× → promote to Phase 2
+            active_p1.remove(mint)
+            data[mint]["phase"] = 2
+            log(f"[P1-GRAD] {mint} → Phase 2 (price={price_300s:.8f}, {price_300s/initial:.2f}×)")
+
+    # === 3) Phase 2 → Phase 3 transition & purge ===
+    for mint in list(active_p2):
+        info = data.get(mint)
+        age = now - info["mint_time"]
+        if age >= P2_THRESHOLD:
+            price_1800s = fetch_price(mint) or 0.0
+            initial = info.get("initial_price", 1.0)
+            ratio = price_1800s / initial
+            if ratio < 1.5:
+                deadlist.append(mint)
+                del data[mint]
+                active_p2.remove(mint)
+                log(f"[P2-PURGED] {mint} only {ratio:.2f}× @ 1800s")
+                continue
+            # Survived Phase 2 → promote to Phase 3
+            active_p2.remove(mint)
+            data[mint]["phase"] = 3
+            log(f"[P2-GRAD] {mint} → Phase 3 (price={price_1800s:.8f}, {ratio:.2f}×)")
+
+    # === 4) Phase 3 → Phase 4 transition & purge ===
+    for mint in list(active_p3):
+        info = data.get(mint)
+        age = now - info["mint_time"]
+        if age >= P3_THRESHOLD:
+            price_3600s = fetch_price(mint) or 0.0
+            initial = info.get("initial_price", 1.0)
+            ratio = price_3600s / initial
+            if ratio < 1.2:
+                deadlist.append(mint)
+                del data[mint]
+                active_p3.remove(mint)
+                log(f"[P3-PURGED] {mint} only {ratio:.2f}× @ 3600s")
+                continue
+            # Survived Phase 3 → graduate to Phase 4
+            active_p3.remove(mint)
+            info["phase"] = 4
+            info["phase4_start_time"] = now
+            info["phase4_initial_price"] = price_3600s
+            graduated[mint] = info
+            del data[mint]
+            log(f"[P3-GRAD] {mint} → Phase 4 (price={price_3600s:.8f}, {ratio:.2f}×)")
+
+    # === 5) Price updates & feature logging for Phase 1–3 tokens ===
+    for mint, info in data.items():
+        phase, subidx = get_phase_and_subinterval(info, now)
+        price = fetch_price(mint) or 0.0
+
+        # Initialize price_log if missing
+        if "price_log" not in info:
+            info["price_log"] = []
+        info["price_log"].append([now, price])
+
+        # If first time, set initial_price
+        if "initial_price" not in info:
+            info["initial_price"] = price
+
+        # Update last_price
+        info["last_price"] = price
+
+        # OPTIONAL: collect subinterval‐specific features
+        # e.g., if phase == 1 and subidx is not None:
+        #     info["phase1_data"].setdefault(f"vol_{start}_{end}", 0.0)
+        #     ... accumulate volume, buyer count, slippage, etc.
+        # Similar hooks can go under Phase 2 and Phase 3.
+
+    # === 6) Save all JSON files ===
+    save_json(WEIGHTS_PATH, data)
+    save_json(DEADLIST_PATH, deadlist)
+    save_json(GRAD_PATH, graduated)
+
+def loop():
+    log("🗜️ FunPurger daemon activated with multi‐phase + WS ingestion.")
+    while True:
+        try:
+            evaluate()
+        except Exception as e:
+            log(f"[ERROR] {e}")
+        time.sleep(10)  # run every 10 seconds to hit subintervals precisely
+
+if __name__ == "__main__":
+    loop()

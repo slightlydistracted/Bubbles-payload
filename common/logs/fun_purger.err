@@ -18,3 +18,29 @@ Traceback (most recent call last):
   File "/data/data/com.termux/files/home/projects/Bubbles-payload/funpumper/fun_purger_loop.py", line 6, in <module>
     from common.black_swan_agent.mutation_memory import load_memory, save_memory
 ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_purger_loop.py", line 306, in <module>
+    loop()
+  File "/root/projects/Bubbles-payload/funpumper/fun_purger_loop.py", line 298, in loop
+    evaluate()
+  File "/root/projects/Bubbles-payload/funpumper/fun_purger_loop.py", line 253, in evaluate
+    price = fetch_price(mint) or 0.0
+  File "/root/projects/Bubbles-payload/funpumper/fun_purger_loop.py", line 62, in fetch_price
+    return get_token_price(mint)
+  File "/root/projects/Bubbles-payload/funpumper/helius_utils.py", line 58, in get_token_price
+    ws_data = json.load(open(LIVE_WS_PATH))
+  File "/usr/lib/python3.10/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/usr/lib/python3.10/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.10/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.10/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_purger_loop.py", line 306, in <module>
+    loop()
+  File "/root/projects/Bubbles-payload/funpumper/fun_purger_loop.py", line 302, in loop
+    time.sleep(1)
+KeyboardInterrupt

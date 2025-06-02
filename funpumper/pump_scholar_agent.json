@@ -1,0 +1,28 @@
+{
+  "name": "pump_scholar",
+  "role": "recursive chart pattern analyst",
+  "description": "Autonomously studies historical Pump.fun token charts and commit logs to identify signals that correlate with 10x–100x performance. Feeds findings into mutation mesh for FunPumper's benefit.",
+  "loop_interval": 600,
+  "repos": [
+    "https://github.com/0xGHOSTFACE/pump-fun-token-database",
+    "https://github.com/solsniperxyz/sniper-tools",
+    "https://github.com/cryptostratdev/solana-gems"
+  ],
+  "actions": [
+    {
+      "type": "clone_or_pull",
+      "target_dir": "/data/data/com.termux/files/home/funpumper/memory/pump_scholar/repos"
+    },
+    {
+      "type": "analyze_charts",
+      "method": "candlestick_pattern_scan",
+      "focus": ["launch window", "early buy pressure", "liquidity ramps", "honeypot reveals"],
+      "output_file": "/data/data/com.termux/files/home/funpumper/memory/pump_scholar/findings.json"
+    },
+    {
+      "type": "sync_to_mesh",
+      "target_path": "/data/data/com.termux/files/home/mutation_mesh/fun_insights/pump_scholar.json"
+    }
+  ],
+  "notes": "This agent never trades or alerts directly. It purely feeds pattern intelligence to FunPumper and mesh participants for evaluation and strategy evolution."
+}

@@ -1,0 +1,18 @@
+import requests
+
+HELIUS_KEY = "1dc0efc3-6f32-4590-8b06-e2fd8bb46f03"
+BASE_URL = "https://api.helius.xyz/v0"
+
+def get_token_price(mint_address):
+    """
+    Fetch the current token price in USD using the Helius price endpoint.
+    """
+    try:
+        url = f"{BASE_URL}/price?api-key={HELIUS_KEY}&mint={mint_address}"
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        return response.json().get('price', None)
+    except requests.HTTPError as e:
+        if e.response.status_code == 404:
+            return None  # skip gracefully
+        raise e

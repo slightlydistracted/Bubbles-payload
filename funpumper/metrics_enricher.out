@@ -1,0 +1,5 @@
+nohup: ignoring input
+  File "/srv/daemon-memory/funpumper/metrics_enricher_loop.py", line 17
+    HEL﻿IUS_RATE_LIMIT       = 2    # 2 requests per second
+       ^
+SyntaxError: invalid non-printable character U+FEFF

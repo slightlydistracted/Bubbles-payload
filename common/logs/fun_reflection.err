@@ -18,3 +18,15 @@ Traceback (most recent call last):
   File "/data/data/com.termux/files/home/projects/Bubbles-payload/funpumper/fun_reflection_loop.py", line 7, in <module>
     from common.black_swan_agent.mutation_memory import load_memory
 ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_reflection_loop.py", line 76, in <module>
+    loop()
+  File "/root/projects/Bubbles-payload/funpumper/fun_reflection_loop.py", line 73, in loop
+    time.sleep(3600)  # Reflect once per hour
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_reflection_loop.py", line 76, in <module>
+    loop()
+  File "/root/projects/Bubbles-payload/funpumper/fun_reflection_loop.py", line 73, in loop
+    time.sleep(3600)  # Reflect once per hour
+KeyboardInterrupt

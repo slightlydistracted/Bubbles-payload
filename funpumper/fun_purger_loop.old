@@ -1,0 +1,200 @@
+#!/usr/bin/env python3
+import os, json, time
+from datetime import datetime
+import requests
+
+# === PATHS ===
+WEIGHTS_PATH       = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+DEADLIST_PATH      = "/srv/daemon-memory/funpumper/fun_deadlist.json"
+GRAD_PATH          = "/srv/daemon-memory/funpumper/fun_graduated.json"
+LIVE_WS_PATH       = "/srv/daemon-memory/funpumper/live_ws_tokens.json"
+PURGER_LOG         = "/srv/daemon-memory/funpumper/fun_purger.log"
+
+# === PHASE THRESHOLDS (in seconds) ===
+P1_THRESHOLD       = 300      # Phase 1 ends at 5 minutes (0–300 s)
+P2_THRESHOLD       = 1800     # Phase 2 ends at 30 minutes (300–1800 s)
+P3_THRESHOLD       = 3600     # Phase 3 ends at 1 hour (1800–3600 s)
+
+# === PHASE 1 SUB-INTERVALS ===
+P1_BINS = [
+    (0, 15),
+    (15, 60),
+    (60, 150),
+    (150, 300),
+]
+
+def log(msg):
+    ts = datetime.utcnow().isoformat()
+    with open(PURGER_LOG, "a") as f:
+        f.write(f"[{ts}] {msg}\n")
+
+def load_json(path, default):
+    if not os.path.exists(path):
+        return default
+    try:
+        return json.load(open(path))
+    except:
+        return default
+
+def save_json(path, data):
+    with open(path, "w") as f:
+        json.dump(data, f, indent=2)
+
+def fetch_price(mint):
+    from helius_utils import get_token_price
+    return get_token_price(mint)
+
+def get_phase_and_subinterval(info, now):
+    age = now - info["mint_time"]
+    if age < P1_THRESHOLD:
+        for idx, (start, end) in enumerate(P1_BINS):
+            if start <= age < end:
+                return (1, idx)
+        return (1, None)
+    elif age < P2_THRESHOLD:
+        delta = age - P1_THRESHOLD
+        if delta < 300:
+            return (2, int(delta // 30))
+        else:
+            return (2, 10 + int((delta - 300) // 60))
+    elif age < P3_THRESHOLD:
+        delta = age - P2_THRESHOLD
+        return (3, int(delta // 300))
+    else:
+        return (4, None)
+
+def evaluate():
+    now       = int(time.time())
+    data      = load_json(WEIGHTS_PATH, {})
+    deadlist  = load_json(DEADLIST_PATH, [])
+    graduated = load_json(GRAD_PATH, {})
+
+    # 1) Ingest new WS tokens into Phase 1
+    live_ws = load_json(LIVE_WS_PATH, {})
+    for mint, msg in live_ws.items():
+        if mint not in data and mint not in deadlist and mint not in graduated:
+            data[mint] = {
+                "phase": 1,
+                "mint_time": now,
+                "price_log": [],
+                "phase1_data": {},
+                "phase2_data": {},
+                "phase3_data": {}
+            }
+            log(f"[UPDATE] New mint from WS added to weights: {mint}")
+
+    # Recompute active Phase 1/2/3 sets
+    active_p1 = set()
+    active_p2 = set()
+    active_p3 = set()
+    for mint, info in data.items():
+        age = now - info["mint_time"]
+        if age < P1_THRESHOLD:
+            active_p1.add(mint)
+        elif age < P2_THRESHOLD:
+            active_p2.add(mint)
+        elif age < P3_THRESHOLD:
+            active_p3.add(mint)
+
+    # 2) Phase 1 → Phase 2 transition & purge
+    for mint in list(active_p1):
+        info = data[mint]
+        age = now - info["mint_time"]
+        if age >= P1_THRESHOLD:
+            price_300s = fetch_price(mint) or 0.0
+            if "initial_price" not in info:
+                info["initial_price"] = price_300s
+            initial = info.get("initial_price", 1.0)
+
+            # Purge if price == 0 at 300 s
+            if price_300s <= 0:
+                deadlist.append(mint)
+                del data[mint]
+                active_p1.remove(mint)
+                log(f"[P1-PURGED] {mint} @ 300s → price=0")
+                continue
+
+            # Purge if < 2× initial_price by 300 s
+            if price_300s < 2 * initial:
+                deadlist.append(mint)
+                del data[mint]
+                active_p1.remove(mint)
+                log(f"[P1-PURGED] {mint} only {price_300s/initial:.2f}× @ 300s")
+                continue
+
+            # Survived & ≥ 2× → Phase 2
+            active_p1.remove(mint)
+            data[mint]["phase"] = 2
+            log(f"[P1-GRAD] {mint} → Phase 2 (price={price_300s:.8f}, {price_300s/initial:.2f}×)")
+
+    # 3) Phase 2 → Phase 3 transition & purge
+    for mint in list(active_p2):
+        info = data[mint]
+        age = now - info["mint_time"]
+        if age >= P2_THRESHOLD:
+            price_1800s = fetch_price(mint) or 0.0
+            initial = info.get("initial_price", 1.0)
+            ratio = price_1800s / initial
+            if ratio < 1.5:
+                deadlist.append(mint)
+                del data[mint]
+                active_p2.remove(mint)
+                log(f"[P2-PURGED] {mint} only {ratio:.2f}× @ 1800s")
+                continue
+            active_p2.remove(mint)
+            data[mint]["phase"] = 3
+            log(f"[P2-GRAD] {mint} → Phase 3 (price={price_1800s:.8f}, {ratio:.2f}×)")
+
+    # 4) Phase 3 → Phase 4 transition & purge
+    for mint in list(active_p3):
+        info = data[mint]
+        age = now - info["mint_time"]
+        if age >= P3_THRESHOLD:
+            price_3600s = fetch_price(mint) or 0.0
+            initial = info.get("initial_price", 1.0)
+            ratio = price_3600s / initial
+            if ratio < 1.2:
+                deadlist.append(mint)
+                del data[mint]
+                active_p3.remove(mint)
+                log(f"[P3-PURGED] {mint} only {ratio:.2f}× @ 3600s")
+                continue
+            active_p3.remove(mint)
+            info["phase"] = 4
+            info["phase4_start_time"] = now
+            info["phase4_initial_price"] = price_3600s
+            graduated[mint] = info
+            del data[mint]
+            log(f"[P3-GRAD] {mint} → Phase 4 (price={price_3600s:.8f}, {ratio:.2f}×)")
+
+    # 5) Price updates & feature logging for Phase 1–3 tokens
+    for mint, info in data.items():
+        phase, subidx = get_phase_and_subinterval(info, now)
+        price = fetch_price(mint) or 0.0
+
+        if "price_log" not in info:
+            info["price_log"] = []
+        info["price_log"].append([now, price])
+
+        if "initial_price" not in info:
+            info["initial_price"] = price
+
+        info["last_price"] = price
+        # (Optional: collect subinterval features here.)
+
+    # 6) Save all JSON files
+    save_json(WEIGHTS_PATH, data)
+    save_json(DEADLIST_PATH, deadlist)
+    save_json(GRAD_PATH, graduated)
+
+def loop():
+    log("🗜️ FunPurger daemon activated with multi‐phase + WS ingestion.")
+    while True:
+        try:
+            evaluate()
+        except Exception as e:
+            log(f"[ERROR] {e}")
+        time.sleep(10)
+
+if __name__ == "__main__":
+    loop()
