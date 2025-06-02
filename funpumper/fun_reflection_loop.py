@@ -1,76 +1,82 @@
+#!/usr/bin/env python3
+import sys
 import os
 import json
 import time
-from datetime import datetime
+from pathlib import Path
 
-WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
-EVOLUTION_LOG = "/srv/daemon-memory/funpumper/fun_brain_evolution.log"
-PROFILE_PATH = "/srv/daemon-memory/funpumper/fun_scoring_profile.json"
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
-def log(message):
-    timestamp = datetime.utcnow().isoformat()
-    with open(EVOLUTION_LOG, "a") as f:
-        f.write(f"[{timestamp}] {message}\n")
+from common.black_swan_agent.mutation_memory import load_memory, save_memory
 
-def load_weights():
-    if not os.path.exists(WEIGHTS_PATH):
-        return {}
-    with open(WEIGHTS_PATH, "r") as f:
-        try:
-            return json.load(f)
-        except json.JSONDecodeError:
-            return {}
+# —— CONFIGURATION —— #
+LOG_PATH = "funpumper/fun_reflection_loop.log"
+ERR_PATH = "common/logs/fun_reflection.err"
+GRADUATED_PATH = Path(__file__).parent / "fun_graduated.json"
+MEMORY_PATH = Path(REPO_ROOT) / "common" / "black_swan_agent" / "mutation_memory.json"
 
-def save_profile(profile):
-    with open(PROFILE_PATH, "w") as f:
-        json.dump(profile, f, indent=2)
+# Thresholds for “graduation” (example: 2×, 4×, 6×)
+PHASE_THRESHOLDS = {
+    "2x": 2.0,
+    "4x": 4.0,
+    "6x": 6.0
+}
 
-def reflect_and_mutate():
-    tokens = load_weights()
-    score_buckets = {
-        "0-0.2": {"pred": 0, "hit": 0},
-        "0.2-0.4": {"pred": 0, "hit": 0},
-        "0.4-0.6": {"pred": 0, "hit": 0},
-        "0.6-0.8": {"pred": 0, "hit": 0},
-        "0.8-1.0": {"pred": 0, "hit": 0}
-    }
+def load_json(path: Path, default):
+    try:
+        return json.load(open(path, "r"))
+    except Exception:
+        return default
 
-    for mint, t in tokens.items():
-        if not t.get("predicted_moon") or "actual_moon" not in t:
-            continue
-        score = float(t.get("score", 0))
-        if score < 0.2:
-            b = "0-0.2"
-        elif score < 0.4:
-            b = "0.2-0.4"
-        elif score < 0.6:
-            b = "0.4-0.6"
-        elif score < 0.8:
-            b = "0.6-0.8"
-        else:
-            b = "0.8-1.0"
-        score_buckets[b]["pred"] += 1
-        if t["actual_moon"]:
-            score_buckets[b]["hit"] += 1
-
-    best_bucket = max(score_buckets.items(), key=lambda x: x[1]["hit"] / x[1]["pred"] if x[1]["pred"] else 0)
-    best_range, best_stats = best_bucket
-    accuracy = best_stats["hit"] / best_stats["pred"] if best_stats["pred"] else 0
-
-    log(f"Reflection complete. Best score range: {best_range} with accuracy: {accuracy:.2%}")
-
-    new_profile = {
-        "last_best_score_range": best_range,
-        "last_accuracy": accuracy,
-        "last_reflection": datetime.utcnow().isoformat()
-    }
-
-    save_profile(new_profile)
+def save_json(path: Path, data):
+    with open(path, "w") as f:
+        json.dump(data, f, indent=2)
 
 def loop():
+    Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
     while True:
-        reflect_and_mutate()
-        time.sleep(3600)  # Reflect once per hour
+        try:
+            # 1) Load list of tokens that have graduated
+            graduated = load_json(GRADUATED_PATH, [])
+
+            # 2) Load mutation memory
+            memory = load_memory()
+
+            # 3) For each graduated token (address & phase), append to memory
+            new_entries = []
+            for entry in graduated:
+                addr = entry.get("address")
+                phase = entry.get("phase")  # e.g. "2x"
+                features = entry.get("features", {})
+                timestamp = entry.get("timestamp", time.time())
+
+                # Avoid duplicates
+                if not any(mem.get("token") == addr and mem.get("phase") == phase for mem in memory.get("mutations", [])):
+                    mem_entry = {
+                        "token": addr,
+                        "phase": phase,
+                        "features": features,
+                        "timestamp": timestamp
+                    }
+                    new_entries.append(mem_entry)
+
+            if new_entries:
+                memory.setdefault("mutations", []).extend(new_entries)
+                save_memory(memory)
+                with open(LOG_PATH, "a") as fl:
+                    for e in new_entries:
+                        fl.write(f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] Appended mutation: {e}\n")
+                # Clear the graduated list after processing
+                save_json(GRADUATED_PATH, [])
+
+        except Exception as e:
+            with open(ERR_PATH, "a") as fe:
+                fe.write(f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] [ERROR] {repr(e)}\n")
+
+        time.sleep(60)
 
 if __name__ == "__main__":
     loop()
