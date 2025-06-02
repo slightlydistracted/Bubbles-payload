@@ -1,61 +1,64 @@
 #!/usr/bin/env python3
-import argparse
+import sys
+import os
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
 import json
-from datetime import datetime
+import time
+import argparse
+from pathlib import Path
+from common.black_swan_agent.mutation_memory import load_memory
+from common.black_swan_agent.simulation_engine import run_simulation
+# Example: load Funpumper evals
+# from common.funpumper_evals import load_evals
 
-def load_config(path):
-    try:
-        return json.load(open(path))
-    except:
-        return {
-            "vote_threshold": 0.6,
-            "reward_allocation": {
-                "funpumper": 0.5,
-                "black_swan": 0.5
-            },
-            "metrics_weights": {
-                "pnl": 0.5,
-                "accuracy": 0.3,
-                "oracle_signal": 0.2
-            }
-        }
+# —— CONFIGURATION —— #
+LOG_PATH = "common/logs/council.log"
+ERR_PATH = "common/logs/council.err"
 
-def run_council(config_path):
-    cfg = load_config(config_path)
-
-    # Load Funpumper evals
-    try:
-        fun_evals = json.load(open("funpumper/funpumper_evals.json"))
-    except:
-        fun_evals = {}
-
-    # Load Black Swan sim logs
-    try:
-        sim_log = json.load(open("common/black_swan_agent/simulation_log.json"))
-    except:
-        sim_log = []
-
-    # Load Oracle patterns
-    try:
-        oracle_patterns = json.load(open("common/oracle/learned_patterns.json"))
-    except:
-        oracle_patterns = []
-
-    # Dummy voting logic: pick top metric
-    directives = {
-        "adjust_phase1_threshold": 1.5,
-        "deploy_new_model": "phase2_4x.pkl",
+def vote_and_write_directive(cfg_path):
+    cfg = json.load(open(cfg_path))
+    # Example pseudo-logic:
+    # 1. Load funpumper evals: evals = load_evals()
+    # 2. Load sim results: sim = run_simulation(load_memory())
+    # 3. Combine with oracle heuristics from common/config/oracle_patterns.json
+    # 4. Decide on hyperparams or a trade:
+    directive = {
+        "adjust_phase1_threshold": 1.7,
         "trade_token": {
-            "address": "SoMeToKenAddreSS",
+            "address": "SoMeToKenAddr",
             "amount_sol": 0.5
         }
     }
-    print(f"[COUNCIL] Voting complete. Directives: {directives}")
-    return directives
+    outpath = "common/council/council_output.json"
+    Path("common/council").mkdir(parents=True, exist_ok=True)
+    with open(outpath, "w") as fo:
+        json.dump(directive, fo, indent=2)
+    with open(LOG_PATH, "a") as fl:
+        fl.write(f"[{time.ctime()}] Wrote directive: {directive}\n")
+
+def main_loop(config_path, interval_s):
+    Path("common/logs").mkdir(parents=True, exist_ok=True)
+    while True:
+        try:
+            vote_and_write_directive(config_path)
+        except Exception as e:
+            with open(ERR_PATH, "a") as fe:
+                fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
+        time.sleep(interval_s)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", default="common/config/council_config.json")
+    parser.add_argument("--config", default="common/config/council_config.json", help="Path to council_config.json")
+    parser.add_argument("--interval", type=int, default=3600, help="Seconds between votes")
     args = parser.parse_args()
-    output = run_council(args.config)
-    print(json.dumps(output, indent=2))
+
+    try:
+        main_loop(args.config, args.interval)
+    except Exception as e:
+        with open(ERR_PATH, "a") as fe:
+            fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")

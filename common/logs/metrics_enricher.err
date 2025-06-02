@@ -8,3 +8,18 @@ Traceback (most recent call last):
     time.sleep(300)  # every 5 minutes
     ^^^^^^^^^^^^^^^
 KeyboardInterrupt
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/Bubbles-payload/funpumper/metrics_enricher_loop.py", line 37, in <module>
+    time.sleep(300)  # every 5 minutes
+    ^^^^^^^^^^^^^^^
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/Bubbles-payload/funpumper/metrics_enricher_loop.py", line 37, in <module>
+    time.sleep(300)  # every 5 minutes
+    ^^^^^^^^^^^^^^^
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/Bubbles-payload/funpumper/metrics_enricher_loop.py", line 37, in <module>
+    time.sleep(300)  # every 5 minutes
+    ^^^^^^^^^^^^^^^
+KeyboardInterrupt

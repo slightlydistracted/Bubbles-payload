@@ -44,3 +44,34 @@ Traceback (most recent call last):
     result = await future
              ^^^^^^^^^^^^
 telethon.errors.rpcerrorlist.ApiIdInvalidError: The api_id/api_hash combination is invalid (caused by ImportBotAuthorizationRequest)
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 36, in <module>
+    send_telemetry(cfg)
+  File "/data/data/com.termux/files/home/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 23, in send_telemetry
+    client.start(bot_token=cfg["bot_token"])
+  File "/data/data/com.termux/files/usr/lib/python3.12/site-packages/telethon/client/auth.py", line 128, in start
+    else self.loop.run_until_complete(coro)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.12/site-packages/telethon/client/auth.py", line 179, in _start
+    await self.sign_in(bot_token=bot_token)
+  File "/data/data/com.termux/files/usr/lib/python3.12/site-packages/telethon/client/auth.py", line 359, in sign_in
+    result = await self(request)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.12/site-packages/telethon/client/users.py", line 30, in __call__
+    return await self._call(self._sender, request, ordered=ordered)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.12/site-packages/telethon/client/users.py", line 92, in _call
+    result = await future
+             ^^^^^^^^^^^^
+telethon.errors.rpcerrorlist.ApiIdInvalidError: The api_id/api_hash combination is invalid (caused by ImportBotAuthorizationRequest)
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 16, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common.config.telemetry_config'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 16, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common.config.telemetry_config'

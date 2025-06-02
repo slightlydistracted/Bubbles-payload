@@ -1,59 +1,58 @@
 #!/usr/bin/env python3
-import argparse
+import sys
+import os
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
 import json
 import time
-from datetime import datetime
+import argparse
+from pathlib import Path
 from telethon import TelegramClient, events
+from common.config.oracle_config import ORACLE_SETTINGS
 
-# Path to the JSON file of learned patterns
-LEARNED_PATTERNS = "common/oracle/learned_patterns.json"
-WALLET_SIGS = "common/oracle/wallet_last_sigs.json"
-ORACLE_OUTPUT = "common/oracle/oracle_output.json"
+# Example imports if you have other modules under common:
+# from common.black_swan_agent.mutation_memory import save_memory
+# from common.black_swan_agent.simulation_engine import run_simulation
 
-def load_config(path):
-    try:
-        return json.load(open(path))
-    except:
-        return {
-            "api_id": 123456,
-            "api_hash": "your_api_hash",
-            "bot_token": "your_bot_token",
-            "chat_id": "your_chat_id"
-        }
+# —— CONFIGURATION —— #
+LOG_PATH = "common/logs/oracle.log"
+ERR_PATH = "common/logs/oracle.err"
 
-def run_oracle(config_path):
-    cfg = load_config(config_path)
-    client = TelegramClient('oracle_session', cfg["api_id"], cfg["api_hash"])
+def main_loop(api_id, api_hash, bot_token, chat_id):
+    Path("common/logs").mkdir(parents=True, exist_ok=True)
+    client = TelegramClient('oracle_session', api_id, api_hash).start(bot_token=bot_token)
 
-    @client.on(events.NewMessage(chats=cfg["chat_id"]))
+    @client.on(events.NewMessage(chats=chat_id))
     async def handler(event):
-        text = event.raw_text
-        print(f"[ORACLE] Received: {text}")
-        # Dummy: write a new pattern when a message contains “learn”
-        if text.lower().startswith("/learn"):
-            parts = text.split()
-            pattern = parts[1] if len(parts) > 1 else "default"
-            entry = {
-                "pattern": pattern,
-                "timestamp": datetime.utcnow().isoformat()
-            }
-            try:
-                patterns = json.load(open(LEARNED_PATTERNS))
-            except:
-                patterns = []
-            patterns.append(entry)
-            with open(LEARNED_PATTERNS, "w") as f:
-                json.dump(patterns, f, indent=2)
-            print(f"[ORACLE] Learned new pattern: {pattern}")
-            with open(ORACLE_OUTPUT, "w") as f:
-                json.dump({"new_pattern": pattern}, f, indent=2)
+        msg = event.message.message
+        ts = time.ctime()
+        with open(LOG_PATH, "a") as fo:
+            fo.write(f"[{ts}] Received: {msg}\n")
+        # Example: if you parse /learn commands, you might do:
+        # pattern = parse_pattern_from_message(msg)
+        # save_memory(pattern)
 
-    client.start(bot_token=cfg["bot_token"])
-    print("[ORACLE] Telegram client started, listening for messages...")
+    print("[ORACLE] Starting Telegram listener")
     client.run_until_disconnected()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", default="common/config/oracle_config.json")
+    parser.add_argument("--config", default="common/config/oracle_config.json", help="Path to oracle_config.json")
     args = parser.parse_args()
-    run_oracle(args.config)
+
+    # Load settings from JSON
+    cfg = json.load(open(args.config))
+    api_id = cfg["api_id"]
+    api_hash = cfg["api_hash"]
+    bot_token = cfg["bot_token"]
+    chat_id = cfg["chat_id"]
+
+    try:
+        main_loop(api_id, api_hash, bot_token, chat_id)
+    except Exception as e:
+        with open(ERR_PATH, "a") as fe:
+            fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")

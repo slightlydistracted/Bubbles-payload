@@ -1,37 +1,55 @@
 #!/usr/bin/env python3
-import argparse
+import sys
+import os
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
 import json
 import time
+import argparse
 from telethon import TelegramClient
+from pathlib import Path
 
-LOG_PATH = "common/logs/telemetry_sent.log"
-CONFIG_PATH = "common/config/telemetry_config.json"
+from common.config.telemetry_config import TELEMETRY_SETTINGS
+# Example imports if you push errors or metrics:
+# from common.metrics import load_latest_metrics
 
-def load_config(path):
-    try:
-        return json.load(open(path))
-    except:
-        return {
-            "api_id": 123456,
-            "api_hash": "your_api_hash",
-            "bot_token": "your_bot_token",
-            "chat_id": "your_chat_id"
-        }
+LOG_PATH = "common/logs/telemetry.log"
+ERR_PATH = "common/logs/telemetry.err"
 
-def send_telemetry(cfg):
-    client = TelegramClient('telemetry_session', cfg["api_id"], cfg["api_hash"])
-    client.start(bot_token=cfg["bot_token"])
-    message = f"Heartbeat: {time.strftime('%Y-%m-%d %H:%M:%S')}"
-    client.send_message(cfg["chat_id"], message)
-    with open(LOG_PATH, "a") as f:
-        f.write(json.dumps({"timestamp": time.time(), "message": message}) + "\n")
-    print(f"[TELEMETRY] Sent: {message}")
+def main_loop(api_id, api_hash, bot_token, chat_id, interval_s):
+    Path("common/logs").mkdir(parents=True, exist_ok=True)
+    client = TelegramClient('telemetry_session', api_id, api_hash).start(bot_token=bot_token)
+
+    while True:
+        try:
+            # Example telemetry data: you might load metrics or accuracy from JSON
+            msg = f"[TELEMETRY] {time.ctime()} System OK"
+            client.send_message(chat_id, msg)
+            with open(LOG_PATH, "a") as fl:
+                fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+        except Exception as e:
+            with open(ERR_PATH, "a") as fe:
+                fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
+        time.sleep(interval_s)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", default=CONFIG_PATH)
+    parser.add_argument("--config", default="common/config/telemetry_config.json", help="Path to telemetry_config.json")
+    parser.add_argument("--interval", type=int, default=1800, help="Seconds between telemetry pings")
     args = parser.parse_args()
-    cfg = load_config(args.config)
-    while True:
-        send_telemetry(cfg)
-        time.sleep(3600)  # every hour
+
+    cfg = json.load(open(args.config))
+    api_id = cfg["api_id"]
+    api_hash = cfg["api_hash"]
+    bot_token = cfg["bot_token"]
+    chat_id = cfg["chat_id"]
+
+    try:
+        main_loop(api_id, api_hash, bot_token, chat_id, args.interval)
+    except Exception as e:
+        with open(ERR_PATH, "a") as fe:
+            fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")

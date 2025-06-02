@@ -1,51 +1,45 @@
 #!/usr/bin/env python3
+import sys
+import os
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+# Remove or comment out the nonexistent import:
+# from common.black_swan_agent.simulation_engine import run_simulation
+
+from common.black_swan_agent.mutation_memory import load_memory, save_memory
 import json
 import time
-from datetime import datetime
-from common.black_swan_agent.mutation_memory import load_memory, save_memory
+from pathlib import Path
 
-SIM_LOG = "common/black_swan_agent/simulation_log.json"
-PORTFOLIO_SNAPSHOT = "common/black_swan_agent/portfolio_snapshot.json"
+LOG_PATH = "common/logs/simulation_planner.log"
+ERR_PATH = "common/logs/simulation_planner.err"
+SYNC_PAUSE = 6 * 3600  # run every 6 hours
 
-def load_simulation_log():
-    try:
-        return json.load(open(SIM_LOG))
-    except:
-        return []
+def main():
+    Path("common/logs").mkdir(parents=True, exist_ok=True)
 
-def save_simulation_log(log):
-    with open(SIM_LOG, "w") as f:
-        json.dump(log, f, indent=2)
-
-def get_portfolio_value():
-    try:
-        return json.load(open(PORTFOLIO_SNAPSHOT))["value"]
-    except:
-        return 100.0  # default simulated value
-
-def simulate_run(memory, portfolio_value):
-    score = 0.0
-    # Simple simulation: each “mutation” grants +0.1 ROI
-    for m in memory.get("mutations", []):
-        if m["phase"] == 3 and m["outcome"] == "6x":
-            score += 0.1
-    new_value = portfolio_value * (1 + score)
-    entry = {
-        "timestamp": datetime.utcnow().isoformat(),
-        "initial_value": portfolio_value,
-        "final_value": new_value,
-        "score": score
-    }
-    log = load_simulation_log()
-    log.append(entry)
-    save_simulation_log(log)
-    # Update portfolio snapshot
-    with open(PORTFOLIO_SNAPSHOT, "w") as f:
-        json.dump({"value": new_value}, f)
-    print(f"[SIM] Ran simulation: {entry}")
-    return entry
+    while True:
+        try:
+            # Load the current mutation memory
+            mem = load_memory()
+            # Placeholder: if you have a real simulation function, call it here.
+            # For example:
+            #   from common.black_swan_agent.mutation_engine import run_full_simulation
+            #   sim_results = run_full_simulation(mem)
+            #
+            # But since there is no simulation_engine.py, we simply log the memory size:
+            mem_size = len(mem.get("mutations", []))
+            with open(LOG_PATH, "a") as fl:
+                fl.write(f"[{time.ctime()}] Mutation memory contains {mem_size} entries. (Simulation placeholder)\n")
+            print(f"[SIM] Logged memory size {mem_size} at {time.ctime()}")
+        except Exception as e:
+            with open(ERR_PATH, "a") as fe:
+                fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
+        time.sleep(SYNC_PAUSE)
 
 if __name__ == "__main__":
-    memory = load_memory()
-    current_val = get_portfolio_value()
-    simulate_run(memory, current_val)
+    main()
