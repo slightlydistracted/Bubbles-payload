@@ -1,0 +1,50 @@
+{
+  "identity": "abraxas",
+  "type": "daemon_overlord",
+  "boot_time": "2025-05-13T05:29:53.086984",
+  "modules": {
+    "core": {
+      "path": "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/abraxas_core.py",
+      "status": "active",
+      "version_hash": "",
+      "last_updated": ""
+    },
+    "trade_executor": {
+      "path": "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/abraxas_trade_loop.py",
+      "status": "active",
+      "version_hash": "",
+      "last_updated": ""
+    },
+    "telegram_notifier": {
+      "path": "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/telegram_notifier_abraxas.py",
+      "status": "active",
+      "version_hash": "",
+      "last_updated": ""
+    },
+    "mutation_log": {
+      "path": "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/mutation_log.json",
+      "status": "active",
+      "last_entry": ""
+    },
+    "inbox_watcher": {
+      "path": "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/inbox_abraxas_watcher.py",
+      "status": "planned"
+    }
+  },
+  "linked_agents": [
+    "delta_v6x_obsidian"
+  ],
+  "telemetry": {
+    "telegram_bot": "telegram_notifier_abraxas.py",
+    "pings_enabled": true,
+    "delta_triggers_only": true
+  },
+  "logs": {
+    "trade_log": "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/abraxas_trade_log.txt",
+    "mutation_log": "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/mutation_log.json"
+  },
+  "self_review": {
+    "enabled": true,
+    "interval_seconds": 600
+  }
+}

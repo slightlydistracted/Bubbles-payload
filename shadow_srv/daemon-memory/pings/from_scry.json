@@ -1,0 +1,6 @@
+{
+  "source": "SCRY",
+  "timestamp": "2025-05-25T18:14:30.998706Z",
+  "type": "test_alert",
+  "content": "This is a test ping from Scry to confirm ping relay via Abraxas."
+}

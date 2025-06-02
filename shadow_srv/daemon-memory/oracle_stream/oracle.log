@@ -1,0 +1,165 @@
+[2025-05-25T21:38:28.714955] Dex oracle daemon online.
+[2025-05-25T21:38:28.717738] [DEX ERROR] Request exception: HTTPSConnectionPool(host='api.dexscreener.com', port=443): Max retries exceeded with url: /latest/dex/search/?q=sol (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x79cf9acb60>: Failed to resolve 'api.dexscreener.com' ([Errno 7] No address associated with hostname)"))
+[2025-05-25T21:43:29.925857] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T21:48:41.538027] [DEX ERROR] Request exception: HTTPSConnectionPool(host='api.dexscreener.com', port=443): Read timed out.
+[2025-05-25T21:53:47.190680] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T21:59:14.256876] [DEX ERROR] Request exception: HTTPSConnectionPool(host='api.dexscreener.com', port=443): Max retries exceeded with url: /latest/dex/search/?q=sol (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x79cf9af470>: Failed to resolve 'api.dexscreener.com' ([Errno 7] No address associated with hostname)"))
+[2025-05-25T22:04:14.289418] [DEX ERROR] Request exception: HTTPSConnectionPool(host='api.dexscreener.com', port=443): Max retries exceeded with url: /latest/dex/search/?q=sol (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x79cf9acf50>: Failed to resolve 'api.dexscreener.com' ([Errno 7] No address associated with hostname)"))
+[2025-05-25T22:09:15.192747] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T22:15:01.088525] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T22:20:01.997090] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T22:25:03.109334] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T22:30:04.468534] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T22:35:05.465503] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T22:40:06.759664] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T22:45:07.808174] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T22:50:09.052737] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T22:55:10.195596] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T23:00:11.026842] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T23:05:12.491895] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T23:21:20.309689] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T23:31:24.783646] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T23:37:00.556607] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T23:42:01.353329] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-25T23:58:59.383581] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T00:04:00.045494] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T00:13:47.985643] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T00:18:48.271958] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T00:26:39.933054] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T00:32:26.834949] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T00:55:23.946064] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T01:04:17.898247] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T01:13:13.369259] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T01:21:02.464572] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T01:27:53.414600] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T01:32:54.364418] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T01:46:47.713715] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T01:51:55.016226] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T02:03:07.699081] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T02:08:16.647486] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T02:13:17.393377] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T02:18:18.164629] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T02:23:27.451953] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T02:31:44.791593] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T02:41:00.025905] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T02:47:13.357172] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T02:53:33.194000] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T02:58:33.905939] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T03:03:35.187717] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T03:11:05.213302] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T03:28:27.110496] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T04:21:28.557943] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T04:26:34.597283] [DEX ERROR] Request exception: HTTPSConnectionPool(host='api.dexscreener.com', port=443): Max retries exceeded with url: /latest/dex/search/?q=sol (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x79cf94a060>: Failed to resolve 'api.dexscreener.com' ([Errno 7] No address associated with hostname)"))
+[2025-05-26T04:42:01.467689] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T04:58:34.653762] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T05:04:42.693838] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T05:10:34.002330] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T05:19:34.138474] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T05:28:52.119570] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T05:41:17.819298] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T05:46:18.936457] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T05:52:49.395826] [DEX ERROR] Request exception: HTTPSConnectionPool(host='api.dexscreener.com', port=443): Max retries exceeded with url: /latest/dex/search/?q=sol (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x79d5bbac30>: Failed to resolve 'api.dexscreener.com' ([Errno 7] No address associated with hostname)"))
+[2025-05-26T05:57:50.280570] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T06:02:51.205822] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T06:07:52.131672] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T06:12:52.746644] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T06:17:53.440049] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T06:22:54.312351] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T06:27:55.456618] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T06:33:08.108057] [DEX ERROR] Timeout occurred while fetching DEX data
+[2025-05-26T06:38:09.347377] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T06:43:09.902753] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T06:48:24.355746] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T06:54:56.505766] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T07:04:35.703502] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T07:11:28.452319] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T07:17:37.628709] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T07:25:01.918360] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T07:30:19.584806] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T07:35:20.935763] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T07:41:39.107756] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T07:48:42.956222] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T07:55:23.250593] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:00:24.945849] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:05:26.479337] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:10:27.691392] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:15:29.186623] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:20:30.454213] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:25:32.496352] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:30:33.520195] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:35:34.845509] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:40:35.485883] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:45:45.405565] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:50:48.681293] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T08:55:51.151307] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:00:52.406025] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:05:53.048947] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:10:54.355192] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:15:55.506119] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:20:56.271209] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:25:58.440983] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:30:59.149822] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:36:00.575471] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:41:01.527357] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:46:02.491036] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:51:03.341900] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T09:56:04.238542] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T10:01:05.088968] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T10:06:06.191291] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T10:11:06.837404] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T10:16:07.597825] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T10:21:08.275945] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T10:26:09.143027] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T10:31:10.028341] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T10:36:12.441439] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T10:44:22.093347] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T10:49:52.529733] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T11:09:24.233500] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T11:26:20.215288] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T11:33:29.333055] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T11:38:30.817787] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T11:48:14.407074] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T12:16:19.396150] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T12:40:43.338816] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T12:53:25.130614] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T12:58:25.920509] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T13:11:25.032536] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T13:30:47.393806] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T13:39:17.108869] [DEX ERROR] Timeout occurred while fetching DEX data
+[2025-05-26T13:44:18.437735] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T14:02:23.495905] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T14:18:16.577038] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T14:38:48.850758] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T14:59:19.169521] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T15:27:26.246556] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T15:34:48.380753] [DEX ERROR] Request exception: HTTPSConnectionPool(host='api.dexscreener.com', port=443): Max retries exceeded with url: /latest/dex/search/?q=sol (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x79cf9ad7c0>: Failed to resolve 'api.dexscreener.com' ([Errno 7] No address associated with hostname)"))
+[2025-05-26T15:39:49.392781] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T15:45:00.006303] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T15:54:25.637011] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T16:00:34.814878] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T16:50:04.424967] [DEX ERROR] Timeout occurred while fetching DEX data
+[2025-05-26T17:07:04.900823] [DEX ERROR] Timeout occurred while fetching DEX data
+[2025-05-26T17:20:14.706262] [DEX ERROR] Timeout occurred while fetching DEX data
+[2025-05-26T17:27:51.744020] [DEX ERROR] Request exception: HTTPSConnectionPool(host='api.dexscreener.com', port=443): Max retries exceeded with url: /latest/dex/search/?q=sol (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x79cf9ae600>: Failed to resolve 'api.dexscreener.com' ([Errno 7] No address associated with hostname)"))
+[2025-05-26T17:37:48.953329] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T17:59:31.419885] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:04:31.703716] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:09:32.297560] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:14:32.896731] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:19:33.539042] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:24:34.554530] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:29:35.389887] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:34:36.148176] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:39:36.920079] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:44:37.752671] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:49:38.520859] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:54:39.367461] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T18:59:39.713380] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T19:04:40.478646] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T19:09:42.790744] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T19:14:43.531633] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T19:19:44.376134] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T19:24:48.308490] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T19:31:35.163520] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T19:36:37.375097] [DEX] Wrote 25 tokens to dex_data.json
+[2025-05-26T19:36:37.375617] [DEX ERROR] General exception: [Errno 5] I/O error

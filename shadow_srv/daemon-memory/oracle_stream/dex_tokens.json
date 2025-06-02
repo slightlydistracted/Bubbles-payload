@@ -1,0 +1,6 @@
+{
+  "tokens": [
+    {"symbol": "MEOW", "mint": "MEOW1234", "liquidity": 12000, "volume": 95000},
+    {"symbol": "SNIPE", "mint": "SNIP9876", "liquidity": 8600, "volume": 43000}
+  ]
+}

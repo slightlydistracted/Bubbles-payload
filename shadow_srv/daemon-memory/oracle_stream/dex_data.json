@@ -1,0 +1,202 @@
+[
+  {
+    "symbol": "SOL",
+    "lp": 102020.58,
+    "price": 174.065,
+    "mint": "factory/osmo1n3n75av8awcnw4jl62n3l48e6e4sxqmaf97w5ua6ddu4s475q5qq9udvx4/alloyed/allSOL",
+    "dex": "osmosis",
+    "fetched_at": "2025-05-26T19:36:37.372003"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 54547.12,
+    "price": 0.0002734,
+    "mint": "0x873301F2B4B83FeaFF04121B68eC9231B29Ce0df",
+    "dex": "pulsex",
+    "fetched_at": "2025-05-26T19:36:37.372051"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 750013.13,
+    "price": 174.084,
+    "mint": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+    "dex": "pancakeswap",
+    "fetched_at": "2025-05-26T19:36:37.372144"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 348617.99,
+    "price": 173.99,
+    "mint": "0xd93f7E271cB87c23AaA73edC008A79646d1F9912",
+    "dex": "uniswap",
+    "fetched_at": "2025-05-26T19:36:37.372174"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 1095678.47,
+    "price": 174.19,
+    "mint": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+    "dex": "pancakeswap",
+    "fetched_at": "2025-05-26T19:36:37.372194"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 506443.97,
+    "price": 174.3,
+    "mint": "0x2bcC6D6CdBbDC0a4071e48bb3B969b06B3330c07",
+    "dex": "camelot",
+    "fetched_at": "2025-05-26T19:36:37.372213"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 159914.02,
+    "price": 174.87,
+    "mint": "0xc9DE0F3e08162312528FF72559db82590b481800",
+    "dex": "vvsfinance",
+    "fetched_at": "2025-05-26T19:36:37.372231"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 139946.74,
+    "price": 175.38,
+    "mint": "0x2bcC6D6CdBbDC0a4071e48bb3B969b06B3330c07",
+    "dex": "uniswap",
+    "fetched_at": "2025-05-26T19:36:37.372248"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 165477.87,
+    "price": 175.31,
+    "mint": "22.contract.portalbridge.near",
+    "dex": "rhea-finance",
+    "fetched_at": "2025-05-26T19:36:37.372266"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 82572.69,
+    "price": 173.88,
+    "mint": "factory/osmo1n3n75av8awcnw4jl62n3l48e6e4sxqmaf97w5ua6ddu4s475q5qq9udvx4/alloyed/allSOL",
+    "dex": "osmosis",
+    "fetched_at": "2025-05-26T19:36:37.372284"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 4059.02,
+    "price": 0.0002768,
+    "mint": "0x873301F2B4B83FeaFF04121B68eC9231B29Ce0df",
+    "dex": "9mm",
+    "fetched_at": "2025-05-26T19:36:37.372302"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 80657.91,
+    "price": 174.19,
+    "mint": "0x2bcC6D6CdBbDC0a4071e48bb3B969b06B3330c07",
+    "dex": "pancakeswap",
+    "fetched_at": "2025-05-26T19:36:37.372320"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 1026.18,
+    "price": 0.0002716,
+    "mint": "0x873301F2B4B83FeaFF04121B68eC9231B29Ce0df",
+    "dex": "pulsex",
+    "fetched_at": "2025-05-26T19:36:37.372338"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 1817999.93,
+    "price": 174.4,
+    "mint": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+    "dex": "pancakeswap",
+    "fetched_at": "2025-05-26T19:36:37.372356"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 203062.66,
+    "price": 174.23,
+    "mint": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+    "dex": "babyswap",
+    "fetched_at": "2025-05-26T19:36:37.372374"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 59258.31,
+    "price": 174.12,
+    "mint": "0x2bcC6D6CdBbDC0a4071e48bb3B969b06B3330c07",
+    "dex": "pancakeswap",
+    "fetched_at": "2025-05-26T19:36:37.372391"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 849777.01,
+    "price": 174.23,
+    "mint": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+    "dex": "thena",
+    "fetched_at": "2025-05-26T19:36:37.372409"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 124586.4,
+    "price": 173.5,
+    "mint": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+    "dex": "unchain-x",
+    "fetched_at": "2025-05-26T19:36:37.372426"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 209072.48,
+    "price": 174.17,
+    "mint": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+    "dex": "uniswap",
+    "fetched_at": "2025-05-26T19:36:37.372444"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 204242.52,
+    "price": 174.26,
+    "mint": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+    "dex": "babyswap",
+    "fetched_at": "2025-05-26T19:36:37.372462"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 118309.77,
+    "price": 174.83,
+    "mint": "0xfA54fF1a158B5189Ebba6ae130CEd6bbd3aEA76e",
+    "dex": "uniswap",
+    "fetched_at": "2025-05-26T19:36:37.372479"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 163406.2,
+    "price": 177.093,
+    "mint": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+    "dex": "pancakeswap",
+    "fetched_at": "2025-05-26T19:36:37.372497"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 56115.51,
+    "price": 173.46,
+    "mint": "sol.token.a11bd.near",
+    "dex": "rhea-finance",
+    "fetched_at": "2025-05-26T19:36:37.372514"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 91549.76,
+    "price": 174.53,
+    "mint": "0x570A5D26f7765Ecb712C0924E4De545B89fD43dF",
+    "dex": "biswap",
+    "fetched_at": "2025-05-26T19:36:37.372532"
+  },
+  {
+    "symbol": "SOL",
+    "lp": 92451.72,
+    "price": 175.5,
+    "mint": "0xfA54fF1a158B5189Ebba6ae130CEd6bbd3aEA76e",
+    "dex": "uniswap",
+    "fetched_at": "2025-05-26T19:36:37.372550"
+  }
+]
