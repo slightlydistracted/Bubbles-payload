@@ -1,9 +1,11 @@
+cat > funpumper/fun_reflection_loop.py << 'EOF'
 #!/usr/bin/env python3
 import sys
 import os
 import json
 import time
 from pathlib import Path
+from datetime import datetime
 
 # ——— Ensure “common/” is on sys.path ———
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
@@ -17,13 +19,6 @@ LOG_PATH = "funpumper/fun_reflection_loop.log"
 ERR_PATH = "common/logs/fun_reflection.err"
 GRADUATED_PATH = Path(__file__).parent / "fun_graduated.json"
 MEMORY_PATH = Path(REPO_ROOT) / "common" / "black_swan_agent" / "mutation_memory.json"
-
-# Thresholds for “graduation” (example: 2×, 4×, 6×)
-PHASE_THRESHOLDS = {
-    "2x": 2.0,
-    "4x": 4.0,
-    "6x": 6.0
-}
 
 def load_json(path: Path, default):
     try:
@@ -39,21 +34,15 @@ def loop():
     Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
     while True:
         try:
-            # 1) Load list of tokens that have graduated
             graduated = load_json(GRADUATED_PATH, [])
-
-            # 2) Load mutation memory
             memory = load_memory()
-
-            # 3) For each graduated token (address & phase), append to memory
             new_entries = []
             for entry in graduated:
                 addr = entry.get("address")
-                phase = entry.get("phase")  # e.g. "2x"
+                phase = entry.get("phase")
                 features = entry.get("features", {})
                 timestamp = entry.get("timestamp", time.time())
 
-                # Avoid duplicates
                 if not any(mem.get("token") == addr and mem.get("phase") == phase for mem in memory.get("mutations", [])):
                     mem_entry = {
                         "token": addr,
@@ -68,15 +57,15 @@ def loop():
                 save_memory(memory)
                 with open(LOG_PATH, "a") as fl:
                     for e in new_entries:
-                        fl.write(f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] Appended mutation: {e}\n")
-                # Clear the graduated list after processing
+                        fl.write(f"[{datetime.utcnow().isoformat()}] Appended mutation: {e}\n")
                 save_json(GRADUATED_PATH, [])
 
         except Exception as e:
             with open(ERR_PATH, "a") as fe:
-                fe.write(f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] [ERROR] {repr(e)}\n")
+                fe.write(f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
 
         time.sleep(60)
 
 if __name__ == "__main__":
     loop()
+EOF
