@@ -1,42 +1,40 @@
+#!/usr/bin/env python3
+import os
 import time
-import shutil
-from pathlib import Path
+import json
 
-INBOXES = [
-    Path.home() / "feralsys/inbox",
-    Path("/sdcard/Download/")
-]
+# Configuration: which folder to watch
+CONFIG_PATH = "common/config/inbox_config.json"
+DEFAULT_INBOX = os.path.expanduser("~/feralsys/inbox")
 
-PROCESSED = Path.home() / "feralsys/inbox/processed"
-LOGFILE = Path.home() / "feralsys/lilith_inbox.log"
-MAX_LOG_SIZE = 1024 * 1024  # 1MB max log file size
-
-def log(message):
+def load_config():
     try:
-        if LOGFILE.exists() and LOGFILE.stat().st_size > MAX_LOG_SIZE:
-            LOGFILE.write_text("")  # clear log if too big
-        with open(LOGFILE, "a") as f:
-            f.write(f"[Lilith Inbox] {message}\n")
-    except Exception as e:
-        print(f"[Lilith Logging ERROR] {e}")
+        cfg = json.load(open(CONFIG_PATH))
+        return cfg.get("inbox_folder", DEFAULT_INBOX)
+    except FileNotFoundError:
+        return DEFAULT_INBOX
 
-def process_file(file_path):
-    try:
-        target_path = PROCESSED / file_path.name
-        shutil.move(str(file_path), str(target_path))
-        log(f"Processed {file_path}")
-    except Exception as e:
-        log(f"Error processing {file_path}: {e}")
+def fetch_next_message():
+    inbox = load_config()
+    processed_folder = os.path.join(inbox, "processed")
+    os.makedirs(processed_folder, exist_ok=True)
 
-def main():
-    PROCESSED.mkdir(parents=True, exist_ok=True)
+    # Poll every 10 seconds
     while True:
-        for inbox in INBOXES:
-            if inbox.exists():
-                for item in inbox.iterdir():
-                    if item.is_file() and not item.name.startswith("."):
-                        process_file(item)
-        time.sleep(0.5)  # sniper-speed polling
+        for fname in os.listdir(inbox):
+            fpath = os.path.join(inbox, fname)
+            if os.path.isfile(fpath) and fname.endswith(".json"):
+                try:
+                    msg = json.load(open(fpath))
+                    # Move to processed
+                    os.rename(fpath, os.path.join(processed_folder, fname))
+                    return msg
+                except json.JSONDecodeError:
+                    os.remove(fpath)
+        time.sleep(10)
 
 if __name__ == "__main__":
-    main()
+    # Example usage: continuously print messages
+    while True:
+        msg = fetch_next_message()
+        print(f"[INBOX] Received: {msg}")

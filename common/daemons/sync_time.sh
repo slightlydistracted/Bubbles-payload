@@ -1,2 +1,4 @@
-#!/data/data/com.termux/files/usr/bin/bash
-date -s "$(curl -s --head http://google.com | grep ^Date: | sed 's/Date: //g')"
+#!/usr/bin/env bash
+# Synchronize system time via NTP
+echo "[SYNC_TIME] Syncing clock..."
+ntpdate -u pool.ntp.org

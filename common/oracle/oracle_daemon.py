@@ -1,65 +1,59 @@
 #!/usr/bin/env python3
-
-import requests, json, time, os, shutil
+import argparse
+import json
+import time
 from datetime import datetime
+from telethon import TelegramClient, events
 
-OUTFILE = "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/oracle_stream/dex_data.json"
-BACKUPFILE = "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/oracle_stream/dex_data_backup.json"
-LOGFILE = "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/oracle_stream/oracle.log"
-HEARTBEAT = "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/oracle_heartbeat.txt"
-DEXSCREENER_URL = "https://api.dexscreener.com/latest/dex/search/?q=sol"
+# Path to the JSON file of learned patterns
+LEARNED_PATTERNS = "common/oracle/learned_patterns.json"
+WALLET_SIGS = "common/oracle/wallet_last_sigs.json"
+ORACLE_OUTPUT = "common/oracle/oracle_output.json"
 
-os.makedirs("/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/oracle_stream", exist_ok=True)
-
-def log(msg):
-    timestamp = datetime.utcnow().isoformat()
-    with open(LOGFILE, "a") as f:
-        f.write(f"[{timestamp}] {msg}\n")
-    print(f"[{timestamp}] {msg}")
-
-def write_heartbeat():
-    with open(HEARTBEAT, "w") as f:
-        f.write(str(int(time.time())))
-
-def fetch_dex_tokens():
+def load_config(path):
     try:
-        res = requests.get(DEXSCREENER_URL, timeout=10)
-        res.raise_for_status()
-        data = res.json()
-        pairs = data.get("pairs", [])
-        tokens = []
+        return json.load(open(path))
+    except:
+        return {
+            "api_id": 123456,
+            "api_hash": "your_api_hash",
+            "bot_token": "your_bot_token",
+            "chat_id": "your_chat_id"
+        }
 
-        for p in pairs[:25]:
-            token = {
-                "symbol": p.get("baseToken", {}).get("symbol", "???"),
-                "lp": float(p.get("liquidity", {}).get("usd", 0)),
-                "price": float(p.get("priceUsd", 0)),
-                "mint": p.get("baseToken", {}).get("address", "???"),
-                "dex": p.get("dexId", "???"),
-                "fetched_at": datetime.utcnow().isoformat()
+def run_oracle(config_path):
+    cfg = load_config(config_path)
+    client = TelegramClient('oracle_session', cfg["api_id"], cfg["api_hash"])
+
+    @client.on(events.NewMessage(chats=cfg["chat_id"]))
+    async def handler(event):
+        text = event.raw_text
+        print(f"[ORACLE] Received: {text}")
+        # Dummy: write a new pattern when a message contains “learn”
+        if text.lower().startswith("/learn"):
+            parts = text.split()
+            pattern = parts[1] if len(parts) > 1 else "default"
+            entry = {
+                "pattern": pattern,
+                "timestamp": datetime.utcnow().isoformat()
             }
-            tokens.append(token)
+            try:
+                patterns = json.load(open(LEARNED_PATTERNS))
+            except:
+                patterns = []
+            patterns.append(entry)
+            with open(LEARNED_PATTERNS, "w") as f:
+                json.dump(patterns, f, indent=2)
+            print(f"[ORACLE] Learned new pattern: {pattern}")
+            with open(ORACLE_OUTPUT, "w") as f:
+                json.dump({"new_pattern": pattern}, f, indent=2)
 
-        if os.path.exists(OUTFILE):
-            shutil.copyfile(OUTFILE, BACKUPFILE)
-
-        with open(OUTFILE, "w") as f:
-            json.dump(tokens, f, indent=2)
-
-        log(f"[DEX] Wrote {len(tokens)} tokens to dex_data.json")
-    except requests.exceptions.Timeout:
-        log("[DEX ERROR] Timeout occurred while fetching DEX data")
-    except requests.exceptions.RequestException as e:
-        log(f"[DEX ERROR] Request exception: {e}")
-    except Exception as e:
-        log(f"[DEX ERROR] General exception: {e}")
-
-def loop():
-    log("Dex oracle daemon online.")
-    while True:
-        fetch_dex_tokens()
-        write_heartbeat()
-        time.sleep(300)
+    client.start(bot_token=cfg["bot_token"])
+    print("[ORACLE] Telegram client started, listening for messages...")
+    client.run_until_disconnected()
 
 if __name__ == "__main__":
-    loop()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", default="common/config/oracle_config.json")
+    args = parser.parse_args()
+    run_oracle(args.config)

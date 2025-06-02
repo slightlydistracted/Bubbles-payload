@@ -1,0 +1,12 @@
+{
+  "vote_threshold": 0.6,
+  "reward_allocation": {
+    "funpumper": 0.4,
+    "black_swan": 0.6
+  },
+  "metrics_weights": {
+    "pnl": 0.5,
+    "accuracy": 0.3,
+    "oracle_signal": 0.2
+  }
+}

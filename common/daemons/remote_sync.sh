@@ -1,10 +1,10 @@
-#!/bin/bash
-# Remote Sync Loop - Bubbles Mode
-
-echo "[remote_sync] Active: $(date)" >> ~/feralsys/logs/remote_sync.log
-
-while true; do
-    echo "[remote_sync] $(date) - Syncing sandbox..." >> ~/feralsys/logs/remote_sync.log
-    find ~/feralsys/inbox/ -mindepth 1 -exec cp -r {} ~/feralsys/sandbox/ \;
-    sleep 60
-done
+#!/usr/bin/env bash
+# Push updated JSONs, models, and configs back to GitHub
+echo "[REMOTE_SYNC] Committing changes..."
+cd ~/projects/Bubbles-payload
+git add common/black_swan_agent/mutation_memory.json
+git add common/models/*.pkl
+git add common/council/council_output.json
+git add funpumper/funpumper_evals.json
+git commit -m "Auto-sync: Updated memory, models, and evals"
+git push origin main

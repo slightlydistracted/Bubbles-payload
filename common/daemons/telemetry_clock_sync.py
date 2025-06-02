@@ -1,45 +1,32 @@
-# telemetry_clock_sync.py
-
+#!/usr/bin/env python3
+import ntplib
 import time
 import json
-import requests
-from datetime import datetime, timezone
+from datetime import datetime
 
-def get_network_utc():
+LOG_PATH = "common/logs/clock_offset.log"
+
+def sync_and_log():
+    client = ntplib.NTPClient()
     try:
-        response = requests.get("http://worldtimeapi.org/api/timezone/Etc/UTC", timeout=4)
-        if response.status_code == 200:
-            net_time = response.json()["utc_datetime"]
-            return datetime.fromisoformat(net_time.replace("Z", "+00:00"))
+        response = client.request('time.google.com')
+        offset = response.offset
+        entry = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "offset_seconds": offset
+        }
+        with open(LOG_PATH, "a") as f:
+            f.write(json.dumps(entry) + "\n")
+        print(f"[CLOCK_SYNC] Offset: {offset:.4f} s")
     except Exception as e:
-        return None
-
-def get_local_utc():
-    return datetime.utcnow().replace(tzinfo=timezone.utc)
-
-def measure_time_drift():
-    local = get_local_utc()
-    network = get_network_utc()
-    if local and network:
-        drift = (local - network).total_seconds()
-        return {
-            "local_time": local.isoformat(),
-            "network_time": network.isoformat(),
-            "drift_seconds": round(drift, 4),
-            "status": (
-                "OK" if abs(drift) < 1.0 else
-                "WARNING" if abs(drift) < 5.0 else
-                "CRITICAL"
-            )
-        }
-    else:
-        return {
-            "local_time": str(local) if local else "ERROR",
-            "network_time": str(network) if network else "ERROR",
-            "drift_seconds": None,
-            "status": "ERROR"
-        }
+        with open(LOG_PATH, "a") as f:
+            f.write(json.dumps({
+                "timestamp": datetime.utcnow().isoformat(),
+                "error": str(e)
+            }) + "\n")
+        print(f"[CLOCK_SYNC] Error: {e}")
 
 if __name__ == "__main__":
-    drift_info = measure_time_drift()
-    print(json.dumps(drift_info, indent=2))
+    while True:
+        sync_and_log()
+        time.sleep(3600)  # run once every hour
