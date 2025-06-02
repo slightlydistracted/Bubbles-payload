@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 print("[DEBUG] launch_all_daemons.py starting")
 # (script goes here)
 #!/usr/bin/env python3
