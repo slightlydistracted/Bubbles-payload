@@ -20,7 +20,7 @@ subprocess.call(["bash", "common/daemons/remote_sync.sh"])
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 # 4. Start Shadow-srv services
-shadow_folder = REPO_ROOT / "shadow-srv"
+shadow_folder = REPO_ROOT / "shadow_srv"
 if shadow_folder.exists():
     for svc in shadow_folder.glob("*.py"):
         print(f"[SHADOW] Starting {svc.name}")
@@ -30,7 +30,7 @@ if shadow_folder.exists():
             stderr=open("common/logs/shadow.err", "a")
         )
 else:
-    print("[SHADOW] No shadow-srv folder found")
+    print("[SHADOW] No shadow_srv folder found")
 
 # 5. Start Oracle
 oracle_script = REPO_ROOT / "common/oracle/oracle_daemon.py"
@@ -94,16 +94,16 @@ else:
     print("[ERROR] Missing metrics_enricher_loop.py")
 
 # 10. Start Funpumper Reflection/Mutation Engine
-reflection = REPO_ROOT / "funpumper/fun_reflection_loop.py"
+reflection = REPO_ROOT / "funpumper/funpumper/fun_reflection_loop.py"
 if reflection.exists():
-    print("[FUNPUMPER REFLECTION] Starting fun_reflection_loop.py")
+    print("[FUNPUMPER REFLECTION] Starting funpumper/fun_reflection_loop.py")
     subprocess.Popen(
         ["python3", str(reflection)],
         stdout=open("common/logs/fun_reflection.log", "a"),
         stderr=open("common/logs/fun_reflection.err", "a")
     )
 else:
-    print("[ERROR] Missing fun_reflection_loop.py")
+    print("[ERROR] Missing funpumper/fun_reflection_loop.py")
 
 # 11. Start Council
 council = REPO_ROOT / "common/council/run_council.py"
