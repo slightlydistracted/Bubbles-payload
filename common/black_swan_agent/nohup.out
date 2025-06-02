@@ -1,0 +1,371 @@
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/heartbeat_loop.py", line 4, in <module>
+    from mutation_engine import apply_mutations
+ModuleNotFoundError: No module named 'mutation_engine'
+/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/heartbeat_loop.py:25: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  print("[HEARTBEAT]", datetime.datetime.utcnow().isoformat())
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+[HEARTBEAT] 2025-04-29T07:46:08.065515
+[SIMULATED BUY] Placeholder executed.
+[SIMULATED SELL] Placeholder executed.
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/heartbeat_loop.py", line 38, in <module>
+    asyncio.run(main_loop())
+  File "/data/data/com.termux/files/usr/lib/python3.12/asyncio/runners.py", line 195, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/usr/lib/python3.12/asyncio/base_events.py", line 691, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/heartbeat_loop.py", line 34, in main_loop
+    await heartbeat()
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/heartbeat_loop.py", line 30, in heartbeat
+    await apply_mutations()
+TypeError: object list can't be used in 'await' expression
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/heartbeat_loop.py", line 30
+    apply_mutations()
+IndentationError: unexpected indent
+/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/heartbeat_loop.py:25: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  print("[HEARTBEAT]", datetime.datetime.utcnow().isoformat())
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'
+Traceback (most recent call last):
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/daily_reporter.py", line 4, in <module>
+    from price_fetcher import get_token_price
+  File "/data/data/com.termux/files/home/feralsys/tools/black_swan_agent/price_fetcher.py", line 1, in <module>
+    import aiohttp
+ModuleNotFoundError: No module named 'aiohttp'

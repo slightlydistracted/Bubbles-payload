@@ -1,0 +1,15 @@
+{
+  "history": [
+    {
+      "date": "2025-04-29",
+      "mutations": [
+        "echo_successful_wallets",
+        "simulate_mean_reversion"
+      ]
+    }
+  ],
+  "current": [
+    "echo_successful_wallets",
+    "simulate_mean_reversion"
+  ]
+}
