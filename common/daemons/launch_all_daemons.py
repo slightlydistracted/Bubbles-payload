@@ -73,6 +73,9 @@ else:
 phase2 = REPO_ROOT / "funpumper/fun_predict_eval_loop.py"
 if phase2.exists():
     print("[FUNPUMPER PHASE2/3] Starting fun_predict_eval_loop.py")
+    echo "[FUNPUMPER REFLECTION] Starting funpumper/fun_reflection_loop.py"
+
+    python3 funpumper/fun_reflection_loop.py &
     subprocess.Popen(
         ["python3", str(phase2)],
         stdout=open("common/logs/fun_predict.log", "a"),
@@ -94,16 +97,13 @@ else:
     print("[ERROR] Missing metrics_enricher_loop.py")
 
 # 10. Start Funpumper Reflection/Mutation Engine
-reflection = REPO_ROOT / "funpumper/funpumper/fun_reflection_loop.py"
 if reflection.exists():
-    print("[FUNPUMPER REFLECTION] Starting funpumper/fun_reflection_loop.py")
     subprocess.Popen(
         ["python3", str(reflection)],
         stdout=open("common/logs/fun_reflection.log", "a"),
         stderr=open("common/logs/fun_reflection.err", "a")
     )
 else:
-    print("[ERROR] Missing funpumper/fun_reflection_loop.py")
 
 # 11. Start Council
 council = REPO_ROOT / "common/council/run_council.py"
