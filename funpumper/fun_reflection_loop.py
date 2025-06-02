@@ -1,4 +1,3 @@
-cat > funpumper/fun_reflection_loop.py << 'EOF'
 #!/usr/bin/env python3
 import sys
 import os
@@ -68,4 +67,3 @@ def loop():
 
 if __name__ == "__main__":
     loop()
-EOF
