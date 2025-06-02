@@ -1,15 +1,15 @@
 {
   "history": [
     {
-      "date": "2025-04-29",
+      "date": "2025-05-25",
       "mutations": [
-        "echo_successful_wallets",
-        "simulate_mean_reversion"
+        "simulate_trend_following",
+        "early_exit_on_dip"
       ]
     }
   ],
   "current": [
-    "echo_successful_wallets",
-    "simulate_mean_reversion"
+    "simulate_trend_following",
+    "early_exit_on_dip"
   ]
 }
