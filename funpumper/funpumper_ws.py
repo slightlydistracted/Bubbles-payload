@@ -1,120 +1,66 @@
 #!/usr/bin/env python3
+import sys
 import os
 import json
 import asyncio
-import websockets
-import time
+from pathlib import Path
 from datetime import datetime
+import websockets
 
-#
-# funpumper_ws.py
-#
-# Listens to PumpPortal’s WebSocket feed and writes out one JSON entry per mint:
-#    {
-#      "mint_time": 1700000000,
-#      "initialBuy": 50000000,
-#      "vSolInBondingCurve": 32.0,
-#      "vTokensInBondingCurve": 1000000000,
-#      "traderPublicKey": "...",
-#      "raw": { ...full original WS payload... }
-#    }
-#
-# into live_ws_tokens.json.  Phase 1’s purifier/predictor will pick up these fields
-# (especially vSolInBondingCurve / vTokensInBondingCurve) to compute price_in_sol, etc.
-#
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
-PUMP_WS_URL = "wss://pumpportal.fun/api/data"
-LOG_PATH    = "/srv/daemon-memory/funpumper/funpumper_ws.log"
-DATA_OUT    = "/srv/daemon-memory/funpumper/live_ws_tokens.json"
-TMP_OUT     = DATA_OUT + ".tmp"
+# —— CONFIGURATION —— #
+LOG_PATH = "common/logs/funpumper_ws.log"
+ERR_PATH = "common/logs/funpumper_ws.err"
+LIVE_WS_PATH = Path(__file__).parent / "live_ws_tokens.json"
 
-# In‐memory cache for “live” tokens; on every new mint we write to disk atomically.
-live_tokens = {}
+async def main():
+    Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
+    uri = "wss://ipc.pump.fun"
+    try:
+        async with websockets.connect(uri) as ws:
+            with open(LOG_PATH, "a") as fl:
+                fl.write(f"[{datetime.utcnow().isoformat()}] [WS] Connected to {uri}\n")
 
-def log(msg: str):
-    ts = datetime.utcnow().isoformat()
-    line = f"[{ts}] {msg}"
-    # append to logfile
-    with open(LOG_PATH, "a") as f:
-        f.write(line + "\n")
-    # also print to stdout (so `tail -f` shows it)
-    print(line)
-
-
-def atomic_write(data: dict, path: str, tmp_path: str):
-    """
-    Write JSON to tmp_path then rename → path.  This prevents partial writes.
-    """
-    with open(tmp_path, "w") as f:
-        json.dump(data, f, indent=2)
-    os.replace(tmp_path, path)
-
-
-async def subscribe(ws, method: str):
-    """
-    Send subscription message over WebSocket.
-    """
-    msg = {"method": method}
-    await ws.send(json.dumps(msg))
-    log(f"[SUBSCRIBED] {method}")
-
-
-async def handle_messages():
-    """
-    Connect to the PumpPortal WS, subscribe to new‐token events, and record each mint.
-    """
-    # (Re)connect loop
-    async with websockets.connect(PUMP_WS_URL) as ws:
-        await subscribe(ws, "subscribeNewToken")
-        while True:
-            try:
+            while True:
                 raw = await ws.recv()
-                msg = json.loads(raw)
-                log(f"[RAW] {msg}")
+                try:
+                    data = json.loads(raw)
+                except Exception:
+                    continue
 
-                # If the WS payload has a "mint" key, it’s a new‐token event.
-                if "mint" in msg:
-                    mint = msg["mint"]
+                if data.get("txType") == "create":
+                    mint_addr = data["mint"]
+                    liquidity = data.get("vSolInBondingCurve", 0)
+                    initial_buy = data.get("initialBuy", 0)
+                    price = initial_buy / (liquidity or 1)
+                    with open(LOG_PATH, "a") as fl:
+                        fl.write(f"[{datetime.utcnow().isoformat()}] [NEW TOKEN] {mint_addr} tracked "
+                                 f"(initialBuy={initial_buy}, vSol={liquidity}, vTokens={data.get('vTokensInBondingCurve',0)})\n")
 
-                    # If we’ve already recorded this mint, skip.
-                    if mint in live_tokens:
-                        continue
+                    # Append into live_ws_tokens.json as a dict of {mint_address: data}
+                    try:
+                        current = json.load(open(LIVE_WS_PATH, "r"))
+                        if not isinstance(current, dict):
+                            current = {}
+                    except Exception:
+                        current = {}
 
-                    # Extract timestamp and bonding‐curve data:
-                    now = int(time.time())
-
-                    initial_buy = msg.get("initialBuy", None)
-                    v_sol       = msg.get("vSolInBondingCurve", None)
-                    v_tokens    = msg.get("vTokensInBondingCurve", None)
-                    trader_key  = msg.get("traderPublicKey", None)
-
-                    # Build our stored record for this mint:
-                    record = {
-                        "mint_time": now,
+                    current[mint_addr] = {
+                        "vSolInBondingCurve": liquidity,
                         "initialBuy": initial_buy,
-                        "vSolInBondingCurve": v_sol,
-                        "vTokensInBondingCurve": v_tokens,
-                        "traderPublicKey": trader_key,
-                        # Keep the entire raw WS payload in case we need other fields later:
-                        "raw": msg
+                        "price": price,
+                        "timestamp": datetime.utcnow().isoformat()
                     }
+                    with open(LIVE_WS_PATH, "w") as f:
+                        json.dump(current, f, indent=2)
 
-                    live_tokens[mint] = record
-
-                    # Atomically write the entire live_tokens dict out to disk:
-                    atomic_write(live_tokens, DATA_OUT, TMP_OUT)
-                    log(f"[NEW TOKEN] {mint} tracked (initialBuy={initial_buy}, vSol={v_sol}, vTokens={v_tokens})")
-
-            except Exception as e:
-                log(f"[WS ERROR] {e}")
-                # Wait a moment before trying again
-                await asyncio.sleep(5)
-
-
-def run_ws_client():
-    log("FunPumper WebSocket Listener Active.")
-    asyncio.run(handle_messages())
-
+    except Exception as e:
+        with open(ERR_PATH, "a") as fe:
+            fe.write(f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
 
 if __name__ == "__main__":
-    run_ws_client()
+    asyncio.run(main())

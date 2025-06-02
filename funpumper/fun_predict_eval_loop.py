@@ -1,64 +1,86 @@
 #!/usr/bin/env python3
-import os, json, time
-from datetime import datetime
+import sys
+import os
+import json
+import time
+from pathlib import Path
 
-WEIGHTS_PATH     = "/srv/daemon-memory/funpumper/funpumper_weights.json"
-PREDICTIONS_PATH = "/srv/daemon-memory/funpumper/fun_predictions.json"
-LOG_PATH         = "/srv/daemon-memory/funpumper/fun_predict_eval_loop.log"
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
-# how strong a signal before we “predict a moon”
-PREDICT_THRESHOLD = 0.8
+from common.black_swan_agent.mutation_memory import load_memory, save_memory
 
-def log(msg):
-    ts = datetime.utcnow().isoformat()
-    with open(LOG_PATH, "a") as f:
-        f.write(f"[{ts}] {msg}\n")
+# —— CONFIGURATION —— #
+LOG_PATH = "funpumper/fun_predict_eval_loop.log"
+ERR_PATH = "common/logs/fun_predict.err"
+FILTERED_PATH = Path(__file__).parent / "fun_filtered.json"
+PREDICTIONS_PATH = Path(__file__).parent / "fun_predictions.json"
+MODEL_DIR = Path(REPO_ROOT) / "common" / "models"
 
-def load_json(path, default):
-    if not os.path.exists(path):
-        return default
-    try:
-        with open(path) as f:
-            return json.load(f)
-    except:
-        return default
-
-def save_json(data, path):
-    with open(path, "w") as f:
-        json.dump(data, f, indent=2)
-
-def run_once():
-    weights = load_json(WEIGHTS_PATH, {})
-    preds   = load_json(PREDICTIONS_PATH, [])
-    seen    = {p["mint"] for p in preds}
-
-    new_mints = []
-    for mint, info in weights.items():
-        score = info.get("score", 0.0)
-        if score >= PREDICT_THRESHOLD and mint not in seen:
-            preds.append({
-                "mint":         mint,
-                "predicted_at": datetime.utcnow().isoformat(),
-                "score":        score,
-                "outcome":      None
-            })
-            new_mints.append(mint)
-            log(f"[PREDICT]   {mint}  (score {score:.2f})")
-
-    if new_mints:
-        save_json(preds, PREDICTIONS_PATH)
-        log(f"[UPDATE]    {len(new_mints)} new predictions")
-    else:
-        log("[PASS]      no new predictions")
+def load_phase1_model():
+    model_path = MODEL_DIR / "phase1_2x.pkl"
+    if model_path.exists():
+        import pickle
+        return pickle.load(open(model_path, "rb"))
+    return None
 
 def main():
-    log("🔮 Prediction loop started.")
+    Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
     while True:
         try:
-            run_once()
+            # 1) Load filtered tokens (list)
+            if not FILTERED_PATH.exists():
+                time.sleep(300)
+                continue
+            filtered = json.load(open(FILTERED_PATH))
+
+            # 2) Load existing predictions (dict)
+            if PREDICTIONS_PATH.exists():
+                all_preds = json.load(open(PREDICTIONS_PATH))
+            else:
+                all_preds = {}
+
+            # 3) Load model (if available)
+            model = load_phase1_model()
+
+            # 4) Iterate and predict
+            for token in filtered:
+                addr = token["address"]
+                if addr in all_preds:
+                    continue
+
+                if model:
+                    # Example: create feature vector from token dict
+                    feats = [token.get("liquidity", 0), token.get("price", 0)]
+                    # This assumes a two‐feature model; adjust as needed
+                    prob = model.predict_proba([feats])[0][1]
+                    score4x = prob
+                    score6x = prob
+                else:
+                    score4x = 0.5
+                    score6x = 0.5
+
+                all_preds[addr] = {
+                    "score4x": score4x,
+                    "score6x": score6x,
+                    "timestamp": time.time()
+                }
+
+            # 5) Save predictions
+            with open(PREDICTIONS_PATH, "w") as fo:
+                json.dump(all_preds, fo, indent=2)
+
+            with open(LOG_PATH, "a") as fl:
+                fl.write(f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] Predicted {len(all_preds)} tokens\n")
+
         except Exception as e:
-            log(f"[ERROR] {e}")
-        time.sleep(300)  # every 5 minutes
+            with open(ERR_PATH, "a") as fe:
+                fe.write(f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] [ERROR] {repr(e)}\n")
+
+        # Sleep 5 minutes
+        time.sleep(300)
 
 if __name__ == "__main__":
     main()

@@ -11,7 +11,11 @@ import json
 import time
 import argparse
 from pathlib import Path
+try:
 from telethon import TelegramClient, events
+except ModuleNotFoundError:
+    TelegramClient = None
+    events = None
 from common.config.oracle_config import ORACLE_SETTINGS
 
 # Example imports if you have other modules under common:
