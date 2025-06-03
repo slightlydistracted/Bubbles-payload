@@ -26,12 +26,10 @@ def main_loop(api_id, api_hash, bot_token, chat_id, interval_s):
     client = TelegramClient('telemetry_session', api_id, api_hash).start(bot_token=bot_token)
 
     while True:
-        try:
             # Example telemetry data: you might load metrics or accuracy from JSON
             msg = f"[TELEMETRY] {time.ctime()} System OK"
             client.send_message(chat_id, msg)
 fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
-        except Exception as e:
                 fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
         time.sleep(interval_s)
 
@@ -46,7 +44,5 @@ if __name__ == "__main__":
     bot_token = cfg["bot_token"]
     chat_id = cfg["chat_id"]
 
-    try:
         main_loop(api_id, api_hash, bot_token, chat_id, args.interval)
-    except Exception as e:
             fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
