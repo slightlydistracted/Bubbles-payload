@@ -45,7 +45,7 @@ def main_loop(api_id, api_hash, bot_token, chat_id):
         # save_memory(pattern)
 
 print("[ORACLE] Starting Telegram listener")
-client.run_until_disconnected()
+# client.run_until_disconnected()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

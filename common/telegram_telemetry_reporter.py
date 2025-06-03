@@ -30,7 +30,7 @@ def main_loop(api_id, api_hash, bot_token, chat_id, interval_s):
             msg = f"[TELEMETRY] {time.ctime()} System OK"
             client.send_message(chat_id, msg)
 fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
-                fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
+fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
         time.sleep(interval_s)
 
 if __name__ == "__main__":
@@ -45,4 +45,4 @@ if __name__ == "__main__":
     chat_id = cfg["chat_id"]
 
         main_loop(api_id, api_hash, bot_token, chat_id, args.interval)
-            fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
+fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
