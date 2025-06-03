@@ -1,5 +1,8 @@
-import subprocess
 import os
+import subprocess
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
 
 BASE = "/data/data/com.termux/files/home/feralsys"
 COUNCIL = os.path.join(BASE, "council_payload")

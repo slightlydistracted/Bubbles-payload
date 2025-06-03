@@ -1,5 +1,8 @@
-import json
 import os
+import json
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
 
 BRAIN_PATH = "/srv/daemon-memory/funpumper/funpumper_brain.json"
 

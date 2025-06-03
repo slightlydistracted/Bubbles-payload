@@ -1,9 +1,14 @@
+import sys
+import os; sys.path.append(
+    os.path.abspath(
+        os.path.dirname(__file__) +
+         "/../../"))
 import os
 import json
 import time
 import traceback
 from datetime import datetime
-from helius_utils import get_token_price
+from funpumper.helius_utils import get_token_price
 
 EVALS_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
 PERF_LOG_PATH = "/srv/daemon-memory/funpumper/performance_log.json"

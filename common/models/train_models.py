@@ -1,11 +1,14 @@
-#!/usr/bin/env python3
-import json
-import pickle
-import pandas as pd
-import lightgbm as lgb
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_auc_score
 from pathlib import Path
+from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import train_test_split
+import lightgbm as lgb
+import pandas as pd
+import pickle
+import json
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+#!/usr/bin/env python3
 
 # —— CONFIG —— #
 MEMORY_PATH = "common/black_swan_agent/mutation_memory.json"

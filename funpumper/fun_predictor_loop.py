@@ -1,3 +1,8 @@
+import sys
+import os; sys.path.append(
+    os.path.abspath(
+        os.path.dirname(__file__) +
+         "/../../"))
 #!/usr/bin/env python3
 import os
 import json
@@ -5,7 +10,7 @@ import time
 import pickle
 from datetime import datetime
 
-from helius_utils import get_token_price
+from funpumper.helius_utils import get_token_price
 from fun_purger_loop import get_phase_and_subinterval
 
 # ————————— PATHS —————————

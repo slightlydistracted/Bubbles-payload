@@ -1,7 +1,10 @@
-#!/usr/bin/env python3
-import os
-import subprocess
 import sys
+import subprocess
+import os
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+#!/usr/bin/env python3
 
 repo_root = os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))

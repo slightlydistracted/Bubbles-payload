@@ -1,7 +1,10 @@
-#!/usr/bin/env python3
-import os
-import time
 from pathlib import Path
+import time
+import os
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+#!/usr/bin/env python3
 
 agents = [
     "delta_v6x_obsidian",

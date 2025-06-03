@@ -1,3 +1,8 @@
+import sys
+import os; sys.path.append(
+    os.path.abspath(
+        os.path.dirname(__file__) +
+         "/../../"))
 #!/usr/bin/env python3
 from common.black_swan_agent.mutation_memory import load_memory, save_memory
 import sys

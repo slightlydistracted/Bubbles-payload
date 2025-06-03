@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
 TELEMETRY_SETTINGS = {
     "api_id": "20244657",
     "api_hash": "582b485fdbe22b7a0677f04ada1b05b6",

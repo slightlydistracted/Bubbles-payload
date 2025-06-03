@@ -1,8 +1,11 @@
-#!/usr/bin/env python3
-import os
-import subprocess
-import time
 import logging
+import time
+import subprocess
+import os
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+#!/usr/bin/env python3
 
 REPOS = {
     "pumpfun-history": "https://github.com/0xkhan/pumpfun-coin-history",

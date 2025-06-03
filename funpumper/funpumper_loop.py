@@ -1,8 +1,11 @@
-#!/usr/bin/env python3
-import os
-import json
-import time
 from datetime import datetime
+import time
+import json
+import os
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+#!/usr/bin/env python3
 
 # === PATHS ===
 WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
@@ -16,7 +19,7 @@ def log(msg):
     with open(LOOP_LOG, "a") as f:
     pass
 
-        f.write(line + "\n")
+       f.write(line + "\n")
 
 
 def load_weights():
@@ -25,7 +28,7 @@ def load_weights():
     try:
     pass
 
-        return json.load(open(WEIGHTS_PATH, "r"))
+       return json.load(open(WEIGHTS_PATH, "r"))
     except json.JSONDecodeError:
         log("⚠️ Failed to decode weights JSON.")
         return {}
@@ -44,7 +47,7 @@ def load_real_tokens():
     try:
     pass
 
-        raw = json.load(open(RESULTS_PATH, "r"))
+       raw = json.load(open(RESULTS_PATH, "r"))
     except json.JSONDecodeError:
         log("⚠️ Failed to decode evals JSON.")
         return {}
@@ -54,20 +57,20 @@ def load_real_tokens():
         for entry in raw:
     pass
 
-            if isinstance(entry, dict):
-                m = entry.get("mint")
-                if m:
-                    out[m] = entry
+       if isinstance(entry, dict):
+            m = entry.get("mint")
+            if m:
+                out[m] = entry
     elif isinstance(raw, dict):
         for m, val in raw.items():
     pass
 
-            if isinstance(val, dict):
-                entry = dict(val)
-                entry.setdefault("mint", m)
-                out[m] = entry
-            else:
-                log(f"⚠️ Unexpected evals entry for {m}: {type(val)}")
+       if isinstance(val, dict):
+            entry = dict(val)
+            entry.setdefault("mint", m)
+            out[m] = entry
+        else:
+            log(f"⚠️ Unexpected evals entry for {m}: {type(val)}")
     else:
         log(f"⚠️ Evals file has unrecognized type: {type(raw)}")
 
@@ -82,7 +85,7 @@ def loop_once():
     for mint, data in results.items():
     pass
 
-        if mint in weights:
+       if mint in weights:
             continue
         weights[mint] = {
             "score": data.get("score", 1),

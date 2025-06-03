@@ -1,6 +1,9 @@
-import random
-import json
 from datetime import datetime
+import json
+import random
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
 
 MUTATION_MEMORY_PATH = "mutation_memory.json"
 

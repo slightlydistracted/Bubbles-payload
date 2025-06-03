@@ -1,12 +1,15 @@
-#!/usr/bin/env python3
-from common.config.telemetry_config import TELEMETRY_SETTINGS
-from pathlib import Path
-from telethon import TelegramClient
-import argparse
-import time
+import os
+import sys
 import json
+import time
+import argparse
+from telethon import TelegramClient
+from pathlib import Path
+from common.config.telemetry_config import TELEMETRY_SETTINGS
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+#!/usr/bin/env python3
 
 # ——— Ensure “common/” is on sys.path ———
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))

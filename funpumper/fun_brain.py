@@ -1,3 +1,8 @@
+import sys
+import os; sys.path.append(
+    os.path.abspath(
+        os.path.dirname(__file__) +
+         "/../../"))
 # /srv/daemon-memory/funpumper/fun_brain.py
 
 import os

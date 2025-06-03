@@ -1,3 +1,8 @@
+import sys
+import os; sys.path.append(
+    os.path.abspath(
+        os.path.dirname(__file__) +
+         "/../../"))
 import requests
 from email.utils import parsedate_to_datetime
 from datetime import timezone

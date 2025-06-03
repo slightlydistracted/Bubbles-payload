@@ -1,6 +1,9 @@
-# normalize_evals.py
-import json
 import os
+import json
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+# normalize_evals.py
 
 SRC = "/srv/daemon-memory/funpumper/funpumper_evals.json"
 BACKUP = "/srv/daemon-memory/funpumper/funpumper_evals_list.json"

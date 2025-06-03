@@ -1,7 +1,10 @@
-
-import json
-import time
 from web3 import Web3
+import time
+import json
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+
 
 # Load private key from file
 with open('/data/data/com.termux/files/home/wallet.txt', 'r') as f:

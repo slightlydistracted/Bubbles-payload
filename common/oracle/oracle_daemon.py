@@ -1,11 +1,14 @@
-#!/usr/bin/env python3
-from common.config.oracle_config import ORACLE_SETTINGS
-from pathlib import Path
-import argparse
-import time
+import os
+import sys
 import json
+import time
+import argparse
+from pathlib import Path
+from common.config.oracle_config import ORACLE_SETTINGS
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+#!/usr/bin/env python3
 
 # ——— Ensure “common/” is on sys.path ———
 REPO_ROOT = os.path.abspath(os.path.join(

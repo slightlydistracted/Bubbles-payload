@@ -1,10 +1,15 @@
+import sys
+import os; sys.path.append(
+    os.path.abspath(
+        os.path.dirname(__file__) +
+         "/../../"))
 import os
 import json
 import time
 from datetime import datetime
 
 # Assumes you already have this module built
-from helius_utils import get_token_price
+from funpumper.helius_utils import get_token_price
 
 WEIGHTS_PATH = "/srv/daemon-memory/funpumper/fun_brain_weights.json"
 LOG_PATH = "/srv/daemon-memory/funpumper/token_history.log"

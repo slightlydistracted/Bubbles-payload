@@ -1,6 +1,9 @@
-import json
-import os
 from datetime import datetime
+import os
+import json
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
 
 EVAL_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
 WEIGHT_OUT = "/srv/daemon-memory/funpumper/funpumper_weights.json"

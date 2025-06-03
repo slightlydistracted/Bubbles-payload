@@ -1,7 +1,10 @@
-import os
-import pickle
-import numpy as np
 from sklearn.dummy import DummyClassifier
+import numpy as np
+import pickle
+import os
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
 
 # Where to save
 MODEL_DIR = "/srv/daemon-memory/funpumper/models"

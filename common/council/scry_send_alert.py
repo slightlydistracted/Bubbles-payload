@@ -1,6 +1,9 @@
-#!/usr/bin/env python3
-import json
 from datetime import datetime
+import json
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+#!/usr/bin/env python3
 
 alert = {
     "source": "SCRY",

@@ -1,6 +1,9 @@
-import json
-import os
 import time
+import os
+import json
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
 
 WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
 MAX_AGE_SECONDS = 12 * 3600  # 12 hours

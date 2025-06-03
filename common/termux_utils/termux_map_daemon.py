@@ -1,7 +1,10 @@
-
-import os
-import json
 from datetime import datetime
+import json
+import os
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+
 
 OUTPUT_PATH = os.path.expanduser("~/blind_reboot_process.json")
 LOG_PATH = os.path.expanduser("~/execution_log.json")

@@ -1,7 +1,10 @@
-import asyncio
-import datetime
-import os
 from mutation_engine import apply_mutations
+import os
+import datetime
+import asyncio
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
 
 
 async def update_prices():

@@ -1,8 +1,11 @@
-#!/usr/bin/env python3
-import json
-import numpy as np
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
+import numpy as np
+import json
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__) + "/../../"))
+#!/usr/bin/env python3
 
 # —— CONFIG —— #
 PRED_PATH = "funpumper/fun_predictions.json"
