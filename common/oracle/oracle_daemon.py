@@ -14,6 +14,7 @@ from pathlib import Path
 try:
 
     from telethon import TelegramClient, events
+cfg = ORACLE_SETTINGS
 
 except ModuleNotFoundError:
 
@@ -39,7 +40,7 @@ def main_loop(api_id, api_hash, bot_token, chat_id):
     async def handler(event):
         msg = event.message.message
         ts = time.ctime()
-            fo.write(f"[{ts}] Received: {msg}\n")
+fo.write(f"[{ts}] Received: {msg}\n")
         # Example: if you parse /learn commands, you might do:
         # pattern = parse_pattern_from_message(msg)
         # save_memory(pattern)
