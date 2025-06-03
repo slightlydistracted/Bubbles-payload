@@ -14,6 +14,7 @@ from telethon import TelegramClient
 from pathlib import Path
 
 from common.config.telemetry_config import TELEMETRY_SETTINGS
+cfg = TELEMETRY_SETTINGS
 # Example imports if you push errors or metrics:
 # from common.metrics import load_latest_metrics
 
@@ -29,10 +30,8 @@ def main_loop(api_id, api_hash, bot_token, chat_id, interval_s):
             # Example telemetry data: you might load metrics or accuracy from JSON
             msg = f"[TELEMETRY] {time.ctime()} System OK"
             client.send_message(chat_id, msg)
-            with open(LOG_PATH, "a") as fl:
                 fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
         except Exception as e:
-            with open(ERR_PATH, "a") as fe:
                 fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
         time.sleep(interval_s)
 
@@ -42,7 +41,6 @@ if __name__ == "__main__":
     parser.add_argument("--interval", type=int, default=1800, help="Seconds between telemetry pings")
     args = parser.parse_args()
 
-    cfg = json.load(open(args.config))
     api_id = cfg["api_id"]
     api_hash = cfg["api_hash"]
     bot_token = cfg["bot_token"]
@@ -51,5 +49,4 @@ if __name__ == "__main__":
     try:
         main_loop(api_id, api_hash, bot_token, chat_id, args.interval)
     except Exception as e:
-        with open(ERR_PATH, "a") as fe:
             fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")

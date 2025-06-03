@@ -21,6 +21,7 @@ except ModuleNotFoundError:
 
     events = None
 from common.config.oracle_config import ORACLE_SETTINGS
+cfg = ORACLE_SETTINGS
 
 # Example imports if you have other modules under common:
 # from common.black_swan_agent.mutation_memory import save_memory
@@ -38,7 +39,6 @@ def main_loop(api_id, api_hash, bot_token, chat_id):
     async def handler(event):
         msg = event.message.message
         ts = time.ctime()
-        with open(LOG_PATH, "a") as fo:
             fo.write(f"[{ts}] Received: {msg}\n")
         # Example: if you parse /learn commands, you might do:
         # pattern = parse_pattern_from_message(msg)
@@ -53,7 +53,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load settings from JSON
-    cfg = json.load(open(args.config))
     api_id = cfg["api_id"]
     api_hash = cfg["api_hash"]
     bot_token = cfg["bot_token"]
