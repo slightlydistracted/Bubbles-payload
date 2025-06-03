@@ -1,4 +1,6 @@
-import os, json, time
+import os
+import json
+import time
 from datetime import datetime
 
 # === PATHS ===
@@ -13,6 +15,8 @@ PREDICTION_WINDOW = 12 * 60 * 60  # 12 hours
 SLEEP_INTERVAL = 600  # 10 minutes
 
 # === LOGGING ===
+
+
 def log(msg):
     ts = datetime.utcnow().isoformat()
     line = f"[{ts}] {msg}"
@@ -21,9 +25,12 @@ def log(msg):
         f.write(line + "\n")
 
 # === JSON UTIL ===
+
+
 def save_json(path, data):
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
+
 
 def load_json(path, default=[]):
     try:
@@ -33,6 +40,8 @@ def load_json(path, default=[]):
         return default
 
 # === EVALUATION ===
+
+
 def evaluate(tokens):
     now = int(time.time())
     results = load_json(RESULT_PATH, [])
@@ -66,6 +75,8 @@ def evaluate(tokens):
     save_json(DATA_PATH, tokens)
 
 # === REEVALUATION ===
+
+
 def reevaluate():
     now = int(time.time())
     results = load_json(RESULT_PATH, [])
@@ -111,6 +122,8 @@ def reevaluate():
     save_json(RESULT_PATH, updated)
 
 # === MAIN LOOP ===
+
+
 def loop():
     log("FunPumper evaluator active.")
     while True:
@@ -118,6 +131,7 @@ def loop():
         tokens = load_json(DATA_PATH, {})
         evaluate(tokens)
         time.sleep(SLEEP_INTERVAL)
+
 
 if __name__ == "__main__":
     loop()

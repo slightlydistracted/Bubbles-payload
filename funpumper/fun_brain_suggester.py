@@ -5,11 +5,13 @@ import time
 WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
 MAX_AGE_SECONDS = 12 * 3600  # 12 hours
 
+
 def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
         return {}
     with open(WEIGHTS_PATH, "r") as f:
         return json.load(f)
+
 
 def suggest_tokens(limit=10):
     weights = load_weights()
@@ -37,6 +39,7 @@ def suggest_tokens(limit=10):
         print(f"   Age:       {token['age_min']} min")
         print(f"   Status:    {token['status']}")
         print("")
+
 
 if __name__ == "__main__":
     suggest_tokens()

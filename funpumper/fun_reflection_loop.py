@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from common.black_swan_agent.mutation_memory import load_memory, save_memory
 import sys
 import os
 import json
@@ -11,13 +12,14 @@ REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
-from common.black_swan_agent.mutation_memory import load_memory, save_memory
 
 # —— CONFIGURATION —— #
 LOG_PATH = "funpumper/fun_reflection_loop.log"
 ERR_PATH = "common/logs/fun_reflection.err"
 GRADUATED_PATH = Path(__file__).parent / "fun_graduated.json"
-MEMORY_PATH = Path(REPO_ROOT) / "common" / "black_swan_agent" / "mutation_memory.json"
+MEMORY_PATH = Path(REPO_ROOT) / "common" / \
+    "black_swan_agent" / "mutation_memory.json"
+
 
 def load_json(path: Path, default):
     try:
@@ -25,9 +27,11 @@ def load_json(path: Path, default):
     except Exception:
         return default
 
+
 def save_json(path: Path, data):
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
+
 
 def loop():
     Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
@@ -56,14 +60,18 @@ def loop():
                 save_memory(memory)
                 with open(LOG_PATH, "a") as fl:
                     for e in new_entries:
-                        fl.write(f"[{datetime.utcnow().isoformat()}] Appended mutation: {e}\n")
+with open("common/logs/telemetry.log", "a") as fl:
+                            fl.write(
+                            f"[{datetime.utcnow().isoformat()}] Appended mutation: {e}\n")
                 save_json(GRADUATED_PATH, [])
 
         except Exception as e:
             with open(ERR_PATH, "a") as fe:
-                fe.write(f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
+                fe.write(
+                    f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
 
         time.sleep(60)
+
 
 if __name__ == "__main__":
     loop()

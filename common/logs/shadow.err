@@ -1,0 +1,113 @@
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/liquidity_snapshots.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/alternative_data.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/liquidity_snapshots.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/alternative_data.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/liquidity_snapshots.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/alternative_data.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/alternative_data.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/liquidity_snapshots.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/alternative_data.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/liquidity_snapshots.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/alternative_data.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/liquidity_snapshots.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/liquidity_snapshots.json'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 11, in run_service
+    with open(OUTPUT_PATH, "w") as f:
+FileNotFoundError: [Errno 2] No such file or directory: 'common/data_feeds/alternative_data.json'
+[SHADOW2] Wrote alternative data
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 14, in run_service
+    time.sleep(600)  # update every 10 minutes
+KeyboardInterrupt
+[SHADOW1] Wrote liquidity snapshot
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 14, in run_service
+    time.sleep(300)  # update every 5 minutes
+KeyboardInterrupt
+[SHADOW1] Wrote liquidity snapshot
+[SHADOW1] Wrote liquidity snapshot
+[SHADOW2] Wrote alternative data
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 17, in <module>
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 17, in <module>
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 14, in run_service
+    run_service()
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_2.py", line 14, in run_service
+    time.sleep(300)  # update every 5 minutes
+KeyboardInterrupt
+    time.sleep(600)  # update every 10 minutes
+KeyboardInterrupt

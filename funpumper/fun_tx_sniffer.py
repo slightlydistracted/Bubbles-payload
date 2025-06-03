@@ -7,9 +7,11 @@ WS_LOG_PATH = "/srv/daemon-memory/funpumper/funpumper_ws.log"
 SNIFF_OUT = "/srv/daemon-memory/funpumper/sniffer_metrics.json"
 MAX_ENTRIES = 1000
 
+
 def log_event(event):
     timestamp = datetime.utcnow().isoformat()
     return {"timestamp": timestamp, **event}
+
 
 def tail_f(path):
     with open(path, "rb") as f:
@@ -23,6 +25,7 @@ def tail_f(path):
                 yield line.decode("utf-8", errors="ignore")
             except UnicodeDecodeError:
                 continue
+
 
 def sniff_loop():
     buffer = []
@@ -56,6 +59,7 @@ def sniff_loop():
                         json.dump(buffer, f, indent=2)
             except Exception:
                 continue
+
 
 if __name__ == "__main__":
     sniff_loop()

@@ -10,6 +10,7 @@ UNCERTAINTY_OUTPUT = "common/active/to_label.json"
 THRESHOLD = 0.05  # consider probs within 0.5 ± 0.05 as “uncertain”
 MAX_SAMPLES = 20  # only select top‐N most uncertain
 
+
 def main():
     Path(UNCERTAINTY_OUTPUT).parent.mkdir(parents=True, exist_ok=True)
 
@@ -39,6 +40,7 @@ def main():
         json.dump(entry, f, indent=2)
 
     print(f"[ACTIVE] {len(to_label)} tokens flagged for manual labeling.")
+
 
 if __name__ == "__main__":
     main()

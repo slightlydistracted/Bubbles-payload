@@ -5,14 +5,16 @@ import traceback
 from datetime import datetime
 from helius_utils import get_token_price
 
-EVALS_PATH       = "/srv/daemon-memory/funpumper/funpumper_evals.json"
-PERF_LOG_PATH    = "/srv/daemon-memory/funpumper/performance_log.json"
+EVALS_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
+PERF_LOG_PATH = "/srv/daemon-memory/funpumper/performance_log.json"
 TRACKER_LOG_PATH = "/srv/daemon-memory/funpumper/survivor_tracker.log"
+
 
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(TRACKER_LOG_PATH, "a") as f:
         f.write(f"[{timestamp}] {message}\n")
+
 
 def repair_json(path):
     """
@@ -28,6 +30,7 @@ def repair_json(path):
         log(f"[REPAIR] Applied single→double‐quote fix on {path}")
     except Exception as e:
         log(f"[ERROR] Could not auto‐repair {path}: {e}")
+
 
 def load_json_safe(path):
     """
@@ -67,9 +70,11 @@ def load_json_safe(path):
         log(traceback.format_exc())
         return []
 
+
 def save_json(path, data):
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
+
 
 def append_performance(mint, price):
     """
@@ -91,6 +96,7 @@ def append_performance(mint, price):
     })
 
     save_json(PERF_LOG_PATH, perf_data)
+
 
 def main():
     log("Survivor tracker started.")
@@ -123,6 +129,7 @@ def main():
             log(f"[ERROR] {e}")
             log(traceback.format_exc())
             time.sleep(5)
+
 
 if __name__ == "__main__":
     main()

@@ -9,10 +9,10 @@ from helius_utils import get_token_price
 from fun_purger_loop import get_phase_and_subinterval
 
 # ————————— PATHS —————————
-WEIGHTS_PATH      = "/srv/daemon-memory/funpumper/funpumper_weights.json"
-PREDICTIONS_PATH  = "/srv/daemon-memory/funpumper/fun_predictions.json"
-MODEL_PATH        = "/srv/daemon-memory/funpumper/phase1_model.pkl"
-PREDICTOR_LOG     = "/srv/daemon-memory/funpumper/fun_predictor.log"
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+PREDICTIONS_PATH = "/srv/daemon-memory/funpumper/fun_predictions.json"
+MODEL_PATH = "/srv/daemon-memory/funpumper/phase1_model.pkl"
+PREDICTOR_LOG = "/srv/daemon-memory/funpumper/fun_predictor.log"
 
 # Phase 1 bins (# of checks = 4)
 P1_CHECK_TIMES = [15, 60, 150, 300]
@@ -81,7 +81,7 @@ def build_phase1_features(info: dict, now: int):
 
     # If we have all 4 check times, build ratios
     if all(check in bucket_prices for check in P1_CHECK_TIMES):
-        return [ bucket_prices[check] / t0 for check in P1_CHECK_TIMES ]
+        return [bucket_prices[check] / t0 for check in P1_CHECK_TIMES]
     return None
 
 

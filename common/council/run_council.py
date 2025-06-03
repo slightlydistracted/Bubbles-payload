@@ -1,24 +1,26 @@
 #!/usr/bin/env python3
+from common.black_swan_agent.simulation_engine import run_simulation
+from common.black_swan_agent.mutation_memory import load_memory
+from pathlib import Path
+import argparse
+import time
+import json
 import sys
 import os
 
 # ——— Ensure “common/” is on sys.path ———
-REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
+REPO_ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), os.pardir, os.pardir))
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
-import json
-import time
-import argparse
-from pathlib import Path
-from common.black_swan_agent.mutation_memory import load_memory
-from common.black_swan_agent.simulation_engine import run_simulation
 # Example: load Funpumper evals
 # from common.funpumper_evals import load_evals
 
 # —— CONFIGURATION —— #
 LOG_PATH = "common/logs/council.log"
 ERR_PATH = "common/logs/council.err"
+
 
 def vote_and_write_directive(cfg_path):
     cfg = json.load(open(cfg_path))
@@ -39,7 +41,9 @@ def vote_and_write_directive(cfg_path):
     with open(outpath, "w") as fo:
         json.dump(directive, fo, indent=2)
     with open(LOG_PATH, "a") as fl:
-        fl.write(f"[{time.ctime()}] Wrote directive: {directive}\n")
+with open("common/logs/telemetry.log", "a") as fl:
+            fl.write(f"[{time.ctime()}] Wrote directive: {directive}\n")
+
 
 def main_loop(config_path, interval_s):
     Path("common/logs").mkdir(parents=True, exist_ok=True)
@@ -51,10 +55,13 @@ def main_loop(config_path, interval_s):
                 fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
         time.sleep(interval_s)
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", default="common/config/council_config.json", help="Path to council_config.json")
-    parser.add_argument("--interval", type=int, default=3600, help="Seconds between votes")
+    parser.add_argument("--config", default="common/config/council_config.json",
+                        help="Path to council_config.json")
+    parser.add_argument("--interval", type=int, default=3600,
+                        help="Seconds between votes")
     args = parser.parse_args()
 
     try:

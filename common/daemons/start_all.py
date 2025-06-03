@@ -5,6 +5,7 @@ BASE = "/data/data/com.termux/files/home/feralsys"
 COUNCIL = os.path.join(BASE, "council_payload")
 LOGS = os.path.join(BASE, "logs")
 
+
 def launch(script_path, log_file):
     try:
         full_log = os.path.join(LOGS, log_file)
@@ -17,6 +18,7 @@ def launch(script_path, log_file):
         print(f"[LAUNCHED] {script_path} → {log_file}")
     except Exception as e:
         print(f"[FAILED] {script_path} → {e}")
+
 
 # Core scripts
 core_scripts = [

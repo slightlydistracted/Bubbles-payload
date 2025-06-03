@@ -9,9 +9,9 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 
 # ————————— PATHS —————————
-WEIGHTS_PATH    = "/srv/daemon-memory/funpumper/funpumper_weights.json"
-MODEL_PATH      = "/srv/daemon-memory/funpumper/phase1_model.pkl"
-TRAINER_LOG     = "/srv/daemon-memory/funpumper/fun_trainer.log"
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+MODEL_PATH = "/srv/daemon-memory/funpumper/phase1_model.pkl"
+TRAINER_LOG = "/srv/daemon-memory/funpumper/fun_trainer.log"
 
 # Phase 1 bins (end‐timestamps in seconds) relative to mint:
 P1_CHECK_TIMES = [15, 60, 150, 300]
@@ -59,7 +59,8 @@ def gather_phase1_examples():
         if not price_log or "initial_price" not in info:
             continue
 
-        t0 = info["initial_price"]  # price at “0s” (first positive price encountered)
+        # price at “0s” (first positive price encountered)
+        t0 = info["initial_price"]
         if t0 <= 0:
             continue
 
@@ -77,7 +78,7 @@ def gather_phase1_examples():
         # Only keep if we got all 4 bins
         if all(check in bucket_prices for check in P1_CHECK_TIMES):
             # Feature vector: [p15/t0, p60/t0, p150/t0, p300/t0]
-            ratios = [ bucket_prices[check] / t0 for check in P1_CHECK_TIMES ]
+            ratios = [bucket_prices[check] / t0 for check in P1_CHECK_TIMES]
             X_list.append(ratios)
 
             # Label = 1 if p300 >= 2× t0, else 0
@@ -101,7 +102,8 @@ def train_phase1_model():
     model.fit(X, y)
 
     save_model(model, MODEL_PATH)
-    log(f"[TRAINED] Phase 1 model retrained on {n} examples. Positive labels: {int(y.sum())}.")
+    log(
+        f"[TRAINED] Phase 1 model retrained on {n} examples. Positive labels: {int(y.sum())}.")
 
 
 def loop():

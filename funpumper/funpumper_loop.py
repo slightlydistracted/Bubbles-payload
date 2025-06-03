@@ -7,13 +7,15 @@ from datetime import datetime
 # === PATHS ===
 WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
 RESULTS_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
-LOOP_LOG    = "/srv/daemon-memory/funpumper/funpumper_loop.log"
+LOOP_LOG = "/srv/daemon-memory/funpumper/funpumper_loop.log"
+
 
 def log(msg):
-    ts   = datetime.utcnow().isoformat()
+    ts = datetime.utcnow().isoformat()
     line = f"[{ts}] {msg}"
     with open(LOOP_LOG, "a") as f:
         f.write(line + "\n")
+
 
 def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
@@ -24,9 +26,11 @@ def load_weights():
         log("⚠️ Failed to decode weights JSON.")
         return {}
 
+
 def save_weights(w):
     with open(WEIGHTS_PATH, "w") as f:
         json.dump(w, f, indent=2)
+
 
 def load_real_tokens():
     if not os.path.exists(RESULTS_PATH):
@@ -58,6 +62,7 @@ def load_real_tokens():
 
     return out
 
+
 def loop_once():
     weights = load_weights()
     results = load_real_tokens()
@@ -83,6 +88,7 @@ def loop_once():
     else:
         log("[PASS] No new tokens found.")
 
+
 def main_loop():
     log("🌕 FunPumper loop (real mode) started.")
     while True:
@@ -92,6 +98,7 @@ def main_loop():
         except Exception as e:
             log(f"[ERROR] {e}")
             time.sleep(30)
+
 
 if __name__ == "__main__":
     main_loop()

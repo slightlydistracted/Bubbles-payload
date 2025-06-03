@@ -6,6 +6,7 @@ from datetime import datetime
 
 LOG_PATH = "common/logs/clock_offset.log"
 
+
 def sync_and_log():
     client = ntplib.NTPClient()
     try:
@@ -25,6 +26,7 @@ def sync_and_log():
                 "error": str(e)
             }) + "\n")
         print(f"[CLOCK_SYNC] Error: {e}")
+
 
 if __name__ == "__main__":
     while True:

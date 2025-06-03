@@ -5,6 +5,7 @@ from datetime import datetime
 EVAL_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
 WEIGHT_OUT = "/srv/daemon-memory/funpumper/funpumper_weights.json"
 
+
 def load_json(path, default=[]):
     try:
         with open(path) as f:
@@ -12,9 +13,11 @@ def load_json(path, default=[]):
     except:
         return default
 
+
 def save_json(path, data):
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
+
 
 def compute_weights(evals):
     weights = {}
@@ -41,12 +44,13 @@ def compute_weights(evals):
 
     return weights
 
+
 def main():
     evals = load_json(EVAL_PATH, [])
     weights = compute_weights(evals)
     save_json(WEIGHT_OUT, weights)
     print(f"[{datetime.utcnow().isoformat()}] Weights saved to {WEIGHT_OUT} ({len(weights)} tokens)")
 
+
 if __name__ == "__main__":
     main()
-

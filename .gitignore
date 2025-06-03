@@ -4,3 +4,6 @@
 /*.log
 /sandbox/
 *.lock
+# ignore all old fun_purger log archives
+funpumper/*.log.gz
+funpumper/*.log.[0-9]*

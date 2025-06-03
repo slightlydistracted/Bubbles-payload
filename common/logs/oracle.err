@@ -83,3 +83,147 @@ Traceback (most recent call last):
   File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 14, in <module>
     from telethon import TelegramClient, events
 ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 14, in <module>
+    from telethon import TelegramClient, events
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 14, in <module>
+    from telethon import TelegramClient, events
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 14, in <module>
+    from telethon import TelegramClient, events
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 14, in <module>
+    from telethon import TelegramClient, events
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 14, in <module>
+    from telethon import TelegramClient, events
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 14, in <module>
+    from telethon import TelegramClient, events
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 14, in <module>
+    from telethon import TelegramClient, events
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 14, in <module>
+    from telethon import TelegramClient, events
+ModuleNotFoundError: No module named 'telethon'
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 15
+    from telethon import TelegramClient, events
+    ^
+IndentationError: expected an indented block after 'try' statement on line 14
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 15
+    from telethon import TelegramClient, events
+    ^
+IndentationError: expected an indented block after 'try' statement on line 14
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 15
+    from telethon import TelegramClient, events
+    ^
+IndentationError: expected an indented block after 'try' statement on line 14
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 15
+    from telethon import TelegramClient, events
+    ^
+IndentationError: expected an indented block after 'try' statement on line 14
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 15
+    from telethon import TelegramClient, events
+    ^
+IndentationError: expected an indented block after 'try' statement on line 14
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 60
+    except Exception as e:
+                          ^
+IndentationError: unindent does not match any outer indentation level
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 23, in <module>
+    from common.config.oracle_config import ORACLE_SETTINGS
+ModuleNotFoundError: No module named 'common.config.oracle_config'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 57, in <module>
+    api_id = cfg["api_id"]
+KeyError: 'api_id'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 23, in <module>
+    from common.config.oracle_config import ORACLE_SETTINGS
+ImportError: cannot import name 'ORACLE_SETTINGS' from 'common.config.oracle_config' (/root/projects/Bubbles-payload/common/config/oracle_config.py)
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 57, in <module>
+    api_id = cfg["api_id"]
+KeyError: 'api_id'
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 42
+    fo.write(f"[{ts}] Received: {msg}\n")
+IndentationError: unexpected indent
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 17
+    cfg = ORACLE_SETTINGS
+    ^^^
+SyntaxError: expected 'except' or 'finally' block
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 47
+    print("[ORACLE] Starting Telegram listener")
+IndentationError: unexpected indent
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 47
+    print("[ORACLE] Starting Telegram listener")
+IndentationError: unexpected indent
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 47
+    print("[ORACLE] Starting Telegram listener")
+IndentationError: unexpected indent
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 47
+    print("[ORACLE] Starting Telegram listener")
+IndentationError: unexpected indent
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 47
+    print("[ORACLE] Starting Telegram listener")
+IndentationError: unexpected indent
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 48
+    client.run_until_disconnected()
+IndentationError: unexpected indent
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 42, in <module>
+    fo.write(f"[{ts}] Received: {msg}\n")
+NameError: name 'fo' is not defined
+[ORACLE] Starting Telegram listener
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 48, in <module>
+    client.run_until_disconnected()
+NameError: name 'client' is not defined
+[ORACLE] Starting Telegram listener
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 58, in <module>
+    bot_token = cfg["bot_token"]
+KeyError: 'bot_token'
+[ORACLE] Starting Telegram listener
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 59, in <module>
+    chat_id = cfg["chat_id"]
+KeyError: 'chat_id'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 2, in <module>
+    from common.config.oracle_config import ORACLE_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 2, in <module>
+    from common.config.oracle_config import ORACLE_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 2, in <module>
+    from common.config.oracle_config import ORACLE_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 2, in <module>
+    from common.config.oracle_config import ORACLE_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 2, in <module>
+    from common.config.oracle_config import ORACLE_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 2, in <module>
+    from common.config.oracle_config import ORACLE_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 2, in <module>
+    from common.config.oracle_config import ORACLE_SETTINGS
+ModuleNotFoundError: No module named 'common'

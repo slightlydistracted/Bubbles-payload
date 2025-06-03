@@ -7,12 +7,14 @@ import json
 CONFIG_PATH = "common/config/inbox_config.json"
 DEFAULT_INBOX = os.path.expanduser("~/feralsys/inbox")
 
+
 def load_config():
     try:
         cfg = json.load(open(CONFIG_PATH))
         return cfg.get("inbox_folder", DEFAULT_INBOX)
     except FileNotFoundError:
         return DEFAULT_INBOX
+
 
 def fetch_next_message():
     inbox = load_config()
@@ -32,6 +34,7 @@ def fetch_next_message():
                 except json.JSONDecodeError:
                     os.remove(fpath)
         time.sleep(10)
+
 
 if __name__ == "__main__":
     # Example usage: continuously print messages

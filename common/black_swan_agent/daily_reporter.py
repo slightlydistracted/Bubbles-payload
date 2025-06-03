@@ -7,6 +7,7 @@ import asyncio
 PORTFOLIO_PATH = '/root/feralsys/tools/black_swan_agent/simulated_portfolio.json'
 REPORTS_DIR = '/root/feralsys/tools/black_swan_agent/reports/'
 
+
 async def generate_daily_report():
     if not os.path.exists(PORTFOLIO_PATH):
         print("[Daily Report] No portfolio found.")

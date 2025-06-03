@@ -17,13 +17,16 @@ LOG_PATH = "common/logs/funpumper_ws.log"
 ERR_PATH = "common/logs/funpumper_ws.err"
 LIVE_WS_PATH = Path(__file__).parent / "live_ws_tokens.json"
 
+
 async def main():
     Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
     uri = "wss://ipc.pump.fun"
     try:
         async with websockets.connect(uri) as ws:
             with open(LOG_PATH, "a") as fl:
-                fl.write(f"[{datetime.utcnow().isoformat()}] [WS] Connected to {uri}\n")
+with open("common/logs/telemetry.log", "a") as fl:
+                    fl.write(
+                    f"[{datetime.utcnow().isoformat()}] [WS] Connected to {uri}\n")
 
             while True:
                 raw = await ws.recv()
@@ -38,7 +41,8 @@ async def main():
                     initial_buy = data.get("initialBuy", 0)
                     price = initial_buy / (liquidity or 1)
                     with open(LOG_PATH, "a") as fl:
-                        fl.write(f"[{datetime.utcnow().isoformat()}] [NEW TOKEN] {mint_addr} tracked "
+with open("common/logs/telemetry.log", "a") as fl:
+                            fl.write(f"[{datetime.utcnow().isoformat()}] [NEW TOKEN] {mint_addr} tracked "
                                  f"(initialBuy={initial_buy}, vSol={liquidity}, vTokens={data.get('vTokensInBondingCurve',0)})\n")
 
                     # Append into live_ws_tokens.json as a dict of {mint_address: data}

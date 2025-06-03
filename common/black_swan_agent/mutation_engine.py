@@ -4,6 +4,7 @@ from datetime import datetime
 
 MUTATION_MEMORY_PATH = "mutation_memory.json"
 
+
 def load_mutation_memory():
     try:
         with open(MUTATION_MEMORY_PATH, "r") as f:
@@ -11,9 +12,11 @@ def load_mutation_memory():
     except FileNotFoundError:
         return {"history": [], "current": None}
 
+
 def save_mutation_memory(data):
     with open(MUTATION_MEMORY_PATH, "w") as f:
         json.dump(data, f, indent=2)
+
 
 # Define your base mutation rules
 AVAILABLE_MUTATIONS = [
@@ -33,10 +36,13 @@ AVAILABLE_MUTATIONS = [
     "echo_successful_wallets",
 ]
 
+
 def select_two_mutations(previously_used):
     choices = [m for m in AVAILABLE_MUTATIONS if m not in previously_used[-6:]]
-    selected = random.sample(choices, 2) if len(choices) >= 2 else random.sample(AVAILABLE_MUTATIONS, 2)
+    selected = random.sample(choices, 2) if len(
+        choices) >= 2 else random.sample(AVAILABLE_MUTATIONS, 2)
     return selected
+
 
 def apply_mutations():
     memory = load_mutation_memory()
@@ -48,7 +54,8 @@ def apply_mutations():
     if previous and previous[-1]["date"] == today:
         return previous[-1]["mutations"]
 
-    selected = select_two_mutations([x["mutations"][0] for x in previous[-6:]] + [x["mutations"][1] for x in previous[-6:]])
+    selected = select_two_mutations(
+        [x["mutations"][0] for x in previous[-6:]] + [x["mutations"][1] for x in previous[-6:]])
 
     memory["history"].append({
         "date": today,

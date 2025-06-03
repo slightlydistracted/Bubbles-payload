@@ -1,0 +1,124 @@
+# common/daemons/launch_all_daemons.py
+
+import os
+import sys
+import time
+import subprocess
+from pathlib import Path
+
+# Ensure REPO_ROOT is on sys.path so imports from common work:
+REPO_ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), os.pardir, os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+# Paths to logs:
+LOG_DIR = Path(REPO_ROOT) / "common" / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+# Commands to launch each component:
+COMMANDS = [
+    {
+        "name": "SHADOW1",
+        "path": Path(REPO_ROOT) / "shadow_srv" / "shadow_service_1.py",
+        "log": LOG_DIR / "shadow.err"
+    },
+    {
+        "name": "SHADOW2",
+        "path": Path(REPO_ROOT) / "shadow_srv" / "shadow_service_2.py",
+        "log": LOG_DIR / "shadow.err"
+    },
+    {
+        "name": "ORACLE",
+        "path": Path(REPO_ROOT) / "common" / "oracle" / "oracle_daemon.py",
+        "log": LOG_DIR / "oracle.err"
+    },
+    {
+        "name": "FUNPUMPER WS",
+        "path": Path(REPO_ROOT) / "funpumper" / "funpumper_ws.py",
+        "log": LOG_DIR / "funpumper_ws.err"
+    },
+    {
+        "name": "FUNPUMPER PHASE1",
+        "path": Path(REPO_ROOT) / "funpumper" / "fun_purger_loop.py",
+        "log": LOG_DIR / "fun_purger.err"
+    },
+    {
+        "name": "FUNPUMPER PHASE2/3",
+        "path": Path(REPO_ROOT) / "funpumper" / "fun_predict_eval_loop.py",
+        "log": LOG_DIR / "fun_predict.err"
+    },
+    {
+        "name": "METRICS ENRICHER",
+        "path": Path(REPO_ROOT) / "funpumper" / "metrics_enricher_loop.py",
+        "log": LOG_DIR / "metrics_enricher.err"
+    },
+    {
+        "name": "FUNPUMPER REFLECTION",
+        "path": Path(REPO_ROOT) / "funpumper" / "fun_reflection_loop.py",
+        "log": LOG_DIR / "fun_reflection.err"
+    },
+    {
+        "name": "COUNCIL",
+        "path": Path(REPO_ROOT) / "common" / "council" / "run_council.py",
+        "log": LOG_DIR / "council.err"
+    },
+    {
+        "name": "TELEMETRY",
+        "path": Path(REPO_ROOT) / "common" / "telegram_telemetry_reporter.py",
+        "log": LOG_DIR / "telemetry.err"
+    },
+    {
+        "name": "SIM",
+        "path": Path(REPO_ROOT) / "common" / "black_swan_agent" / "simulation_planner.py",
+        "log": LOG_DIR / "simulation_planner.err"
+    }
+]
+
+
+def launch_process(name, script_path, log_path):
+    if not script_path.exists():
+        print(f"[ERROR] Missing {script_path.relative_to(REPO_ROOT)}")
+        return None
+
+    print(f"[{name}] Starting {script_path.relative_to(REPO_ROOT)}")
+    with open(log_path, "a") as lf:
+        # Launch in background, redirect stdout+stderr to log
+        proc = subprocess.Popen(
+            ["python3", str(script_path)],
+            cwd=str(REPO_ROOT),
+            stdout=lf,
+            stderr=lf
+        )
+    return proc
+
+
+def main():
+    processes = []
+    for cmd in COMMANDS:
+        name = cmd["name"]
+        script = cmd["path"]
+        log = cmd["log"]
+        log.parent.mkdir(parents=True, exist_ok=True)
+        p = launch_process(name, script, log)
+        processes.append((name, p))
+
+    # Keep the launcher running; periodically check if any child died
+    try:
+        while True:
+            for name, proc in processes:
+                if proc and proc.poll() is not None:
+                    print(
+                        f"[{name}] Process {proc.pid} exited with code {proc.returncode}")
+                    # Optionally, you could auto‐restart here.
+            time.sleep(30)
+    except KeyboardInterrupt:
+        print("Shutting down all subprocesses...")
+        for name, proc in processes:
+            if proc and proc.poll() is None:
+                proc.terminate()
+        sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()

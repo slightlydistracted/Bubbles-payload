@@ -8,10 +8,12 @@ WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
 FORK_HISTORY_PATH = "/srv/daemon-memory/funpumper/fork_history.json"
 MUTATION_LOG = "/srv/daemon-memory/funpumper/fun_mutation.log"
 
+
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(MUTATION_LOG, "a") as f:
         f.write(f"[{timestamp}] {message}\n")
+
 
 def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
@@ -22,9 +24,11 @@ def load_weights():
         except json.JSONDecodeError:
             return {}
 
+
 def save_weights(data):
     with open(WEIGHTS_PATH, "w") as f:
         json.dump(data, f, indent=2)
+
 
 def load_history():
     if not os.path.exists(FORK_HISTORY_PATH):
@@ -35,9 +39,11 @@ def load_history():
         except json.JSONDecodeError:
             return []
 
+
 def save_history(history):
     with open(FORK_HISTORY_PATH, "w") as f:
         json.dump(history, f, indent=2)
+
 
 def mutate_weights(weights):
     mutated = {}
@@ -49,9 +55,11 @@ def mutate_weights(weights):
             mutated[mint]["score"] = round(new_score, 3)
     return mutated
 
+
 def score_delta_score(weights):
     scores = [t["score"] for t in weights.values() if "score" in t]
     return round(sum(scores) / len(scores), 4) if scores else 0.0
+
 
 def loop():
     while True:
@@ -78,6 +86,7 @@ def loop():
             log("[MUTATION] Rejected mutation, baseline better.")
 
         time.sleep(3600)  # Every 1 hour
+
 
 if __name__ == "__main__":
     loop()

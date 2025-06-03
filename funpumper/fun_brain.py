@@ -8,10 +8,12 @@ from datetime import datetime
 WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
 BRAIN_LOG = "/srv/daemon-memory/funpumper/fun_brain.log"
 
+
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(BRAIN_LOG, "a") as f:
         f.write(f"[{timestamp}] {message}\n")
+
 
 def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
@@ -22,9 +24,11 @@ def load_weights():
         except json.JSONDecodeError:
             return {}
 
+
 def save_weights(data):
     with open(WEIGHTS_PATH, "w") as f:
         json.dump(data, f, indent=2)
+
 
 def simple_score(token):
     # Placeholder scoring logic
@@ -34,6 +38,7 @@ def simple_score(token):
     moon = token.get("predicted_moon", False)
     score = (1.0 if moon else 0.5) * min(age / 10000, 1.0)
     return round(score, 3)
+
 
 def score_tokens():
     tokens = load_weights()
@@ -47,6 +52,7 @@ def score_tokens():
             log(f"[UPDATE] {count} tokens scored so far...")
     log(f"[COMPLETE] Brain scored {count} tokens.")
     save_weights(tokens)
+
 
 def get_top_suggestions(limit=10, max_age=43200):
     now = int(time.time())

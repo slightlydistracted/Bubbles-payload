@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-import os, json, time, random, requests
+import os
+import json
+import time
+import random
+import requests
 from datetime import datetime
 
 MEMORY_FILE = "/data/data/com.termux/files/home/feralsys/srv_link/agent_logs/winny_memory.json"
@@ -15,12 +19,14 @@ TOKEN_LIMIT = 10
 DEV_WALLET_CAP = 2
 LIQUIDITY_MIN = 10000
 
+
 def log(msg):
     t = datetime.utcnow().isoformat()
     line = f"[{t}] {msg}"
     with open(LOG_FILE, "a") as f:
         f.write(line + "\n")
     print(line)
+
 
 def load_json(path, default):
     if not os.path.exists(path):
@@ -31,18 +37,22 @@ def load_json(path, default):
     except:
         return default
 
+
 def save_json(path, data):
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
+
 
 def load_tokens():
     data = load_json(DEX_FILE, [])
     return [t for t in data if isinstance(t, dict) and "mint" in t][:TOKEN_LIMIT]
     return []
 
+
 def get_helius_info(mint):
     holders = load_json(HELIUS_FILE, {}).get(mint, {}).get("holders", [])
     return len(holders)
+
 
 def is_safe(token, helius_count):
     reasons = []
@@ -55,6 +65,7 @@ def is_safe(token, helius_count):
     if helius_count == 0:
         reasons.append("No holder data")
     return reasons
+
 
 def main_loop():
     memory = load_json(MEMORY_FILE, {"scans": [], "mutations": 0})
@@ -90,6 +101,7 @@ def main_loop():
         except Exception as e:
             log(f"[ERROR] {e}")
             time.sleep(60)
+
 
 if __name__ == "__main__":
     main_loop()

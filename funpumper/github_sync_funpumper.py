@@ -20,6 +20,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s"
 )
 
+
 def run_cmd(cmd, cwd=None):
     try:
         subprocess.run(cmd, cwd=cwd, check=True)
@@ -27,6 +28,7 @@ def run_cmd(cmd, cwd=None):
     except subprocess.CalledProcessError as e:
         logging.error(f"Failed: {' '.join(cmd)} -- {e}")
         return False
+
 
 def clone_or_pull(repo_name, repo_url):
     repo_path = os.path.join(DEST_DIR, repo_name)
@@ -37,17 +39,20 @@ def clone_or_pull(repo_name, repo_url):
         logging.info(f"Pulling {repo_name}")
         return run_cmd(["git", "pull"], cwd=repo_path)
 
+
 def sync_all():
     if not os.path.exists(DEST_DIR):
         os.makedirs(DEST_DIR)
     for name, url in REPOS.items():
         clone_or_pull(name, url)
 
+
 def main_loop():
     logging.info("Funpumper GitHub sync loop started")
     while True:
         sync_all()
         time.sleep(SLEEP_INTERVAL)
+
 
 if __name__ == "__main__":
     main_loop()

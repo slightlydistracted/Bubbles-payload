@@ -5,6 +5,7 @@ from pathlib import Path
 # Overwrite the canonical evals file in place
 EVALS_PATH = Path("/srv/daemon-memory/funpumper/funpumper_evals.json")
 
+
 def fix():
     try:
         raw = json.loads(EVALS_PATH.read_text())
@@ -40,6 +41,7 @@ def fix():
 
     except Exception as e:
         print(f"[ERROR] Fixer failed: {e}")
+
 
 if __name__ == "__main__":
     fix()

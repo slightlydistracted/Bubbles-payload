@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
-import os, json, time
+import os
+import json
+import time
 from datetime import datetime
 
-RAW_PATH       = "/srv/daemon-memory/funpumper/live_ws_tokens.json"
-FILTERED_OUT   = "/srv/daemon-memory/funpumper/filtered_mints.json"
-LOG_PATH       = "/srv/daemon-memory/funpumper/mint_filter.log"
-MAX_ATTEMPTS   = 3
+RAW_PATH = "/srv/daemon-memory/funpumper/live_ws_tokens.json"
+FILTERED_OUT = "/srv/daemon-memory/funpumper/filtered_mints.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/mint_filter.log"
+MAX_ATTEMPTS = 3
 SLEEP_INTERVAL = 10  # seconds between filter runs
+
 
 def log(msg):
     ts = datetime.utcnow().isoformat()
     with open(LOG_PATH, "a") as f:
         f.write(f"[{ts}] {msg}\n")
+
 
 def load_raw():
     for attempt in range(1, MAX_ATTEMPTS + 1):
@@ -23,9 +27,11 @@ def load_raw():
             time.sleep(0.5)
     raise RuntimeError(f"load_raw failed after {MAX_ATTEMPTS} attempts")
 
+
 def filter_mints(raw):
     # example filter: only keep tokens with pool=='pump'
     return [mint for mint, data in raw.items() if data.get("pool") == "pump"]
+
 
 def main():
     log("🚦 mint_filter daemon started")
@@ -40,6 +46,7 @@ def main():
         except Exception as e:
             log(f"[ERROR] {e}")
         time.sleep(SLEEP_INTERVAL)
+
 
 if __name__ == "__main__":
     main()

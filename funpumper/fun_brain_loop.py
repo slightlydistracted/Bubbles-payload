@@ -17,10 +17,12 @@ TRAIT_WEIGHTS = {
 
 PREDICTION_THRESHOLD = 0.85
 
+
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(LOG_PATH, "a") as f:
         f.write(f"[{timestamp}] {message}\n")
+
 
 def load_json(path):
     if not os.path.exists(path):
@@ -31,9 +33,11 @@ def load_json(path):
         except json.JSONDecodeError:
             return {}
 
+
 def save_json(path, data):
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
+
 
 def score_token(t):
     score = 0.0
@@ -45,14 +49,16 @@ def score_token(t):
 
     # Status influence
     status = t.get("status", "PENDING")
-    status_score = {"PENDING": 0.2, "ACTIVE": 0.7, "FINAL": 0.5}.get(status, 0.1)
+    status_score = {"PENDING": 0.2, "ACTIVE": 0.7,
+                    "FINAL": 0.5}.get(status, 0.1)
     score += status_score * TRAIT_WEIGHTS["status"]
 
     # Price volatility
     price_log = t.get("price_log", [])
     vol = 0.0
     if isinstance(price_log, list) and len(price_log) >= 2:
-        diffs = [abs(price_log[i] - price_log[i - 1]) for i in range(1, len(price_log))]
+        diffs = [abs(price_log[i] - price_log[i - 1])
+                 for i in range(1, len(price_log))]
         vol = sum(diffs) / len(diffs)
         vol_score = min(vol / 0.1, 1.0)
     else:
@@ -64,6 +70,7 @@ def score_token(t):
     score += rand_score * TRAIT_WEIGHTS["randomness"]
 
     return round(min(score, 1.0), 4)
+
 
 def brain_loop():
     log("FunBrain (Phase 2) engaged.")
@@ -92,6 +99,7 @@ def brain_loop():
     save_json(WEIGHTS_PATH, tokens)
     save_json(PREDICTION_LOG, predictions)
     log(f"[COMPLETE] Brain scored {updated} tokens.")
+
 
 if __name__ == "__main__":
     while True:

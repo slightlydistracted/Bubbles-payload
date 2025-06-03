@@ -17,6 +17,8 @@ SOCIAL_VEL_FEED = "common/data_feeds/social_velocity.json"
 FEATURES_OUTPUT = "common/features/engineered_features.json"
 
 # Helper: read newline-delimited JSON from a file, return list of dicts
+
+
 def read_ndjson(path):
     out = []
     if not Path(path).exists():
@@ -27,6 +29,7 @@ def read_ndjson(path):
         except:
             continue
     return out
+
 
 def build_feature_vector(token):
     addr = token["address"]
@@ -39,18 +42,21 @@ def build_feature_vector(token):
 
     # —— Whale count in first 5 minutes —— #
     whales = read_ndjson(WHale_FEED)
-    cutoff = datetime.fromisoformat(base["mint_time"]) + timedelta(minutes=5) if base["mint_time"] else None
-    whale_buys = [w for w in whales if w.get("token") == addr 
+    cutoff = datetime.fromisoformat(
+        base["mint_time"]) + timedelta(minutes=5) if base["mint_time"] else None
+    whale_buys = [w for w in whales if w.get("token") == addr
                   and cutoff and datetime.fromisoformat(w["timestamp"]) <= cutoff]
     base["whale_buys_5m"] = len(whale_buys)
 
     # —— Sentiment in first 10 minutes —— #
     sents = read_ndjson(SENTIMENT_FEED)
-    cutoff2 = datetime.fromisoformat(base["mint_time"]) + timedelta(minutes=10) if base["mint_time"] else None
-    sent_scores = [s["sentiment"] for s in sents 
-                   if s.get("token") == addr 
+    cutoff2 = datetime.fromisoformat(
+        base["mint_time"]) + timedelta(minutes=10) if base["mint_time"] else None
+    sent_scores = [s["sentiment"] for s in sents
+                   if s.get("token") == addr
                    and cutoff2 and datetime.fromisoformat(s["timestamp"]) <= cutoff2]
-    base["avg_sentiment_10m"] = sum(sent_scores)/len(sent_scores) if sent_scores else 0
+    base["avg_sentiment_10m"] = sum(
+        sent_scores)/len(sent_scores) if sent_scores else 0
 
     # —— Delta 6× score —— #
     deltas = read_ndjson(DELTA_FEED)
@@ -62,9 +68,11 @@ def build_feature_vector(token):
     # Find the entry whose timestamp is closest before mint_time
     if base["mint_time"]:
         mint_dt = datetime.fromisoformat(base["mint_time"])
-        past = [s for s in socials if datetime.fromisoformat(s["timestamp"]) <= mint_dt]
+        past = [s for s in socials if datetime.fromisoformat(
+            s["timestamp"]) <= mint_dt]
         if past:
-            nearest = max(past, key=lambda s: datetime.fromisoformat(s["timestamp"]))
+            nearest = max(
+                past, key=lambda s: datetime.fromisoformat(s["timestamp"]))
             base["twitter_cnt_5m"] = nearest.get("twitter_mentions_5m", 0)
             base["reddit_cnt_15m"] = nearest.get("reddit_mentions_15m", 0)
         else:
@@ -86,6 +94,7 @@ def build_feature_vector(token):
 
     return base
 
+
 def main():
     Path(FEATURES_OUTPUT).parent.mkdir(parents=True, exist_ok=True)
 
@@ -103,6 +112,7 @@ def main():
         json.dump(all_features, f, indent=2)
 
     print(f"[FE] Generated features for {len(all_features)} tokens.")
+
 
 if __name__ == "__main__":
     main()

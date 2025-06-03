@@ -9,23 +9,25 @@ from datetime import datetime
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 
-API_KEY     = "1dc0efc3-6f32-4590-8b06-e2fd8bb46f03"
-EVALS_PATH  = "/srv/daemon-memory/funpumper/fixed_evals.json"
-LOG_PATH    = "/srv/daemon-memory/funpumper/metrics_enricher.log"
+API_KEY = "1dc0efc3-6f32-4590-8b06-e2fd8bb46f03"
+EVALS_PATH = "/srv/daemon-memory/funpumper/fixed_evals.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/metrics_enricher.log"
 
 # HOW MANY HELIUS REQUESTS TOTAL per second (shared across get_price + get_activity)
-HELIUS_RATE_LIMIT       = 2    # 2 requests per second
-HELIUS_RATE_PERIOD_SEC  = 1.0  # period over which that applies
+HELIUS_RATE_LIMIT = 2    # 2 requests per second
+HELIUS_RATE_PERIOD_SEC = 1.0  # period over which that applies
 
 # How long to wait after fully processing each token, to further spread out calls
 TOKEN_PAUSE_SEC = 0.3
 
 # ── Rate Limiter Definition ────────────────────────────────────────────────────
 
+
 class RateLimiter:
     """
     Simple token‐bucket rate limiter: allows `rate` calls per `per` seconds total.
     """
+
     def __init__(self, rate, per):
         self.rate = float(rate)
         self.per = float(per)
@@ -51,10 +53,12 @@ class RateLimiter:
             else:
                 self.allowance -= 1.0
 
+
 # Single global limiter for all Helius calls
 limiter = RateLimiter(rate=HELIUS_RATE_LIMIT, per=HELIUS_RATE_PERIOD_SEC)
 
 # ── Logging Utility ─────────────────────────────────────────────────────────────
+
 
 def log(message):
     """
@@ -65,6 +69,7 @@ def log(message):
         f.write(f"[{ts}] {message}\n")
 
 # ── Load Eval List Safely ────────────────────────────────────────────────────────
+
 
 def load_evals():
     """
@@ -84,6 +89,7 @@ def load_evals():
         return []
 
 # ── Helius Wrappers (Rate‐Limited) ────────────────────────────────────────────────
+
 
 def get_price(mint):
     """
@@ -106,7 +112,8 @@ def get_price(mint):
     except requests.exceptions.HTTPError as e:
         code = e.response.status_code if e.response else None
         if code == 429:
-            log(f"[WARN] rate-limited fetching price for {mint} (429), backing off 5s")
+            log(
+                f"[WARN] rate-limited fetching price for {mint} (429), backing off 5s")
             time.sleep(5)
             return None
         log(f"[ERROR] price lookup failed for {mint}: {e}")
@@ -138,7 +145,8 @@ def get_activity(mint):
     except requests.exceptions.HTTPError as e:
         code = e.response.status_code if e.response else None
         if code == 429:
-            log(f"[WARN] rate-limited fetching activity for {mint} (429), backing off 5s")
+            log(
+                f"[WARN] rate-limited fetching activity for {mint} (429), backing off 5s")
             time.sleep(5)
             return 0
         log(f"[ERROR] get_activity {mint}: {e}")
@@ -149,6 +157,7 @@ def get_activity(mint):
         return 0
 
 # ── Main Loop: Oldest‐First with Pauses ───────────────────────────────────────────
+
 
 def main_loop():
     log("Live metrics enricher loop started.")

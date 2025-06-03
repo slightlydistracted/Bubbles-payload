@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-import os, json, gzip
+import os
+import json
+import gzip
 from pathlib import Path
 from datetime import datetime, timedelta
 
@@ -48,7 +50,8 @@ if EVALS.exists():
         arc_file = ARCH / f"funpumper_evals_{stamp}.json"
         arc_file.write_text(json.dumps(old, indent=2))
         EVALS.write_text(json.dumps(keep, indent=2))
-        print(f"[{datetime.utcnow().isoformat()}] Archived {len(old)} old evals → {arc_file.name}")
+        print(
+            f"[{datetime.utcnow().isoformat()}] Archived {len(old)} old evals → {arc_file.name}")
 
 # 3) Purge finished tokens from live_ws_tokens.json
 LIVE = BASE / "live_ws_tokens.json"
@@ -56,16 +59,20 @@ if LIVE.exists():
     data = json.loads(LIVE.read_text())
     # load the statuses
     evals = {e.get("mint"): e.get("status") for e in keep}
-    filtered = {m:d for m,d in data.items() if evals.get(m,"PENDING")=="PENDING"}
+    filtered = {m: d for m, d in data.items(
+    ) if evals.get(m, "PENDING") == "PENDING"}
     if len(filtered) != len(data):
         LIVE.write_text(json.dumps(filtered, indent=2))
-        print(f"[{datetime.utcnow().isoformat()}] Purged {len(data)-len(filtered)} non-pending tokens")
+        print(
+            f"[{datetime.utcnow().isoformat()}] Purged {len(data)-len(filtered)} non-pending tokens")
 
 # 4) (Optional) Prune weights JSON to only those still pending
 WTS = BASE / "funpumper_weights.json"
 if WTS.exists():
     w = json.loads(WTS.read_text())
-    filtered = {m:d for m,d in w.items() if evals.get(m,"PENDING")=="PENDING"}
-    if len(filtered)!=len(w):
+    filtered = {m: d for m, d in w.items() if evals.get(
+        m, "PENDING") == "PENDING"}
+    if len(filtered) != len(w):
         WTS.write_text(json.dumps(filtered, indent=2))
-        print(f"[{datetime.utcnow().isoformat()}] Stripped {len(w)-len(filtered)} weights for finished tokens")
+        print(
+            f"[{datetime.utcnow().isoformat()}] Stripped {len(w)-len(filtered)} weights for finished tokens")

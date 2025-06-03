@@ -6,6 +6,8 @@ from datetime import datetime
 OUTPUT_FILE = "token_queue.json"
 
 # Example mutation logic or selection stub
+
+
 def select_token():
     # This is a placeholder — replace with real strategy_weaver output
     tokens = [
@@ -14,6 +16,7 @@ def select_token():
         {"symbol": "FREN", "confidence": round(random.uniform(0.8, 0.98), 3)}
     ]
     return random.choice(tokens)
+
 
 if __name__ == "__main__":
     token = select_token()

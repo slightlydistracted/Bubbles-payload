@@ -5,12 +5,13 @@ import json
 import time
 
 # (We keep _get_sol_usd_price() exactly as before.)
-COINGECKO_API       = "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd"
-_SOL_USD_CACHE      = None
+COINGECKO_API = "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd"
+_SOL_USD_CACHE = None
 _SOL_USD_LAST_FETCH = 0.0
-_SOL_USD_TTL        = 60.0   # cache SOL→USD for 60 seconds
+_SOL_USD_TTL = 60.0   # cache SOL→USD for 60 seconds
 
-LIVE_WS_PATH        = "/srv/daemon-memory/funpumper/live_ws_tokens.json"
+LIVE_WS_PATH = "/srv/daemon-memory/funpumper/live_ws_tokens.json"
+
 
 def _get_sol_usd_price():
     """
@@ -28,7 +29,7 @@ def _get_sol_usd_price():
             data = r.json()
             sol_price = data.get("solana", {}).get("usd")
             if sol_price is not None:
-                _SOL_USD_CACHE      = float(sol_price)
+                _SOL_USD_CACHE = float(sol_price)
                 _SOL_USD_LAST_FETCH = now
                 return _SOL_USD_CACHE
             else:
@@ -65,7 +66,7 @@ def get_token_price(mint: str):
         print(f"[WS MISS] No entry in live_ws_tokens.json for {mint}")
         return None
 
-    v_sol    = token_info.get("vSolInBondingCurve")
+    v_sol = token_info.get("vSolInBondingCurve")
     v_tokens = token_info.get("vTokensInBondingCurve")
     if v_sol is None or v_tokens is None or v_tokens == 0:
         print(f"[WS DATA ERROR] invalid vSol/vTokens for {mint}")
@@ -82,6 +83,6 @@ def get_token_price(mint: str):
         return None
 
     price_usd = price_in_sol * sol_usd
-    print(f"[WS] price_usd = {price_in_sol:.12f} * {sol_usd:.2f} = {price_usd:.8f}")
+    print(
+        f"[WS] price_usd = {price_in_sol:.12f} * {sol_usd:.2f} = {price_usd:.8f}")
     return price_usdy
-

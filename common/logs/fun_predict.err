@@ -28,3 +28,99 @@ Traceback (most recent call last):
   File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 15, in <module>
     from common.black_swan_agent.mutation_memory import load_memory, save_memory
 ModuleNotFoundError: No module named 'common'
+[2025-06-02T23:33:54] [ERROR] TypeError('string indices must be integers')
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 86, in <module>
+    main()
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 83, in main
+    time.sleep(300)
+KeyboardInterrupt
+[2025-06-02T23:36:15] [ERROR] TypeError('string indices must be integers')
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 86, in <module>
+    main()
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 83, in main
+    time.sleep(300)
+KeyboardInterrupt
+[2025-06-02T23:37:15] [ERROR] TypeError('string indices must be integers')
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 86, in <module>
+    main()
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 83, in main
+    time.sleep(300)
+KeyboardInterrupt
+[2025-06-02T23:39:47] [ERROR] TypeError('string indices must be integers')
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 86, in <module>
+    main()
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 83, in main
+    time.sleep(300)
+KeyboardInterrupt
+[2025-06-02T23:42:30] [ERROR] TypeError('string indices must be integers')
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 86, in <module>
+    main()
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 83, in main
+    time.sleep(300)
+KeyboardInterrupt
+[2025-06-02T23:43:37] [ERROR] TypeError('string indices must be integers')
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 86, in <module>
+    main()
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 83, in main
+    time.sleep(300)
+KeyboardInterrupt
+[2025-06-02T23:45:07] [ERROR] TypeError('string indices must be integers')
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 86, in <module>
+    main()
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 83, in main
+    time.sleep(300)
+KeyboardInterrupt
+[2025-06-02T23:54:39] [ERROR] TypeError('string indices must be integers')
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 86, in <module>
+    main()
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 83, in main
+    time.sleep(300)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 86, in <module>
+    main()
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 83, in main
+    time.sleep(300)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 2, in <module>
+    from common.black_swan_agent.mutation_memory import load_memory, save_memory
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 2, in <module>
+    from common.black_swan_agent.mutation_memory import load_memory, save_memory
+ModuleNotFoundError: No module named 'common'
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 78
+    with open("common/logs/telemetry.log", "a") as fl:
+IndentationError: expected an indented block after 'with' statement on line 77
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 78
+    with open("common/logs/telemetry.log", "a") as fl:
+IndentationError: expected an indented block after 'with' statement on line 77
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 78
+    with open("common/logs/telemetry.log", "a") as fl:
+IndentationError: expected an indented block after 'with' statement on line 77
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 78
+    with open("common/logs/telemetry.log", "a") as fl:
+IndentationError: expected an indented block after 'with' statement on line 77
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 78
+    with open("common/logs/telemetry.log", "a") as fl:
+IndentationError: expected an indented block after 'with' statement on line 77
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 187, in _run_module_as_main
+    mod_name, mod_spec, code = _get_module_details(mod_name, _Error)
+  File "/usr/lib/python3.10/runpy.py", line 157, in _get_module_details
+    code = loader.get_code(mod_name)
+  File "<frozen importlib._bootstrap_external>", line 1017, in get_code
+  File "<frozen importlib._bootstrap_external>", line 947, in source_to_code
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "/root/projects/Bubbles-payload/funpumper/fun_predict_eval_loop.py", line 78
+    with open("common/logs/telemetry.log", "a") as fl:
+IndentationError: expected an indented block after 'with' statement on line 77

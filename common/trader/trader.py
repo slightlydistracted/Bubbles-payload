@@ -13,11 +13,14 @@ bsc_rpc = 'https://bsc-dataseed.binance.org/'
 w3 = Web3(Web3.HTTPProvider(bsc_rpc))
 
 # Trade logic placeholder
+
+
 def check_and_trade():
     print("Running trade loop...")
     # Placeholder logic
     print(f"Wallet: {public_address}")
     # Replace with live logic
+
 
 # Main loop
 if __name__ == "__main__":

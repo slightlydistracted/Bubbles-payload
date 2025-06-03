@@ -15,8 +15,11 @@ REDDIT_SUBREDDITS = ["CryptoMoonShots", "Solana"]
 CHECK_INTERVAL = 300  # seconds (5 minutes)
 
 # Twitter scraping via snscrape (no API key needed)
+
+
 def fetch_twitter_count(keyword, since_minutes=5):
-    since = (datetime.utcnow() - timedelta(minutes=since_minutes)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    since = (datetime.utcnow() - timedelta(minutes=since_minutes)
+             ).strftime("%Y-%m-%dT%H:%M:%SZ")
     # snscrape formats: since:YYYY-MM-DD see docs or use `--since`
     cmd = [
         "snscrape", "--jsonl", f"twitter-search", f"{keyword} since:{since}"
@@ -30,6 +33,8 @@ def fetch_twitter_count(keyword, since_minutes=5):
         return 0
 
 # Reddit scraping via PRAW
+
+
 def fetch_reddit_count(subreddits, keyword, since_minutes=10):
     import praw
     import time
@@ -65,6 +70,7 @@ def fetch_reddit_count(subreddits, keyword, since_minutes=10):
             continue
     return count
 
+
 def main_loop():
     Path(OUTPUT_PATH).parent.mkdir(parents=True, exist_ok=True)
     seen = {}  # keep previous counts if needed
@@ -72,7 +78,8 @@ def main_loop():
     while True:
         ts = datetime.utcnow().isoformat()
         twitter_count = fetch_twitter_count(TWITTER_KEYWORD, since_minutes=5)
-        reddit_count = fetch_reddit_count(REDDIT_SUBREDDITS, TWITTER_KEYWORD, since_minutes=15)
+        reddit_count = fetch_reddit_count(
+            REDDIT_SUBREDDITS, TWITTER_KEYWORD, since_minutes=15)
 
         entry = {
             "timestamp": ts,
@@ -84,6 +91,7 @@ def main_loop():
             f.write(json.dumps(entry) + "\n")
         print(f"[SOCIAL] {ts} Tw:{twitter_count} Rdt:{reddit_count}")
         time.sleep(CHECK_INTERVAL)
+
 
 if __name__ == "__main__":
     main_loop()

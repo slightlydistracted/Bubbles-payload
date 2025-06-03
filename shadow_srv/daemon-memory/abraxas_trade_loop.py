@@ -11,10 +11,12 @@ QUEUE_FILE = "token_queue.json"
 RESULT_LOG = "obsidian_first_contact.json"
 CONFIDENCE_THRESHOLD = 0.7
 
+
 def log(message):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open(LOG_FILE, "a") as f:
         f.write(f"[{timestamp}] {message}\n")
+
 
 def load_token_from_queue():
     try:
@@ -27,6 +29,7 @@ def load_token_from_queue():
         log(f"Error reading token queue: {str(e)}")
         return None, []
 
+
 def write_queue(queue):
     try:
         with open(QUEUE_FILE, "w") as f:
@@ -34,12 +37,14 @@ def write_queue(queue):
     except Exception as e:
         log(f"Error writing token queue: {str(e)}")
 
+
 def save_result_to_memory(result):
     try:
         with open(RESULT_LOG, "a") as f:
             f.write(json.dumps(result) + "\n")
     except Exception as e:
         log(f"Error saving result to memory: {str(e)}")
+
 
 def execute_trade(token_info):
     symbol = token_info.get("symbol", "UNKNOWN")
@@ -65,6 +70,7 @@ def execute_trade(token_info):
         log(message)
 
     subprocess.run(["python3", TELEGRAM_SCRIPT])
+
 
 if __name__ == "__main__":
     token, remaining_queue = load_token_from_queue()

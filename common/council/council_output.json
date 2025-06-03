@@ -1,0 +1,7 @@
+{
+  "adjust_phase1_threshold": 1.7,
+  "trade_token": {
+    "address": "SoMeToKenAddr",
+    "amount_sol": 0.5
+  }
+}

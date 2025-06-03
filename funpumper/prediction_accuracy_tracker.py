@@ -6,10 +6,12 @@ from datetime import datetime
 WEIGHTS_PATH = "/srv/daemon-memory/funpumper/fun_brain_weights.json"
 LOG_PATH = "/srv/daemon-memory/funpumper/accuracy_tracker.log"
 
+
 def log(msg):
     timestamp = datetime.utcnow().isoformat()
     with open(LOG_PATH, "a") as f:
         f.write(f"[{timestamp}] {msg}\n")
+
 
 def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
@@ -20,9 +22,11 @@ def load_weights():
         except json.JSONDecodeError:
             return {}
 
+
 def save_weights(data):
     with open(WEIGHTS_PATH, "w") as f:
         json.dump(data, f, indent=2)
+
 
 def load_predictions():
     """Load our predictions store as a list of entries."""
@@ -40,6 +44,7 @@ def load_predictions():
         return raw
     # Fallback
     return []
+
 
 def evaluate_prediction_accuracy():
     tokens = load_weights()
@@ -64,11 +69,13 @@ def evaluate_prediction_accuracy():
     save_weights(tokens)
     log(f"[ACCURACY] Evaluated {checked} tokens, {correct} predictions correct.")
 
+
 def loop():
     log("Prediction accuracy tracker online.")
     while True:
         evaluate_prediction_accuracy()
         time.sleep(180)  # every 3 minutes
+
 
 if __name__ == "__main__":
     loop()

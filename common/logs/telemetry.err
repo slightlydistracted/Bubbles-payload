@@ -83,3 +83,147 @@ Traceback (most recent call last):
   File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 13, in <module>
     from telethon import TelegramClient
 ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 13, in <module>
+    from telethon import TelegramClient
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 13, in <module>
+    from telethon import TelegramClient
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 13, in <module>
+    from telethon import TelegramClient
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 13, in <module>
+    from telethon import TelegramClient
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 13, in <module>
+    from telethon import TelegramClient
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 13, in <module>
+    from telethon import TelegramClient
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 13, in <module>
+    from telethon import TelegramClient
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 13, in <module>
+    from telethon import TelegramClient
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 13, in <module>
+    from telethon import TelegramClient
+ModuleNotFoundError: No module named 'telethon'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 16, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common.config.telemetry_config'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 16, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common.config.telemetry_config'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 16, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common.config.telemetry_config'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 16, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common.config.telemetry_config'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 16, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common.config.telemetry_config'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 16, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common.config.telemetry_config'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 46, in <module>
+    api_id = cfg["api_id"]
+KeyError: 'api_id'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 16, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ImportError: cannot import name 'TELEMETRY_SETTINGS' from 'common.config.telemetry_config' (/root/projects/Bubbles-payload/common/config/telemetry_config.py)
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 46, in <module>
+    api_id = cfg["api_id"]
+KeyError: 'api_id'
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 33
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+IndentationError: unexpected indent
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 34
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+SyntaxError: expected 'except' or 'finally' block
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 33
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+SyntaxError: expected 'except' or 'finally' block
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 33
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+SyntaxError: expected 'except' or 'finally' block
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 33
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+SyntaxError: expected 'except' or 'finally' block
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 33
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+SyntaxError: expected 'except' or 'finally' block
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 33
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+SyntaxError: expected 'except' or 'finally' block
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 33
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+SyntaxError: expected 'except' or 'finally' block
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 33
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+SyntaxError: expected 'except' or 'finally' block
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 33
+    fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
+IndentationError: unexpected indent
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 34
+    time.sleep(interval_s)
+IndentationError: unexpected indent
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 47
+    main_loop(api_id, api_hash, bot_token, chat_id, args.interval)
+IndentationError: unexpected indent
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 2, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 2, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 2, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 2, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 2, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 2, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 2, in <module>
+    from common.config.telemetry_config import TELEMETRY_SETTINGS
+ModuleNotFoundError: No module named 'common'
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 37, in <module>
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+NameError: name 'msg' is not defined

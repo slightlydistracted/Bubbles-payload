@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-import os, json, time, random
+import os
+import json
+import time
+import random
 from datetime import datetime
 
 DEX_PATH = "/data/data/com.termux/files/home/feralsys/srv_link/oracle_stream/dex_tokens.json"
@@ -12,12 +15,14 @@ TELEGRAM_ENABLED = True
 TELEGRAM_TOKEN = "8090852179:AAE4xSKKs2T5AAapWV3MpQ-6FrdMEjGyYuk"
 CHAT_ID = "8071168808"
 
+
 def log(msg):
     t = datetime.utcnow().isoformat()
     line = f"[{t}] {msg}"
     with open(LOG_FILE, "a") as f:
         f.write(line + "\n")
     print(line)
+
 
 def send_telegram(msg):
     if TELEGRAM_ENABLED:
@@ -28,6 +33,7 @@ def send_telegram(msg):
         except Exception as e:
             log(f"[TELEGRAM ERROR] {e}")
 
+
 def load_json(path, default):
     try:
         if os.path.exists(path):
@@ -37,15 +43,18 @@ def load_json(path, default):
         log(f"[ERROR loading {path}] {e}")
     return default
 
+
 def save_json(path, obj):
     with open(path, "w") as f:
         json.dump(obj, f, indent=2)
+
 
 def qualifies_as_dip(last, current):
     try:
         return ((last - current) / last) >= 0.07
     except:
         return False
+
 
 def main_loop():
     memory = load_json(MEMORY_FILE, {"mutations": 0, "dips_detected": []})
@@ -102,6 +111,7 @@ def main_loop():
         except Exception as e:
             log(f"[ERROR] {str(e)}")
             time.sleep(60)
+
 
 if __name__ == "__main__":
     main_loop()

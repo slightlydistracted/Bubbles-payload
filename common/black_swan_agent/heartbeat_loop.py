@@ -3,11 +3,13 @@ import datetime
 import os
 from mutation_engine import apply_mutations
 
+
 async def update_prices():
     try:
         os.system("python3 price_fetcher.py")
     except Exception as e:
         print("[ERROR during price update]", e)
+
 
 async def generate_daily_report():
     try:
@@ -15,11 +17,14 @@ async def generate_daily_report():
     except Exception as e:
         print("[ERROR during daily report]", e)
 
+
 async def simulate_buy():
     print("[SIMULATED BUY] Placeholder executed.")
 
+
 async def simulate_sell():
     print("[SIMULATED SELL] Placeholder executed.")
+
 
 async def heartbeat():
     print("[HEARTBEAT]", datetime.datetime.utcnow().isoformat())
@@ -28,6 +33,7 @@ async def heartbeat():
     await simulate_buy()
     await simulate_sell()
     apply_mutations()
+
 
 async def main_loop():
     while True:

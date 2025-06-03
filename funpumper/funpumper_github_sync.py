@@ -5,7 +5,8 @@ import time
 from datetime import datetime
 
 # Use your existing PAT; fallback to the old hardcoded one if unset
-GITHUB_TOKEN = os.getenv("GITHUB_PAT", "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")
+GITHUB_TOKEN = os.getenv(
+    "GITHUB_PAT", "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")
 
 # Change CLONE_DIR to point at historical_tokens so downstream parsers will find data there
 CLONE_DIR = "/srv/daemon-memory/funpumper/historical_tokens"
@@ -17,9 +18,11 @@ REPOS = [
     "T4uru/pumpfun-analysis"
 ]
 
+
 def log(msg):
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{ts}] {msg}", flush=True)
+
 
 def clone_or_pull(repo):
     user_repo = repo.split("/")[-1]
@@ -45,6 +48,7 @@ def clone_or_pull(repo):
             stderr=subprocess.DEVNULL
         )
 
+
 def main():
     log("FunPumper GitHub sync loop started")
     while True:
@@ -55,6 +59,7 @@ def main():
                 log(f"[✗] Failed to access {repo}: {e}")
         log(f"Sleeping {INTERVAL_HOURS} hours...\n")
         time.sleep(INTERVAL_HOURS * 3600)
+
 
 if __name__ == "__main__":
     main()

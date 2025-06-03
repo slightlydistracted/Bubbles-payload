@@ -18,11 +18,13 @@ KEY_PATH = os.path.expanduser("~/.ssh/id_rsa")
 BOT_TOKEN = "8090852179:AAE4xSKKs2T5AAapWVzOIuwEq3NVLXvLSnc"
 CHAT_ID = "8071168808"
 
+
 def log(msg):
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
     with open(LOG_PATH, "a") as f:
         f.write(f"[{timestamp}] {msg}\n")
     print(f"[{timestamp}] {msg}")
+
 
 def send_telegram(msg):
     try:
@@ -31,6 +33,7 @@ def send_telegram(msg):
         requests.post(url, data=payload, timeout=5)
     except Exception as e:
         log(f"[TELEGRAM FAIL] {e}")
+
 
 def push_file_to_abraxas(file_path):
     filename = os.path.basename(file_path)
@@ -45,13 +48,16 @@ def push_file_to_abraxas(file_path):
         send_telegram(f"[Lilith Push] {filename} → FAILED")
         return False
 
+
 def write_lock():
     with open(LOCK_PATH, "w") as f:
         f.write(str(os.getpid()))
 
+
 def update_heartbeat():
     with open(HEARTBEAT_PATH, "w") as f:
         f.write(time.strftime("%Y-%m-%d %H:%M:%S"))
+
 
 def monitor_inbox():
     write_lock()
@@ -66,6 +72,7 @@ def monitor_inbox():
                 if success:
                     os.rename(full_path, os.path.join(PROCESSED_DIR, file))
         time.sleep(10)
+
 
 if __name__ == "__main__":
     monitor_inbox()

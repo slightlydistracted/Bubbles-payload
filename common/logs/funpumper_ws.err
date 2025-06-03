@@ -230,3 +230,50 @@ Traceback (most recent call last):
   File "/usr/lib/python3.10/selectors.py", line 469, in select
     fd_event_list = self._selector.poll(timeout, max_ev)
 KeyboardInterrupt
+[2025-06-02T23:33:49.482822] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-02T23:36:10.973531] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-02T23:37:10.774727] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-02T23:39:42.224880] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-02T23:42:25.117418] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-02T23:43:32.265565] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-02T23:45:02.733662] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-02T23:54:39.905872] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-02T23:57:15.318804] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:00:31.222808] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:02:48.299731] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:04:47.595437] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:05:48.000434] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:07:45.136362] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:08:55.543763] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:10:12.217349] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:12:01.828724] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:12:52.530638] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:13:47.145409] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:14:30.938627] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:15:12.144844] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:15:53.075089] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:16:50.495127] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:17:25.693115] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:18:01.896818] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:18:33.782149] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:19:01.535848] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:19:45.203464] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:20:33.625390] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:22:02.531124] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:31:30.229076] [ERROR] gaierror(-5, 'No address associated with hostname')
+[2025-06-03T00:56:09.541881] [ERROR] gaierror(-5, 'No address associated with hostname')
+  File "/root/projects/Bubbles-payload/funpumper/funpumper_ws.py", line 27
+    with open("common/logs/telemetry.log", "a") as fl:
+IndentationError: expected an indented block after 'with' statement on line 26
+  File "/root/projects/Bubbles-payload/funpumper/funpumper_ws.py", line 27
+    with open("common/logs/telemetry.log", "a") as fl:
+IndentationError: expected an indented block after 'with' statement on line 26
+  File "/root/projects/Bubbles-payload/funpumper/funpumper_ws.py", line 27
+    with open("common/logs/telemetry.log", "a") as fl:
+IndentationError: expected an indented block after 'with' statement on line 26
+  File "/root/projects/Bubbles-payload/funpumper/funpumper_ws.py", line 27
+    with open("common/logs/telemetry.log", "a") as fl:
+IndentationError: expected an indented block after 'with' statement on line 26
+  File "/root/projects/Bubbles-payload/funpumper/funpumper_ws.py", line 27
+    with open("common/logs/telemetry.log", "a") as fl:
+IndentationError: expected an indented block after 'with' statement on line 26

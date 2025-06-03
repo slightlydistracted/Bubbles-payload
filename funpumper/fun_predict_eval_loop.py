@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from common.black_swan_agent.mutation_memory import load_memory, save_memory
 import sys
 import os
 import json
@@ -10,7 +11,6 @@ REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
-from common.black_swan_agent.mutation_memory import load_memory, save_memory
 
 # —— CONFIGURATION —— #
 LOG_PATH = "funpumper/fun_predict_eval_loop.log"
@@ -19,12 +19,14 @@ FILTERED_PATH = Path(__file__).parent / "fun_filtered.json"
 PREDICTIONS_PATH = Path(__file__).parent / "fun_predictions.json"
 MODEL_DIR = Path(REPO_ROOT) / "common" / "models"
 
+
 def load_phase1_model():
     model_path = MODEL_DIR / "phase1_2x.pkl"
     if model_path.exists():
         import pickle
         return pickle.load(open(model_path, "rb"))
     return None
+
 
 def main():
     Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
@@ -73,14 +75,18 @@ def main():
                 json.dump(all_preds, fo, indent=2)
 
             with open(LOG_PATH, "a") as fl:
-                fl.write(f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] Predicted {len(all_preds)} tokens\n")
+with open("common/logs/telemetry.log", "a") as fl:
+                    fl.write(
+                    f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] Predicted {len(all_preds)} tokens\n")
 
         except Exception as e:
             with open(ERR_PATH, "a") as fe:
-                fe.write(f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] [ERROR] {repr(e)}\n")
+                fe.write(
+                    f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] [ERROR] {repr(e)}\n")
 
         # Sleep 5 minutes
         time.sleep(300)
+
 
 if __name__ == "__main__":
     main()

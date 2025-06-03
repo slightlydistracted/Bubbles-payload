@@ -17,11 +17,13 @@ PHASE1_SURVIVE_PKL = f"{MODEL_DIR}/phase1_survive.pkl"
 PHASE2_PKL = f"{MODEL_DIR}/phase2_4x.pkl"
 PHASE3_PKL = f"{MODEL_DIR}/phase3_6x.pkl"
 
+
 def load_memory():
     try:
         return json.load(open(MEMORY_PATH))
     except:
         return {"mutations": []}
+
 
 def load_features():
     try:
@@ -29,6 +31,7 @@ def load_features():
         return df
     except:
         return pd.DataFrame()
+
 
 def train_phase(phase, label_col, output_path):
     mem = load_memory().get("mutations", [])
@@ -41,7 +44,8 @@ def train_phase(phase, label_col, output_path):
     records = []
     for m in mem:
         if m["phase"] == phase:
-            rec = {"address": m["token"], label_col: (1 if m["outcome"] == label_col else 0)}
+            rec = {"address": m["token"], label_col: (
+                1 if m["outcome"] == label_col else 0)}
             rec.update(m.get("features", {}))
             records.append(rec)
     if not records:
@@ -55,7 +59,8 @@ def train_phase(phase, label_col, output_path):
     X = df.drop(columns=["address", "mint_time", label_col])
 
     # Train/test split
-    X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_val, y_train, y_val = train_test_split(
+        X, y, test_size=0.2, random_state=42)
 
     # LightGBM dataset
     lgb_train = lgb.Dataset(X_train, label=y_train)
@@ -67,7 +72,8 @@ def train_phase(phase, label_col, output_path):
         "learning_rate": 0.05,
         "verbose": -1
     }
-    print(f"[TRAIN] Training Phase {phase} model ({label_col}) on {len(X_train)} examples...")
+    print(
+        f"[TRAIN] Training Phase {phase} model ({label_col}) on {len(X_train)} examples...")
     gbm = lgb.train(
         params,
         lgb_train,
@@ -86,6 +92,7 @@ def train_phase(phase, label_col, output_path):
     pickle.dump(gbm, open(output_path, "wb"))
     print(f"[TRAIN] Saved Phase {phase} model to {output_path}")
 
+
 def main():
     # Phase 1: two separate labels (2× vs. survive vs. fail)
     train_phase(1, "2x", PHASE1_PKL)
@@ -97,6 +104,7 @@ def main():
 
     # Phase 3: only tokens that graduated Phase 2 have “6x” or “dead”
     train_phase(3, "6x", PHASE3_PKL)
+
 
 if __name__ == "__main__":
     main()
