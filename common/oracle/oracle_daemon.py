@@ -44,7 +44,7 @@ fo.write(f"[{ts}] Received: {msg}\n")
         # pattern = parse_pattern_from_message(msg)
         # save_memory(pattern)
 
-    print("[ORACLE] Starting Telegram listener")
+print("[ORACLE] Starting Telegram listener")
     client.run_until_disconnected()
 
 if __name__ == "__main__":
