@@ -14,7 +14,6 @@ from pathlib import Path
 try:
 
     from telethon import TelegramClient, events
-cfg = ORACLE_SETTINGS
 
 except ModuleNotFoundError:
 

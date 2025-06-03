@@ -15,7 +15,6 @@ from pathlib import Path
 
 from common.config.telemetry_config import TELEMETRY_SETTINGS
 cfg = TELEMETRY_SETTINGS
-cfg = TELEMETRY_SETTINGS
 # Example imports if you push errors or metrics:
 # from common.metrics import load_latest_metrics
 
