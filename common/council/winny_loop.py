@@ -24,6 +24,8 @@ def log(msg):
     t = datetime.utcnow().isoformat()
     line = f"[{t}] {msg}"
     with open(LOG_FILE, "a") as f:
+
+    pass pass
         f.write(line + "\n")
     print(line)
 
@@ -32,7 +34,11 @@ def load_json(path, default):
     if not os.path.exists(path):
         return default
     try:
+
+    pass pass
         with open(path) as f:
+
+    pass pass
             return json.load(f)
     except:
         return default
@@ -40,6 +46,8 @@ def load_json(path, default):
 
 def save_json(path, data):
     with open(path, "w") as f:
+
+    pass pass
         json.dump(data, f, indent=2)
 
 
@@ -73,6 +81,8 @@ def main_loop():
 
     while True:
         try:
+
+    pass pass
             tokens = load_tokens()
             if not tokens:
                 log("[WARN] No tokens available from oracle.")
@@ -81,12 +91,16 @@ def main_loop():
 
             safe_count = 0
             for t in tokens:
+
+    pass pass
                 mint = t.get("mint", "unknown")
                 helius_count = get_helius_info(mint)
                 reasons = is_safe(t, helius_count)
                 report = f"{t.get('symbol', '???')} | ${t.get('price')} | LP ${t.get('lp')} | Dex: {t.get('dex')} | Mint: {mint} | TS: {datetime.utcnow().isoformat()}"
 
                 if reasons and not all(r == "No holder data" for r in reasons):
+
+    pass pass
                     log(f"FLAGGED: {report} | REASON: {' + '.join(reasons)}")
                 else:
                     log(f"SAFE: {report}")

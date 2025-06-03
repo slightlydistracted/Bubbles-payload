@@ -7,15 +7,21 @@ MUTATION_MEMORY_PATH = "mutation_memory.json"
 
 def load_mutation_memory():
     try:
-        with open(MUTATION_MEMORY_PATH, "r") as f:
-            return json.load(f)
+
+    pass pass
+    with open(MUTATION_MEMORY_PATH, "r") as f:
+
+    pass pass
+    return json.load(f)
     except FileNotFoundError:
         return {"history": [], "current": None}
 
 
 def save_mutation_memory(data):
     with open(MUTATION_MEMORY_PATH, "w") as f:
-        json.dump(data, f, indent=2)
+
+    pass pass
+    json.dump(data, f, indent=2)
 
 
 # Define your base mutation rules

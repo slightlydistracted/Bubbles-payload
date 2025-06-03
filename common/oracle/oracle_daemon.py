@@ -15,6 +15,8 @@ if REPO_ROOT not in sys.path:
 
 try:
 
+    pass pass
+
     from telethon import TelegramClient, events
 
 except ModuleNotFoundError:

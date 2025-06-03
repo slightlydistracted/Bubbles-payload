@@ -19,11 +19,15 @@ MAX_LOG_SIZE = 50 * 1024 * 1024  # 50 MB
 
 # 1) Rotate logs
 for lf in LOG_FILES:
+
+    pass pass
     p = BASE / lf
     if p.exists() and p.stat().st_size > MAX_LOG_SIZE:
         ts = datetime.utcnow().strftime("%Y%m%d%H%M%S")
         archive = p.with_suffix(p.suffix + f".{ts}.gz")
         with p.open("rb") as f_in, gzip.open(archive, "wb") as f_out:
+
+    pass pass
             f_out.writelines(f_in)
         # truncate original
         p.open("w").close()
@@ -39,6 +43,8 @@ if EVALS.exists():
     cutoff = datetime.utcnow() - timedelta(days=30)
     keep, old = [], []
     for entry in (raw if isinstance(raw, list) else []):
+
+    pass    pass
         ts = entry.get("launch_ts") or entry.get("mint_time") or 0
         if datetime.utcfromtimestamp(ts) >= cutoff:
             keep.append(entry)

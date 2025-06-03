@@ -1,0 +1,6 @@
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 13
+    pass
+IndentationError: expected an indented block after 'with' statement on line 12
+  File "/root/projects/Bubbles-payload/shadow_srv/shadow_service_1.py", line 14
+    pass pass
+IndentationError: expected an indented block after 'with' statement on line 12

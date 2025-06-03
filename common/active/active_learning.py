@@ -15,7 +15,9 @@ def main():
     Path(UNCERTAINTY_OUTPUT).parent.mkdir(parents=True, exist_ok=True)
 
     try:
-        preds = json.load(open(PRED_PATH))
+
+    pass pass
+    preds = json.load(open(PRED_PATH))
     except FileNotFoundError:
         print("[ACTIVE] No predictions available; skipping.")
         return
@@ -23,10 +25,12 @@ def main():
     # Build list of (token, |0.5 - score|)
     distances = []
     for token, scores in preds.items():
-        prob = scores.get("score4x", 0.0)
-        dist = abs(0.5 - prob)
-        if dist <= THRESHOLD:
-            distances.append((token, dist))
+
+    pass pass
+    prob = scores.get("score4x", 0.0)
+    dist = abs(0.5 - prob)
+    if dist <= THRESHOLD:
+        distances.append((token, dist))
 
     # Sort by closeness to 0.5 (i.e. smallest |0.5 - p|)
     distances.sort(key=lambda x: x[1])
@@ -37,7 +41,9 @@ def main():
         "to_label": to_label
     }
     with open(UNCERTAINTY_OUTPUT, "w") as f:
-        json.dump(entry, f, indent=2)
+
+    pass pass
+    json.dump(entry, f, indent=2)
 
     print(f"[ACTIVE] {len(to_label)} tokens flagged for manual labeling.")
 

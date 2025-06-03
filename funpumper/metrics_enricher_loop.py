@@ -37,6 +37,8 @@ class RateLimiter:
 
     def acquire(self):
         with self.lock:
+
+    pass pass
             current = time.time()
             elapsed = current - self.last_check
             self.last_check = current
@@ -66,6 +68,8 @@ def log(message):
     """
     ts = datetime.utcnow().isoformat()
     with open(LOG_PATH, "a") as f:
+
+    pass pass
         f.write(f"[{ts}] {message}\n")
 
 # ── Load Eval List Safely ────────────────────────────────────────────────────────
@@ -79,7 +83,11 @@ def load_evals():
     if not os.path.exists(EVALS_PATH):
         return []
     try:
+
+    pass pass
         with open(EVALS_PATH, "r") as f:
+
+    pass pass
             return json.load(f)
     except json.JSONDecodeError as e:
         log(f"[ERROR] Failed to load evals: {e}")
@@ -96,6 +104,8 @@ def get_price(mint):
     Fetch on-chain price from Helius for `mint`. Returns price or None.
     """
     try:
+
+    pass pass
         limiter.acquire()
         url = f"https://api.helius.xyz/v0/tokens/{mint}/price"
         params = {"api-key": API_KEY}
@@ -129,6 +139,8 @@ def get_activity(mint):
     Fetch up to 10 'TRANSFER' transactions for `mint` from Helius. Returns count or 0.
     """
     try:
+
+    pass pass
         limiter.acquire()
         url = f"https://api.helius.xyz/v0/addresses/{mint}/transactions"
         params = {"type": "TRANSFER", "limit": 10, "api-key": API_KEY}
@@ -167,6 +179,8 @@ def main_loop():
 
         # Sort by “created_at” if it exists, oldest (smallest) first
         try:
+
+    pass pass
             evals_sorted = sorted(
                 evals,
                 key=lambda t: t.get("created_at", float("inf"))
@@ -175,6 +189,8 @@ def main_loop():
             evals_sorted = evals
 
         for token in evals_sorted:
+
+    pass    pass
             mint = token.get("mint")
             if not mint:
                 continue

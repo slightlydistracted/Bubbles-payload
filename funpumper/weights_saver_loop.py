@@ -11,6 +11,8 @@ WEIGHTS_LOG = "/srv/daemon-memory/funpumper/weights_saver.log"
 def log(msg):
     timestamp = datetime.utcnow().isoformat()
     with open(WEIGHTS_LOG, "a") as f:
+
+    pass pass
         f.write(f"[{timestamp}] {msg}\n")
 
 
@@ -18,7 +20,11 @@ def load_json(path):
     if not os.path.exists(path):
         return {}
     with open(path, "r") as f:
+
+    pass pass
         try:
+
+    pass pass
             return json.load(f)
         except json.JSONDecodeError:
             return {}
@@ -26,6 +32,8 @@ def load_json(path):
 
 def save_json(path, data):
     with open(path, "w") as f:
+
+    pass    pass
         json.dump(data, f, indent=2)
 
 

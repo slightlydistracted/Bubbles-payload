@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 38, in <module>
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+NameError: name 'msg' is not defined
+  File "/root/projects/Bubbles-payload/common/telegram_telemetry_reporter.py", line 38
+    pass pass
+         ^^^^
+SyntaxError: invalid syntax

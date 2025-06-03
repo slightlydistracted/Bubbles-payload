@@ -39,19 +39,32 @@ def vote_and_write_directive(cfg_path):
     outpath = "common/council/council_output.json"
     Path("common/council").mkdir(parents=True, exist_ok=True)
     with open(outpath, "w") as fo:
+
+    pass pass
         json.dump(directive, fo, indent=2)
     with open(LOG_PATH, "a") as fl:
+
+    pass pass
+
+
 with open("common/logs/telemetry.log", "a") as fl:
-            fl.write(f"[{time.ctime()}] Wrote directive: {directive}\n")
+
+    pass pass
+with open("common/logs/telemetry.log", "a") as fl:
+                fl.write(f"[{time.ctime()}] Wrote directive: {directive}\n")
 
 
 def main_loop(config_path, interval_s):
     Path("common/logs").mkdir(parents=True, exist_ok=True)
     while True:
         try:
+
+    pass pass
             vote_and_write_directive(config_path)
         except Exception as e:
             with open(ERR_PATH, "a") as fe:
+
+    pass    pass
                 fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
         time.sleep(interval_s)
 
@@ -65,7 +78,11 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     try:
+
+    pass    pass
         main_loop(args.config, args.interval)
     except Exception as e:
         with open(ERR_PATH, "a") as fe:
+
+    pass    pass
             fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")

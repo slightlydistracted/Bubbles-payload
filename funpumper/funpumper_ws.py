@@ -22,15 +22,26 @@ async def main():
     Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
     uri = "wss://ipc.pump.fun"
     try:
+
+    pass pass
         async with websockets.connect(uri) as ws:
+
+    pass pass
             with open(LOG_PATH, "a") as fl:
+
+    pass pass
 with open("common/logs/telemetry.log", "a") as fl:
-                    fl.write(
+
+    pass pass
+with open("common/logs/telemetry.log", "a") as fl:
+                        fl.write(
                     f"[{datetime.utcnow().isoformat()}] [WS] Connected to {uri}\n")
 
             while True:
                 raw = await ws.recv()
                 try:
+
+    pass    pass
                     data = json.loads(raw)
                 except Exception:
                     continue
@@ -41,12 +52,19 @@ with open("common/logs/telemetry.log", "a") as fl:
                     initial_buy = data.get("initialBuy", 0)
                     price = initial_buy / (liquidity or 1)
                     with open(LOG_PATH, "a") as fl:
+
+    pass    pass
 with open("common/logs/telemetry.log", "a") as fl:
-                            fl.write(f"[{datetime.utcnow().isoformat()}] [NEW TOKEN] {mint_addr} tracked "
+
+    pass    pass
+with open("common/logs/telemetry.log", "a") as fl:
+                                fl.write(f"[{datetime.utcnow().isoformat()}] [NEW TOKEN] {mint_addr} tracked "
                                  f"(initialBuy={initial_buy}, vSol={liquidity}, vTokens={data.get('vTokensInBondingCurve',0)})\n")
 
                     # Append into live_ws_tokens.json as a dict of {mint_address: data}
                     try:
+
+    pass    pass
                         current = json.load(open(LIVE_WS_PATH, "r"))
                         if not isinstance(current, dict):
                             current = {}
@@ -60,10 +78,14 @@ with open("common/logs/telemetry.log", "a") as fl:
                         "timestamp": datetime.utcnow().isoformat()
                     }
                     with open(LIVE_WS_PATH, "w") as f:
+
+    pass    pass
                         json.dump(current, f, indent=2)
 
     except Exception as e:
         with open(ERR_PATH, "a") as fe:
+
+    pass    pass
             fe.write(f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
 
 if __name__ == "__main__":

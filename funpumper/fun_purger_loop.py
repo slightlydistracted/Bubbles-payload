@@ -30,6 +30,8 @@ MIN_INITIAL_BUY = 1  # example value
 
 def load_json(path: Path, default):
     try:
+
+    pass pass
         return json.load(open(path, "r"))
     except FileNotFoundError:
         return default
@@ -39,13 +41,19 @@ def load_json(path: Path, default):
 
 def save_json(path: Path, data):
     with open(path, "w") as f:
+
+    pass pass
         json.dump(data, f, indent=2)
 
 
 def fetch_price_for_token(token_address):
+
     # Placeholder for actual price lookup. Replace with real API if needed.
+    pass
     # Example: Helius or Serum API call
     try:
+
+    pass pass
         resp = requests.get(f"https://api.example.com/price/{token_address}")
         return float(resp.json().get("price", 0))
     except Exception:
@@ -58,6 +66,8 @@ def loop():
 
     while True:
         try:
+
+    pass pass
             # 1) Load the WS‐populated dictionary (address → data dict)
             live_ws: dict = load_json(LIVE_WS_PATH, {})
 
@@ -79,6 +89,8 @@ def loop():
 
             # 3) Iterate over all mint entries in live_ws
             for mint_addr, msg in live_ws.items():
+
+    pass pass
                 if mint_addr in filtered_addresses or mint_addr in dead_addresses:
                     continue
 
@@ -109,6 +121,8 @@ def loop():
             # 4) Sleep briefly before re‐checking
         except Exception as e:
             with open(ERR_PATH, "a") as fe:
+
+    pass    pass
                 fe.write(
                     f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
         time.sleep(1)

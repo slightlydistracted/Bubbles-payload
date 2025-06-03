@@ -15,6 +15,8 @@ def log_event(event):
 
 def tail_f(path):
     with open(path, "rb") as f:
+
+    pass pass
         f.seek(0, os.SEEK_END)
         while True:
             line = f.readline()
@@ -22,6 +24,8 @@ def tail_f(path):
                 time.sleep(0.5)
                 continue
             try:
+
+    pass pass
                 yield line.decode("utf-8", errors="ignore")
             except UnicodeDecodeError:
                 continue
@@ -31,14 +35,22 @@ def sniff_loop():
     buffer = []
     if os.path.exists(SNIFF_OUT):
         with open(SNIFF_OUT, "r") as f:
+
+    pass    pass
             try:
+
+    pass    pass
                 buffer = json.load(f)
             except json.JSONDecodeError:
                 buffer = []
 
     for line in tail_f(WS_LOG_PATH):
+
+    pass    pass
         if "txType" in line and '"create"' in line:
             try:
+
+    pass    pass
                 obj = json.loads(line.split("[RAW]")[-1].strip())
                 mint = obj.get("mint")
                 name = obj.get("name")
@@ -56,6 +68,8 @@ def sniff_loop():
                     buffer.append(record)
                     buffer = buffer[-MAX_ENTRIES:]
                     with open(SNIFF_OUT, "w") as f:
+
+    pass    pass
                         json.dump(buffer, f, indent=2)
             except Exception:
                 continue

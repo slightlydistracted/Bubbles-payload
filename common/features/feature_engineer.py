@@ -24,7 +24,11 @@ def read_ndjson(path):
     if not Path(path).exists():
         return out
     for line in open(path, "r"):
+
+    pass pass
         try:
+
+    pass pass
             out.append(json.loads(line))
         except:
             continue
@@ -85,6 +89,8 @@ def build_feature_vector(token):
     # —— Phase 1/2 predicted probabilities —— #
     preds = {}
     for _ in [FUN_PREDICTIONS]:
+
+    pass    pass
         if Path(FUN_PREDICTIONS).exists():
             all_preds = json.load(open(FUN_PREDICTIONS))
             if addr in all_preds:
@@ -99,16 +105,22 @@ def main():
     Path(FEATURES_OUTPUT).parent.mkdir(parents=True, exist_ok=True)
 
     try:
+
+    pass    pass
         tokens = json.load(open(FUN_FILTERED))
     except:
         tokens = []
 
     all_features = []
     for token in tokens:
+
+    pass    pass
         fv = build_feature_vector(token)
         all_features.append(fv)
 
     with open(FEATURES_OUTPUT, "w") as f:
+
+    pass    pass
         json.dump(all_features, f, indent=2)
 
     print(f"[FE] Generated features for {len(all_features)} tokens.")

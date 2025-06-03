@@ -20,6 +20,8 @@ def log(msg):
     t = datetime.utcnow().isoformat()
     line = f"[{t}] {msg}"
     with open(LOG_FILE, "a") as f:
+
+    pass pass
         f.write(line + "\n")
     print(line)
 
@@ -28,6 +30,8 @@ def send_telegram(msg):
     if TELEGRAM_ENABLED:
         import requests
         try:
+
+    pass pass
             url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
             requests.post(url, json={"chat_id": CHAT_ID, "text": msg})
         except Exception as e:
@@ -36,8 +40,12 @@ def send_telegram(msg):
 
 def load_json(path, default):
     try:
+
+    pass    pass
         if os.path.exists(path):
             with open(path) as f:
+
+    pass    pass
                 return json.load(f)
     except Exception as e:
         log(f"[ERROR loading {path}] {e}")
@@ -46,11 +54,15 @@ def load_json(path, default):
 
 def save_json(path, obj):
     with open(path, "w") as f:
+
+    pass    pass
         json.dump(obj, f, indent=2)
 
 
 def qualifies_as_dip(last, current):
     try:
+
+    pass    pass
         return ((last - current) / last) >= 0.07
     except:
         return False
@@ -63,10 +75,14 @@ def main_loop():
 
     while True:
         try:
+
+    pass    pass
             tokens = load_json(DEX_PATH, [])
             dips = []
 
             for token in tokens:
+
+    pass    pass
                 symbol = token.get("symbol", "UNKNOWN")
                 price = float(token.get("priceUsd", 0))
                 if price <= 0:
@@ -94,6 +110,8 @@ def main_loop():
 
             if os.path.exists(SUMMON_FILE):
                 with open(SUMMON_FILE) as f:
+
+    pass    pass
                     cmd = f.read().strip().lower()
                 os.remove(SUMMON_FILE)
 

@@ -32,6 +32,8 @@ def main():
     Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
     while True:
         try:
+
+    pass pass
             # 1) Load filtered tokens (list)
             if not FILTERED_PATH.exists():
                 time.sleep(300)
@@ -49,6 +51,8 @@ def main():
 
             # 4) Iterate and predict
             for token in filtered:
+
+    pass pass
                 addr = token["address"]
                 if addr in all_preds:
                     continue
@@ -72,15 +76,24 @@ def main():
 
             # 5) Save predictions
             with open(PREDICTIONS_PATH, "w") as fo:
+
+    pass    pass
                 json.dump(all_preds, fo, indent=2)
 
             with open(LOG_PATH, "a") as fl:
+
+    pass    pass
 with open("common/logs/telemetry.log", "a") as fl:
-                    fl.write(
+
+    pass    pass
+with open("common/logs/telemetry.log", "a") as fl:
+                        fl.write(
                     f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] Predicted {len(all_preds)} tokens\n")
 
         except Exception as e:
             with open(ERR_PATH, "a") as fe:
+
+    pass    pass
                 fe.write(
                     f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] [ERROR] {repr(e)}\n")
 

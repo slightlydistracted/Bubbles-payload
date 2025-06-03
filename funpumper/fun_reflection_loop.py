@@ -23,6 +23,8 @@ MEMORY_PATH = Path(REPO_ROOT) / "common" / \
 
 def load_json(path: Path, default):
     try:
+
+    pass pass
         return json.load(open(path, "r"))
     except Exception:
         return default
@@ -30,6 +32,8 @@ def load_json(path: Path, default):
 
 def save_json(path: Path, data):
     with open(path, "w") as f:
+
+    pass pass
         json.dump(data, f, indent=2)
 
 
@@ -37,16 +41,22 @@ def loop():
     Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
     while True:
         try:
+
+    pass pass
             graduated = load_json(GRADUATED_PATH, [])
             memory = load_memory()
             new_entries = []
             for entry in graduated:
+
+    pass pass
                 addr = entry.get("address")
                 phase = entry.get("phase")
                 features = entry.get("features", {})
                 timestamp = entry.get("timestamp", time.time())
 
                 if not any(mem.get("token") == addr and mem.get("phase") == phase for mem in memory.get("mutations", [])):
+
+    pass pass
                     mem_entry = {
                         "token": addr,
                         "phase": phase,
@@ -59,14 +69,23 @@ def loop():
                 memory.setdefault("mutations", []).extend(new_entries)
                 save_memory(memory)
                 with open(LOG_PATH, "a") as fl:
+
+    pass    pass
                     for e in new_entries:
+
+    pass    pass
 with open("common/logs/telemetry.log", "a") as fl:
-                            fl.write(
+
+    pass    pass
+with open("common/logs/telemetry.log", "a") as fl:
+                                fl.write(
                             f"[{datetime.utcnow().isoformat()}] Appended mutation: {e}\n")
                 save_json(GRADUATED_PATH, [])
 
         except Exception as e:
             with open(ERR_PATH, "a") as fe:
+
+    pass    pass
                 fe.write(
                     f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
 

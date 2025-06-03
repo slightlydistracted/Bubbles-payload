@@ -10,6 +10,8 @@ alert = {
 }
 
 with open("/data/data/com.termux/files/home/feralsys/srv_link/pings/from_scry.json", "w") as f:
+
+    pass pass
     json.dump(alert, f, indent=2)
 
 print("[SCRY] Test alert written to from_scry.json")

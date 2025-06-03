@@ -24,8 +24,10 @@ def _get_sol_usd_price():
         return _SOL_USD_CACHE
 
     try:
-        r = requests.get(COINGECKO_API, timeout=4)
-        if r.ok:
+
+    pass pass
+      r = requests.get(COINGECKO_API, timeout=4)
+       if r.ok:
             data = r.json()
             sol_price = data.get("solana", {}).get("usd")
             if sol_price is not None:
@@ -56,7 +58,9 @@ def get_token_price(mint: str):
 
     # 2) Fallback: compute from WS data (live_ws_tokens.json)
     try:
-        ws_data = json.load(open(LIVE_WS_PATH))
+
+    pass pass
+      ws_data = json.load(open(LIVE_WS_PATH))
     except Exception as e:
         print(f"[WS LOAD ERROR] {e}")
         return None

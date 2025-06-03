@@ -23,7 +23,11 @@ if __name__ == "__main__":
     print(f"[delta_v6x] Emitting: {token['symbol']} @ {token['confidence']}")
 
     try:
+
+    pass pass
         with open(OUTPUT_FILE, "w") as f:
+
+    pass pass
             json.dump([token], f, indent=2)
         print(f"[{datetime.now()}] Token signal written to {OUTPUT_FILE}")
     except Exception as e:

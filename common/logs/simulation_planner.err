@@ -41,3 +41,9 @@ IndentationError: expected an indented block after 'with' statement on line 38
   File "/root/projects/Bubbles-payload/common/black_swan_agent/simulation_planner.py", line 39
     with open("common/logs/telemetry.log", "a") as fl:
 IndentationError: expected an indented block after 'with' statement on line 38
+  File "/root/projects/Bubbles-payload/common/black_swan_agent/simulation_planner.py", line 29
+    pass
+IndentationError: expected an indented block after 'try' statement on line 28
+  File "/root/projects/Bubbles-payload/common/black_swan_agent/simulation_planner.py", line 30
+    pass pass
+IndentationError: expected an indented block after 'try' statement on line 28

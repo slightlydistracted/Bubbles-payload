@@ -21,6 +21,8 @@ PREDICTION_THRESHOLD = 0.85
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(LOG_PATH, "a") as f:
+
+    pass pass
         f.write(f"[{timestamp}] {message}\n")
 
 
@@ -28,7 +30,11 @@ def load_json(path):
     if not os.path.exists(path):
         return {}
     with open(path, "r") as f:
+
+    pass pass
         try:
+
+    pass pass
             return json.load(f)
         except json.JSONDecodeError:
             return {}
@@ -36,6 +42,8 @@ def load_json(path):
 
 def save_json(path, data):
     with open(path, "w") as f:
+
+    pass    pass
         json.dump(data, f, indent=2)
 
 
@@ -79,6 +87,8 @@ def brain_loop():
     updated = 0
 
     for mint, t in tokens.items():
+
+    pass    pass
         brain_score = score_token(t)
         t["brain_score"] = brain_score
         updated += 1

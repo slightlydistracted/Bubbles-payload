@@ -14,6 +14,8 @@ def log(msg):
     ts = datetime.utcnow().isoformat()
     line = f"[{ts}] {msg}"
     with open(LOOP_LOG, "a") as f:
+
+    pass pass
         f.write(line + "\n")
 
 
@@ -21,6 +23,8 @@ def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
         return {}
     try:
+
+    pass pass
         return json.load(open(WEIGHTS_PATH, "r"))
     except json.JSONDecodeError:
         log("⚠️ Failed to decode weights JSON.")
@@ -29,6 +33,8 @@ def load_weights():
 
 def save_weights(w):
     with open(WEIGHTS_PATH, "w") as f:
+
+    pass pass
         json.dump(w, f, indent=2)
 
 
@@ -37,6 +43,8 @@ def load_real_tokens():
         log(f"⚠️ No evals file at {RESULTS_PATH}")
         return {}
     try:
+
+    pass pass
         raw = json.load(open(RESULTS_PATH, "r"))
     except json.JSONDecodeError:
         log("⚠️ Failed to decode evals JSON.")
@@ -45,12 +53,16 @@ def load_real_tokens():
     out = {}
     if isinstance(raw, list):
         for entry in raw:
+
+    pass pass
             if isinstance(entry, dict):
                 m = entry.get("mint")
                 if m:
                     out[m] = entry
     elif isinstance(raw, dict):
         for m, val in raw.items():
+
+    pass pass
             if isinstance(val, dict):
                 entry = dict(val)
                 entry.setdefault("mint", m)
@@ -69,6 +81,8 @@ def loop_once():
     new_count = 0
 
     for mint, data in results.items():
+
+    pass pass
         if mint in weights:
             continue
         weights[mint] = {
@@ -93,6 +107,8 @@ def main_loop():
     log("🌕 FunPumper loop (real mode) started.")
     while True:
         try:
+
+    pass pass
             loop_once()
             time.sleep(60)
         except Exception as e:

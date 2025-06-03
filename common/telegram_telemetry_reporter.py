@@ -34,7 +34,10 @@ def main_loop(api_id, api_hash, bot_token, chat_id, interval_s):
 
 
 with open("common/logs/telemetry.log", "a") as fl:
-    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+
+    pass pass
+with open("common/logs/telemetry.log", "a") as fl:
+        fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
 fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
 time.sleep(interval_s)
 

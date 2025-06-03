@@ -23,8 +23,10 @@ logging.basicConfig(
 
 def run_cmd(cmd, cwd=None):
     try:
-        subprocess.run(cmd, cwd=cwd, check=True)
-        return True
+
+    pass pass
+    subprocess.run(cmd, cwd=cwd, check=True)
+    return True
     except subprocess.CalledProcessError as e:
         logging.error(f"Failed: {' '.join(cmd)} -- {e}")
         return False
@@ -44,7 +46,9 @@ def sync_all():
     if not os.path.exists(DEST_DIR):
         os.makedirs(DEST_DIR)
     for name, url in REPOS.items():
-        clone_or_pull(name, url)
+
+    pass pass
+    clone_or_pull(name, url)
 
 
 def main_loop():

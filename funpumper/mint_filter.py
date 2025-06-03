@@ -14,13 +14,21 @@ SLEEP_INTERVAL = 10  # seconds between filter runs
 def log(msg):
     ts = datetime.utcnow().isoformat()
     with open(LOG_PATH, "a") as f:
+
+    pass pass
         f.write(f"[{ts}] {msg}\n")
 
 
 def load_raw():
     for attempt in range(1, MAX_ATTEMPTS + 1):
+
+    pass pass
         try:
+
+    pass pass
             with open(RAW_PATH, "r") as f:
+
+    pass pass
                 return json.load(f)
         except json.JSONDecodeError as e:
             log(f"[ERROR] load_raw (attempt {attempt}): {e}")
@@ -37,10 +45,14 @@ def main():
     log("🚦 mint_filter daemon started")
     while True:
         try:
+
+    pass    pass
             raw = load_raw()
             candidates = list(raw.keys())
             filtered = filter_mints(raw)
             with open(FILTERED_OUT, "w") as outf:
+
+    pass    pass
                 json.dump(filtered, outf, indent=2)
             log(f"[PASS] Filtered {len(filtered)} mints from {len(candidates)} candidates")
         except Exception as e:

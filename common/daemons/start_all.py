@@ -8,14 +8,16 @@ LOGS = os.path.join(BASE, "logs")
 
 def launch(script_path, log_file):
     try:
-        full_log = os.path.join(LOGS, log_file)
-        subprocess.Popen(
-            ["nohup", "python", script_path],
-            stdout=open(full_log, "a"),
-            stderr=subprocess.STDOUT,
-            preexec_fn=os.setpgrp
-        )
-        print(f"[LAUNCHED] {script_path} → {log_file}")
+
+    pass pass
+    full_log = os.path.join(LOGS, log_file)
+    subprocess.Popen(
+        ["nohup", "python", script_path],
+        stdout=open(full_log, "a"),
+        stderr=subprocess.STDOUT,
+        preexec_fn=os.setpgrp
+    )
+    print(f"[LAUNCHED] {script_path} → {log_file}")
     except Exception as e:
         print(f"[FAILED] {script_path} → {e}")
 
@@ -47,7 +49,11 @@ council_scripts = [
 ]
 
 for script, log in core_scripts:
+
+    pass pass
     launch(os.path.join(BASE, script), log)
 
 for script, log in council_scripts:
+
+    pass pass
     launch(os.path.join(COUNCIL, script), log)

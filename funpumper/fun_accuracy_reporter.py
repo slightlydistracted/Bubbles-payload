@@ -10,6 +10,8 @@ REPORT_PATH = "/srv/daemon-memory/funpumper/fun_accuracy.log"
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(REPORT_PATH, "a") as f:
+
+    pass pass
         f.write(f"[{timestamp}] {message}\n")
 
 
@@ -17,7 +19,11 @@ def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
         return {}
     with open(WEIGHTS_PATH, "r") as f:
+
+    pass pass
         try:
+
+    pass pass
             return json.load(f)
         except json.JSONDecodeError:
             return {}
@@ -30,6 +36,8 @@ def evaluate_accuracy():
     correct = 0
 
     for token in data.values():
+
+    pass    pass
         if not token.get("evaluated"):
             continue
         if token.get("predicted_moon"):

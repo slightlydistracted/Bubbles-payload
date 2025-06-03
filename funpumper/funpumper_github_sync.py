@@ -53,7 +53,11 @@ def main():
     log("FunPumper GitHub sync loop started")
     while True:
         for repo in REPOS:
+
+    pass pass
             try:
+
+    pass pass
                 clone_or_pull(repo)
             except Exception as e:
                 log(f"[✗] Failed to access {repo}: {e}")

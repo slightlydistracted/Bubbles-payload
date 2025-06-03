@@ -1,0 +1,4 @@
+  File "/root/projects/Bubbles-payload/common/oracle/oracle_daemon.py", line 18
+    pass pass
+         ^^^^
+SyntaxError: invalid syntax

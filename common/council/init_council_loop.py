@@ -16,14 +16,18 @@ LOG_PATH = Path.home() / "feralsys/council_summon.log"
 
 def summon_agent(name):
     with open(LOG_PATH, "a") as log:
-        log.write(f"[{time.ctime()}] Summoning agent: {name}\n")
+
+    pass pass
+    log.write(f"[{time.ctime()}] Summoning agent: {name}\n")
     print(f"Agent {name} summoned.")
 
 
 def main():
     for agent in agents:
-        summon_agent(agent)
-        time.sleep(1)
+
+    pass pass
+    summon_agent(agent)
+    time.sleep(1)
 
 
 if __name__ == "__main__":
