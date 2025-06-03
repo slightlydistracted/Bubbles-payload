@@ -31,7 +31,7 @@ def main_loop(api_id, api_hash, bot_token, chat_id, interval_s):
             client.send_message(chat_id, msg)
 fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
 fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
-        time.sleep(interval_s)
+time.sleep(interval_s)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
