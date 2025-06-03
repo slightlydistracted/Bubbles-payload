@@ -12,7 +12,7 @@ import time
 import argparse
 from pathlib import Path
 try:
-from telethon import TelegramClient, events
+    from telethon import TelegramClient, events
 except ModuleNotFoundError:
     TelegramClient = None
     events = None
@@ -55,7 +55,7 @@ if __name__ == "__main__":
     bot_token = cfg["bot_token"]
     chat_id = cfg["chat_id"]
 
-    try:
+try:
         main_loop(api_id, api_hash, bot_token, chat_id)
     except Exception as e:
         with open(ERR_PATH, "a") as fe:
