@@ -14,8 +14,8 @@ EVALS_PATH  = "/srv/daemon-memory/funpumper/fixed_evals.json"
 LOG_PATH    = "/srv/daemon-memory/funpumper/metrics_enricher.log"
 
 # HOW MANY HELIUS REQUESTS TOTAL per second (shared across get_price + get_activity)
-HEL﻿IUS_RATE_LIMIT       = 2    # 2 requests per second
-HEL﻿IUS_RATE_PERIOD_SEC  = 1.0  # period over which that applies
+HELIUS_RATE_LIMIT       = 2    # 2 requests per second
+HELIUS_RATE_PERIOD_SEC  = 1.0  # period over which that applies
 
 # How long to wait after fully processing each token, to further spread out calls
 TOKEN_PAUSE_SEC = 0.3
@@ -52,7 +52,7 @@ class RateLimiter:
                 self.allowance -= 1.0
 
 # Single global limiter for all Helius calls
-limiter = RateLimiter(rate=HEL﻿IUS_RATE_LIMIT, per=HEL﻿IUS_RATE_PERIOD_SEC)
+limiter = RateLimiter(rate=HELIUS_RATE_LIMIT, per=HELIUS_RATE_PERIOD_SEC)
 
 # ── Logging Utility ─────────────────────────────────────────────────────────────
 
