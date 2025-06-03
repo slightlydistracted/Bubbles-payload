@@ -13,8 +13,8 @@ TRACKER_LOG_PATH = "/srv/daemon-memory/funpumper/survivor_tracker.log"
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(TRACKER_LOG_PATH, "a") as f:
+    pass
 
-    pass pass
         f.write(f"[{timestamp}] {message}\n")
 
 
@@ -23,17 +23,17 @@ def repair_json(path):
     Naively fix single‐quoted keys by converting 'key': to "key":
     """
     try:
+    pass
 
-    pass pass
         raw = open(path, "r").read()
         # Replace patterns like 'someKey':  with "someKey":
+    pass
 
-    pass pass
         import re
         fixed = re.sub(r"'([A-Za-z0-9_]+)'\s*:", r'"\1":', raw)
         with open(path, "w") as f:
+    pass
 
-    pass pass
             f.write(fixed)
         log(f"[REPAIR] Applied single→double‐quote fix on {path}")
     except Exception as e:
@@ -49,18 +49,21 @@ def load_json_safe(path):
         return []
 
     try:
+    pass
 
-    pass    pass
+    pass
         with open(path, "r") as f:
+    pass
 
-    pass    pass
+    pass
             return json.load(f)
     except json.JSONDecodeError as jde:
         # Log the decode error with position info
         log(f"[ERROR] JSONDecodeError in file: {path} → {jde}")
         try:
+    pass
 
-    pass    pass
+    pass
             raw_text = open(path, "r").read()
             start = max(0, jde.pos - 50)
             snippet = raw_text[start: jde.pos + 50]
@@ -76,10 +79,12 @@ def load_json_safe(path):
 
     pass    pass
             with open(path, "r") as f:
+    pass
 
     pass    pass
                 return json.load(f)
         except Exception as e_retry:
+    pass
 
     pass    pass
             log(f"[ERROR] Retry load failed for {path}: {e_retry}")
@@ -99,6 +104,7 @@ def save_json(path, data):
 
 
 def append_performance(mint, price):
+    pass
 
     pass    """
     Append current timestamp+price to performance log under this mint key.
@@ -106,9 +112,11 @@ def append_performance(mint, price):
     if not os.path.exists(PERF_LOG_PATH):
         save_json(PERF_LOG_PATH, {})
     try:
+    pass
 
     pass    pass
         with open(PERF_LOG_PATH, "r") as f:
+    pass
 
     pass    pass
             perf_data = json.load(f)
@@ -135,6 +143,7 @@ def main():
             evals = load_json_safe(EVALS_PATH)
 
             for token in evals:
+    pass
 
     pass    pass
                 if not isinstance(token, dict):

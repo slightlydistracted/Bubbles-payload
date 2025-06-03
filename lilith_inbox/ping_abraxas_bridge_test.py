@@ -3,11 +3,11 @@
 import os
 
 try:
+    pass
 
-    pass pass
     with open("/sdcard/Download/abraxas_ping.txt", "w") as f:
+    pass
 
-    pass pass
     f.write("Lilith says: Bridge confirmed.")
     print("Abraxas ping written.")
 except Exception as e:

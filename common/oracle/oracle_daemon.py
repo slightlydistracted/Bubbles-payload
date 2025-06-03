@@ -14,12 +14,12 @@ if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
 try:
-
-    pass pass
+    pass
 
     from telethon import TelegramClient, events
 
 except ModuleNotFoundError:
+    pass
 
     TelegramClient = None
 
@@ -56,7 +56,9 @@ print("[ORACLE] Starting Telegram listener")
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--config", default="common/config/oracle_config.json", help="Path to oracle_config.json")
+        "--config",
+        default="common/config/oracle_config.json",
+        help="Path to oracle_config.json")
     args = parser.parse_args()
 
     # Load settings from JSON

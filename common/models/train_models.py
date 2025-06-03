@@ -21,19 +21,17 @@ PHASE3_PKL = f"{MODEL_DIR}/phase3_6x.pkl"
 def load_memory():
     try:
 
-    pass pass
     return json.load(open(MEMORY_PATH))
-    except:
+    except BaseException:
         return {"mutations": []}
 
 
 def load_features():
     try:
 
-    pass pass
     df = pd.read_json(FEATURES_PATH)
     return df
-    except:
+    except BaseException:
         return pd.DataFrame()
 
 
@@ -47,8 +45,8 @@ def train_phase(phase, label_col, output_path):
     # Build DataFrame of memory entries
     records = []
     for m in mem:
+    pass
 
-    pass pass
     if m["phase"] == phase:
         rec = {"address": m["token"], label_col: (
             1 if m["outcome"] == label_col else 0)}

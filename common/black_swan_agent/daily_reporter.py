@@ -14,8 +14,8 @@ async def generate_daily_report():
         return
 
     with open(PORTFOLIO_PATH, 'r') as f:
+    pass
 
-    pass pass
     portfolio = json.load(f)
 
     if not os.path.exists(REPORTS_DIR):
@@ -27,8 +27,8 @@ async def generate_daily_report():
     detailed_holdings = []
 
     for position in portfolio:
+    pass
 
-    pass pass
     token = position['token_address']
     amount = position['amount_purchased']
     buy_price = position['price_at_purchase']
@@ -67,8 +67,8 @@ async def generate_daily_report():
     filename = f"report_{datetime.utcnow().date()}.json"
     filepath = os.path.join(REPORTS_DIR, filename)
     with open(filepath, 'w') as f:
+    pass
 
-    pass pass
     json.dump(daily_summary, f, indent=2)
 
     # Pretty print to screen

@@ -7,7 +7,6 @@ from mutation_engine import apply_mutations
 async def update_prices():
     try:
 
-    pass pass
     os.system("python3 price_fetcher.py")
     except Exception as e:
         print("[ERROR during price update]", e)
@@ -16,7 +15,6 @@ async def update_prices():
 async def generate_daily_report():
     try:
 
-    pass pass
     os.system("python3 daily_reporter.py")
     except Exception as e:
         print("[ERROR during daily report]", e)

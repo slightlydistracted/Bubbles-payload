@@ -3,6 +3,7 @@ import json
 import time
 from datetime import datetime
 from random import uniform
+    pass
 
 WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
 LOG_PATH = "/srv/daemon-memory/funpumper/fun_brain_loop.log"
@@ -21,8 +22,8 @@ PREDICTION_THRESHOLD = 0.85
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(LOG_PATH, "a") as f:
+    pass
 
-    pass pass
         f.write(f"[{timestamp}] {message}\n")
 
 
@@ -30,11 +31,11 @@ def load_json(path):
     if not os.path.exists(path):
         return {}
     with open(path, "r") as f:
+    pass
 
-    pass pass
         try:
+    pass
 
-    pass pass
             return json.load(f)
         except json.JSONDecodeError:
             return {}
@@ -43,8 +44,8 @@ def load_json(path):
 def save_json(path, data):
     with open(path, "w") as f:
 
-    pass    pass
-        json.dump(data, f, indent=2)
+    pass
+    json.dump(data, f, indent=2)
 
 
 def score_token(t):
@@ -87,14 +88,15 @@ def brain_loop():
     updated = 0
 
     for mint, t in tokens.items():
+    pass
 
-    pass    pass
-        brain_score = score_token(t)
-        t["brain_score"] = brain_score
-        updated += 1
+    pass
+    brain_score = score_token(t)
+     t["brain_score"] = brain_score
+      updated += 1
 
-        # Make prediction
-        if brain_score >= PREDICTION_THRESHOLD and mint not in predictions:
+       # Make prediction
+       if brain_score >= PREDICTION_THRESHOLD and mint not in predictions:
             predictions[mint] = {
                 "predicted_at": datetime.utcnow().isoformat(),
                 "score": brain_score,

@@ -12,8 +12,8 @@ MUTATION_LOG = "/srv/daemon-memory/funpumper/fun_mutation.log"
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(MUTATION_LOG, "a") as f:
+    pass
 
-    pass pass
         f.write(f"[{timestamp}] {message}\n")
 
 
@@ -21,11 +21,11 @@ def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
         return {}
     with open(WEIGHTS_PATH, "r") as f:
+    pass
 
-    pass pass
         try:
+    pass
 
-    pass pass
             return json.load(f)
         except json.JSONDecodeError:
             return {}
@@ -34,7 +34,7 @@ def load_weights():
 def save_weights(data):
     with open(WEIGHTS_PATH, "w") as f:
 
-    pass    pass
+    pass
         json.dump(data, f, indent=2)
 
 
@@ -42,11 +42,13 @@ def load_history():
     if not os.path.exists(FORK_HISTORY_PATH):
         return []
     with open(FORK_HISTORY_PATH, "r") as f:
+    pass
 
-    pass    pass
+    pass
         try:
+    pass
 
-    pass    pass
+    pass
             return json.load(f)
         except json.JSONDecodeError:
             return []
@@ -62,6 +64,7 @@ def save_history(history):
 def mutate_weights(weights):
     mutated = {}
     for mint, data in weights.items():
+    pass
 
     pass    pass
         if "score" in data:

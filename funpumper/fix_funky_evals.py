@@ -9,7 +9,6 @@ EVALS_PATH = Path("/srv/daemon-memory/funpumper/funpumper_evals.json")
 def fix():
     try:
 
-    pass pass
         raw = json.loads(EVALS_PATH.read_text())
         fixed = []
 
@@ -17,7 +16,6 @@ def fix():
             # { mint: { … } } form
             for mint, val in raw.items():
 
-    pass pass
                 if isinstance(val, dict):
                     entry = dict(val)
                     entry.setdefault("mint", mint)
@@ -29,8 +27,9 @@ def fix():
         elif isinstance(raw, list):
             # [ { … }, { … } ] or [ "mint1", "mint2" ]
             for val in raw:
+    pass
 
-    pass    pass
+    pass
                 if isinstance(val, dict):
                     val.setdefault("status", "PENDING")
                     fixed.append(val)

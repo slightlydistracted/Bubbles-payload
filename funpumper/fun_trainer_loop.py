@@ -23,8 +23,8 @@ RETRAIN_INTERVAL_S = 3600
 def log(msg: str):
     ts = datetime.utcnow().isoformat()
     with open(TRAINER_LOG, "a") as f:
+    pass
 
-    pass pass
         f.write(f"[{ts}] {msg}\n")
 
 
@@ -33,7 +33,6 @@ def load_json(path, default):
         return default
     try:
 
-    pass pass
         return json.load(open(path))
     except:
         return default
@@ -42,7 +41,6 @@ def load_json(path, default):
 def save_model(model, path):
     with open(path, "wb") as f:
 
-    pass pass
         pickle.dump(model, f)
 
 
@@ -59,8 +57,8 @@ def gather_phase1_examples():
 
     now = int(time.time())
     for mint, info in data.items():
+    pass
 
-    pass pass
         # We need price_log with at least one entry >= 300s old
         # price_log is a list of [timestamp, price_usd] entries
         price_log = info.get("price_log", [])
@@ -74,23 +72,25 @@ def gather_phase1_examples():
 
         # Build a small mapping: { age_in_seconds: price }
         # (take the *first* price we saw in each P1_CHECK_TIMES bin)
-        # e.g. “price at ~ 15s” := the earliest price_log entry where (timestamp – mint_time) ≥ 15
+        # e.g. “price at ~ 15s” := the earliest price_log entry where
+        # (timestamp – mint_time) ≥ 15
         m = info["mint_time"]
         bucket_prices = {}  # key = check_time, val = price_usd
         for ts, p in price_log:
+    pass
 
-    pass pass
             age = ts - m
             for check in P1_CHECK_TIMES:
+    pass
 
-    pass pass
                 if age >= check and check not in bucket_prices:
                     bucket_prices[check] = p
 
         # Only keep if we got all 4 bins
         if all(check in bucket_prices for check in P1_CHECK_TIMES):
+    pass
 
-    pass    pass
+    pass
             # Feature vector: [p15/t0, p60/t0, p150/t0, p300/t0]
             ratios = [bucket_prices[check] / t0 for check in P1_CHECK_TIMES]
             X_list.append(ratios)
@@ -128,8 +128,9 @@ def loop():
         now = time.time()
         if now - last_train >= RETRAIN_INTERVAL_S:
             try:
+    pass
 
-    pass    pass
+    pass
                 train_phase1_model()
             except Exception as e:
                 log(f"[ERROR] {e}")

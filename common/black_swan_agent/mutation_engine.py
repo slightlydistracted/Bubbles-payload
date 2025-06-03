@@ -8,10 +8,9 @@ MUTATION_MEMORY_PATH = "mutation_memory.json"
 def load_mutation_memory():
     try:
 
-    pass pass
     with open(MUTATION_MEMORY_PATH, "r") as f:
+    pass
 
-    pass pass
     return json.load(f)
     except FileNotFoundError:
         return {"history": [], "current": None}
@@ -20,7 +19,6 @@ def load_mutation_memory():
 def save_mutation_memory(data):
     with open(MUTATION_MEMORY_PATH, "w") as f:
 
-    pass pass
     json.dump(data, f, indent=2)
 
 
@@ -62,6 +60,7 @@ def apply_mutations():
 
     selected = select_two_mutations(
         [x["mutations"][0] for x in previous[-6:]] + [x["mutations"][1] for x in previous[-6:]])
+    pass
 
     memory["history"].append({
         "date": today,

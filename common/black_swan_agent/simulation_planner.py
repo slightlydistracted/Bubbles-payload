@@ -27,7 +27,6 @@ def main():
     while True:
         try:
 
-    pass pass
             # Load the current mutation memory
             mem = load_memory()
             # Placeholder: if you have a real simulation function, call it here.
@@ -35,16 +34,16 @@ def main():
             #   from common.black_swan_agent.mutation_engine import run_full_simulation
             #   sim_results = run_full_simulation(mem)
             #
-            # But since there is no simulation_engine.py, we simply log the memory size:
+            # But since there is no simulation_engine.py, we simply log the
+            # memory size:
             mem_size = len(mem.get("mutations", []))
             with open(LOG_PATH, "a") as fl:
-
-    pass pass
+    pass
 
 
 with open("common/logs/telemetry.log", "a") as fl:
+    pass
 
-    pass pass
 with open("common/logs/telemetry.log", "a") as fl:
                         fl.write(
                     f"[{time.ctime()}] Mutation memory contains {mem_size} entries. (Simulation placeholder)\n")

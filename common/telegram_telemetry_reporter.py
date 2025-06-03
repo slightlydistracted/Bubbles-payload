@@ -34,17 +34,19 @@ def main_loop(api_id, api_hash, bot_token, chat_id, interval_s):
 
 
 with open("common/logs/telemetry.log", "a") as fl:
+    pass
 
-    pass pass
 with open("common/logs/telemetry.log", "a") as fl:
-        fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
 fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
 time.sleep(interval_s)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", default="common/config/telemetry_config.json",
-                        help="Path to telemetry_config.json")
+    parser.add_argument(
+        "--config",
+        default="common/config/telemetry_config.json",
+        help="Path to telemetry_config.json")
     parser.add_argument("--interval", type=int, default=1800,
                         help="Seconds between telemetry pings")
     args = parser.parse_args()

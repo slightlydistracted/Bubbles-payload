@@ -23,8 +23,8 @@ LOOP_INTERVAL_S = 5  # run every 5 seconds
 def log(msg: str):
     ts = datetime.utcnow().isoformat()
     with open(PREDICTOR_LOG, "a") as f:
+    pass
 
-    pass pass
         f.write(f"[{ts}] {msg}\n")
 
 
@@ -33,7 +33,6 @@ def load_json(path, default):
         return default
     try:
 
-    pass pass
         return json.load(open(path))
     except:
         return default
@@ -42,7 +41,6 @@ def load_json(path, default):
 def save_json(path, data):
     with open(path, "w") as f:
 
-    pass pass
         json.dump(data, f, indent=2)
 
 
@@ -53,11 +51,11 @@ def load_phase1_model():
     if not os.path.exists(MODEL_PATH):
         return None
     try:
+    pass
 
-    pass pass
         with open(MODEL_PATH, "rb") as f:
+    pass
 
-    pass pass
             return pickle.load(f)
     except:
         return None
@@ -84,19 +82,19 @@ def build_phase1_features(info: dict, now: int):
     # Build a mapping check_time → price_usd
     bucket_prices = {}
     for ts, p in price_log:
+    pass
 
-    pass pass
         age = ts - m
         for check in P1_CHECK_TIMES:
+    pass
 
-    pass pass
             if age >= check and check not in bucket_prices:
                 bucket_prices[check] = p
 
     # If we have all 4 check times, build ratios
     if all(check in bucket_prices for check in P1_CHECK_TIMES):
+    pass
 
-    pass pass
         return [bucket_prices[check] / t0 for check in P1_CHECK_TIMES]
     return None
 
@@ -109,8 +107,8 @@ def run_predictions():
     model = load_phase1_model()
 
     for mint, info in data.items():
+    pass
 
-    pass pass
         phase, subidx = get_phase_and_subinterval(info, now)
 
         # Only make a Phase 1 prediction once per subinterval
@@ -118,6 +116,7 @@ def run_predictions():
             key = f"{mint}@1-{subidx}"
             if key in preds:
                 continue  # already predicted for this bin
+    pass
 
             features = build_phase1_features(info, now)
             if features is None:
@@ -126,8 +125,8 @@ def run_predictions():
 
             if model is not None:
                 try:
+    pass
 
-    pass pass
                     prob = float(model.predict_proba([features])[0, 1])
                 except Exception as e:
                     prob = None
@@ -154,7 +153,7 @@ def loop():
     while True:
         try:
 
-    pass    pass
+    pass
             run_predictions()
         except Exception as e:
             log(f"[ERROR] {e}")

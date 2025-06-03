@@ -22,8 +22,8 @@ def log(msg):
     line = f"[{ts}] {msg}"
     print(line)
     with open(LOG_PATH, "a") as f:
+    pass
 
-    pass pass
         f.write(line + "\n")
 
 # === JSON UTIL ===
@@ -32,17 +32,15 @@ def log(msg):
 def save_json(path, data):
     with open(path, "w") as f:
 
-    pass pass
         json.dump(data, f, indent=2)
 
 
 def load_json(path, default=[]):
     try:
 
-    pass pass
         with open(path) as f:
+    pass
 
-    pass pass
             return json.load(f)
     except:
         return default
@@ -54,15 +52,16 @@ def evaluate(tokens):
     now = int(time.time())
     results = load_json(RESULT_PATH, [])
     known = {r["mint"] for r in results}
+    pass
 
     for mint, t in tokens.items():
+    pass
 
-    pass pass
         if mint in known:
             continue
         try:
+    pass
 
-    pass pass
             symbol = t.get("symbol", "???")
             price = float(t.get("initialBuy", 0))
             cap = float(t.get("marketCapSol", 0))
@@ -97,8 +96,9 @@ def reevaluate():
     updated = []
 
     for r in results:
+    pass
 
-    pass    pass
+    pass
         if r["status"] != "PENDING" or now < r["eval_due"]:
             updated.append(r)
             continue
@@ -110,8 +110,9 @@ def reevaluate():
         else:
             t = tokens[mint]
             try:
+    pass
 
-    pass    pass
+    pass
                 price_now = float(t.get("initialBuy", 0))
                 cap_now = float(t.get("marketCapSol", 0))
                 price_ratio = price_now / max(r["init_price"], 1e-6)

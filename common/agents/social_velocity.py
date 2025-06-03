@@ -25,8 +25,8 @@ def fetch_twitter_count(keyword, since_minutes=5):
         "snscrape", "--jsonl", f"twitter-search", f"{keyword} since:{since}"
     ]
     try:
+    pass
 
-    pass pass
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
         # Each line of stdout is one JSON tweet
         tweets = proc.stdout.strip().splitlines()
@@ -43,15 +43,14 @@ def fetch_reddit_count(subreddits, keyword, since_minutes=10):
     # You need a Reddit “script” app for PRAW. Create one at reddit.com/prefs/apps,
     # then populate ~/.config/reddit_config.json with your credentials:
 
-    pass pass
     # {
     #   "client_id": "...",
     #   "client_secret": "...",
     #   "user_agent": "SocialVelocityBot/0.1 by your_reddit_username"
     # }
     try:
+    pass
 
-    pass pass
         cfg = json.load(open("common/config/reddit_config.json"))
     except FileNotFoundError:
         print("[SOCIAL] Missing reddit_config.json; skip Reddit count")
@@ -65,14 +64,14 @@ def fetch_reddit_count(subreddits, keyword, since_minutes=10):
     count = 0
     cutoff = datetime.utcnow() - timedelta(minutes=since_minutes)
     for sub in subreddits:
+    pass
 
-    pass pass
         try:
+    pass
 
-    pass pass
             for post in reddit.subreddit(sub).new(limit=50):
+    pass
 
-    pass pass
                 post_time = datetime.utcfromtimestamp(post.created_utc)
                 if post_time < cutoff:
                     break
@@ -100,8 +99,9 @@ def main_loop():
         }
         # Append newline‐delimited
         with open(OUTPUT_PATH, "a") as f:
+    pass
 
-    pass    pass
+    pass
             f.write(json.dumps(entry) + "\n")
         print(f"[SOCIAL] {ts} Tw:{twitter_count} Rdt:{reddit_count}")
         time.sleep(CHECK_INTERVAL)

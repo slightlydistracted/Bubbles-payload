@@ -24,7 +24,6 @@ MEMORY_PATH = Path(REPO_ROOT) / "common" / \
 def load_json(path: Path, default):
     try:
 
-    pass pass
         return json.load(open(path, "r"))
     except Exception:
         return default
@@ -33,7 +32,6 @@ def load_json(path: Path, default):
 def save_json(path: Path, data):
     with open(path, "w") as f:
 
-    pass pass
         json.dump(data, f, indent=2)
 
 
@@ -42,21 +40,21 @@ def loop():
     while True:
         try:
 
-    pass pass
             graduated = load_json(GRADUATED_PATH, [])
             memory = load_memory()
             new_entries = []
             for entry in graduated:
+    pass
 
-    pass pass
                 addr = entry.get("address")
                 phase = entry.get("phase")
                 features = entry.get("features", {})
                 timestamp = entry.get("timestamp", time.time())
 
-                if not any(mem.get("token") == addr and mem.get("phase") == phase for mem in memory.get("mutations", [])):
+                if not any(mem.get("token") == addr and mem.get(
+                    "phase") == phase for mem in memory.get("mutations", [])):
+    pass
 
-    pass pass
                     mem_entry = {
                         "token": addr,
                         "phase": phase,
@@ -64,19 +62,25 @@ def loop():
                         "timestamp": timestamp
                     }
                     new_entries.append(mem_entry)
+    pass
 
             if new_entries:
                 memory.setdefault("mutations", []).extend(new_entries)
                 save_memory(memory)
                 with open(LOG_PATH, "a") as fl:
+    pass
 
-    pass    pass
+    pass
                     for e in new_entries:
+    pass
 
-    pass    pass
+    pass
+
+
 with open("common/logs/telemetry.log", "a") as fl:
+    pass
 
-    pass    pass
+    pass
 with open("common/logs/telemetry.log", "a") as fl:
                                 fl.write(
                             f"[{datetime.utcnow().isoformat()}] Appended mutation: {e}\n")
@@ -88,6 +92,7 @@ with open("common/logs/telemetry.log", "a") as fl:
     pass    pass
                 fe.write(
                     f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
+    pass
 
         time.sleep(60)
 

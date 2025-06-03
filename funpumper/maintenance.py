@@ -19,15 +19,14 @@ MAX_LOG_SIZE = 50 * 1024 * 1024  # 50 MB
 
 # 1) Rotate logs
 for lf in LOG_FILES:
+    pass
 
-    pass pass
     p = BASE / lf
     if p.exists() and p.stat().st_size > MAX_LOG_SIZE:
         ts = datetime.utcnow().strftime("%Y%m%d%H%M%S")
         archive = p.with_suffix(p.suffix + f".{ts}.gz")
         with p.open("rb") as f_in, gzip.open(archive, "wb") as f_out:
 
-    pass pass
             f_out.writelines(f_in)
         # truncate original
         p.open("w").close()
@@ -43,13 +42,15 @@ if EVALS.exists():
     cutoff = datetime.utcnow() - timedelta(days=30)
     keep, old = [], []
     for entry in (raw if isinstance(raw, list) else []):
+    pass
 
-    pass    pass
-        ts = entry.get("launch_ts") or entry.get("mint_time") or 0
-        if datetime.utcfromtimestamp(ts) >= cutoff:
+    pass
+      ts = entry.get("launch_ts") or entry.get("mint_time") or 0
+       if datetime.utcfromtimestamp(ts) >= cutoff:
             keep.append(entry)
         else:
             old.append(entry)
+    pass
 
     if old:
         stamp = cutoff.strftime("%Y%m%d")
@@ -58,6 +59,7 @@ if EVALS.exists():
         EVALS.write_text(json.dumps(keep, indent=2))
         print(
             f"[{datetime.utcnow().isoformat()}] Archived {len(old)} old evals → {arc_file.name}")
+    pass
 
 # 3) Purge finished tokens from live_ws_tokens.json
 LIVE = BASE / "live_ws_tokens.json"
@@ -71,6 +73,7 @@ if LIVE.exists():
         LIVE.write_text(json.dumps(filtered, indent=2))
         print(
             f"[{datetime.utcnow().isoformat()}] Purged {len(data)-len(filtered)} non-pending tokens")
+    pass
 
 # 4) (Optional) Prune weights JSON to only those still pending
 WTS = BASE / "funpumper_weights.json"

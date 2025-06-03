@@ -22,8 +22,8 @@ CHAT_ID = "8071168808"
 def log(msg):
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
     with open(LOG_PATH, "a") as f:
+    pass
 
-    pass pass
         f.write(f"[{timestamp}] {msg}\n")
     print(f"[{timestamp}] {msg}")
 
@@ -31,7 +31,6 @@ def log(msg):
 def send_telegram(msg):
     try:
 
-    pass pass
         url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
         payload = {"chat_id": CHAT_ID, "text": msg}
         requests.post(url, data=payload, timeout=5)
@@ -43,8 +42,8 @@ def push_file_to_abraxas(file_path):
     filename = os.path.basename(file_path)
     scp_cmd = f"scp -i {KEY_PATH} {file_path} {REMOTE_USER}@{REMOTE_HOST}:{REMOTE_PATH}"
     try:
+    pass
 
-    pass pass
         subprocess.run(scp_cmd, shell=True, check=True)
         log(f"[PUSHED] {filename}")
         send_telegram(f"[Lilith Push] {filename} → Abraxas [OK]")
@@ -58,14 +57,12 @@ def push_file_to_abraxas(file_path):
 def write_lock():
     with open(LOCK_PATH, "w") as f:
 
-    pass pass
         f.write(str(os.getpid()))
 
 
 def update_heartbeat():
     with open(HEARTBEAT_PATH, "w") as f:
 
-    pass pass
         f.write(time.strftime("%Y-%m-%d %H:%M:%S"))
 
 
@@ -76,9 +73,10 @@ def monitor_inbox():
     while True:
         update_heartbeat()
         for file in os.listdir(INBOX_DIR):
+    pass
 
-    pass pass
             if file.endswith(".py") or file.endswith(".json"):
+    pass
 
     pass full_path = os.path.join(INBOX_DIR, file)
                 success = push_file_to_abraxas(full_path)

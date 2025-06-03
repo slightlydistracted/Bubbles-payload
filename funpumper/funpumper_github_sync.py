@@ -8,7 +8,8 @@ from datetime import datetime
 GITHUB_TOKEN = os.getenv(
     "GITHUB_PAT", "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")
 
-# Change CLONE_DIR to point at historical_tokens so downstream parsers will find data there
+# Change CLONE_DIR to point at historical_tokens so downstream parsers
+# will find data there
 CLONE_DIR = "/srv/daemon-memory/funpumper/historical_tokens"
 INTERVAL_HOURS = 6
 
@@ -54,10 +55,9 @@ def main():
     while True:
         for repo in REPOS:
 
-    pass pass
             try:
+    pass
 
-    pass pass
                 clone_or_pull(repo)
             except Exception as e:
                 log(f"[✗] Failed to access {repo}: {e}")

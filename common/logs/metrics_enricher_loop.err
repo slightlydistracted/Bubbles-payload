@@ -2,3 +2,7 @@ python3: can't open file '/root/projects/Bubbles-payload/funpumper/metrics_enric
   File "/root/projects/Bubbles-payload/funpumper/metrics_enricher_loop.py", line 41
     pass pass
 IndentationError: expected an indented block after 'with' statement on line 39
+  File "/root/projects/Bubbles-payload/funpumper/metrics_enricher_loop.py", line 86
+    pass
+    ^
+IndentationError: expected an indented block after 'try' statement on line 85

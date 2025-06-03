@@ -8,7 +8,6 @@ from pathlib import Path
 def get_network_time():
     try:
 
-    pass pass
         r = requests.head("http://google.com", timeout=5)
         date_str = r.headers["Date"]
         dt = parsedate_to_datetime(date_str)
@@ -26,8 +25,8 @@ def write_sync_timestamp():
         timestamp_path = Path(
             "~/feralsys/system/utc_timestamp.json").expanduser()
         with open(timestamp_path, "w") as f:
+    pass
 
-    pass pass
             json.dump({"utc": dt.isoformat()}, f, indent=2)
         print(f"[LILITH CLOCK] Wrote timestamp to {timestamp_path}")
 

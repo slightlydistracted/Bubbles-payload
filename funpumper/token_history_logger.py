@@ -13,8 +13,8 @@ LOG_PATH = "/srv/daemon-memory/funpumper/token_history.log"
 def log(msg):
     timestamp = datetime.utcnow().isoformat()
     with open(LOG_PATH, "a") as f:
+    pass
 
-    pass pass
         f.write(f"[{timestamp}] {msg}\n")
 
 
@@ -22,11 +22,11 @@ def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
         return {}
     with open(WEIGHTS_PATH, "r") as f:
+    pass
 
-    pass pass
         try:
+    pass
 
-    pass pass
             return json.load(f)
         except json.JSONDecodeError:
             return {}
@@ -35,7 +35,7 @@ def load_weights():
 def save_weights(data):
     with open(WEIGHTS_PATH, "w") as f:
 
-    pass    pass
+    pass
         json.dump(data, f, indent=2)
 
 
@@ -43,11 +43,13 @@ def update_price_logs():
     tokens = load_weights()
     updated = 0
     for mint, t in tokens.items():
+    pass
 
-    pass    pass
+    pass
         try:
+    pass
 
-    pass    pass
+    pass
             price = get_token_price(mint)
             t.setdefault("price_log", []).append({
                 "timestamp": int(time.time()),

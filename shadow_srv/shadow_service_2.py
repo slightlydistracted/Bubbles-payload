@@ -10,8 +10,8 @@ def run_service():
         # Mock: produce a random off-chain metric
         data = {"timestamp": time.time(), "sentiment": 0.75}
         with open(OUTPUT_PATH, "w") as f:
+    pass
 
-    pass pass
             json.dump(data, f, indent=2)
         print(f"[SHADOW2] Wrote alternative data")
         time.sleep(600)  # update every 10 minutes

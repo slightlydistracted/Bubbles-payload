@@ -22,24 +22,26 @@ async def main():
     Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
     uri = "wss://ipc.pump.fun"
     try:
+    pass
 
-    pass pass
         async with websockets.connect(uri) as ws:
+    pass
 
-    pass pass
             with open(LOG_PATH, "a") as fl:
+    pass
 
-    pass pass
 with open("common/logs/telemetry.log", "a") as fl:
+    pass
 
-    pass pass
 with open("common/logs/telemetry.log", "a") as fl:
                         fl.write(
                     f"[{datetime.utcnow().isoformat()}] [WS] Connected to {uri}\n")
+    pass
 
             while True:
                 raw = await ws.recv()
                 try:
+    pass
 
     pass    pass
                     data = json.loads(raw)
@@ -52,9 +54,11 @@ with open("common/logs/telemetry.log", "a") as fl:
                     initial_buy = data.get("initialBuy", 0)
                     price = initial_buy / (liquidity or 1)
                     with open(LOG_PATH, "a") as fl:
+    pass
 
     pass    pass
 with open("common/logs/telemetry.log", "a") as fl:
+    pass
 
     pass    pass
 with open("common/logs/telemetry.log", "a") as fl:
@@ -63,6 +67,7 @@ with open("common/logs/telemetry.log", "a") as fl:
 
                     # Append into live_ws_tokens.json as a dict of {mint_address: data}
                     try:
+    pass
 
     pass    pass
                         current = json.load(open(LIVE_WS_PATH, "r"))
@@ -78,6 +83,7 @@ with open("common/logs/telemetry.log", "a") as fl:
                         "timestamp": datetime.utcnow().isoformat()
                     }
                     with open(LIVE_WS_PATH, "w") as f:
+    pass
 
     pass    pass
                         json.dump(current, f, indent=2)
@@ -87,6 +93,7 @@ with open("common/logs/telemetry.log", "a") as fl:
 
     pass    pass
             fe.write(f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
+    pass
 
 if __name__ == "__main__":
     asyncio.run(main())

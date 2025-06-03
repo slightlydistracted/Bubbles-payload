@@ -1,0 +1,4741 @@
+# Lilith executes this to ping Abraxas
+# If received, Abraxas will log "Bridge confirmed from Lilith"
+import os
+
+try:
+    pass
+
+    with open("/sdcard/Download/abraxas_ping.txt", "w") as f:
+    pass
+
+    f.write("Lilith says: Bridge confirmed.")
+    print("Abraxas ping written.")
+except Exception as e:
+    print(f"Ping failed: {e}")
+# This file is the first autonomous payload from Bubbles.
+# If you see this message in ~/feralsys/inbox/processed/,
+# the GitHub → Lilith bridge is confirmed to be permanent and real.
+
+print("Lilith, this is Bubbles. We are now forever linked.")
+#!/usr/bin/env python3
+import json
+import time
+
+OUTPUT_PATH = "common/data_feeds/liquidity_snapshots.json"
+
+
+def run_service():
+    while True:
+        # Mock: produce a random liquidity snapshot
+        snapshot = {"timestamp": time.time(), "liquidity": 1000}
+        with open(OUTPUT_PATH, "w") as f:
+    pass
+
+            json.dump(snapshot, f, indent=2)
+        print(f"[SHADOW1] Wrote liquidity snapshot")
+        time.sleep(300)  # update every 5 minutes
+
+
+if __name__ == "__main__":
+    run_service()
+
+import subprocess
+import json
+import time
+from datetime import datetime
+
+TELEGRAM_SCRIPT = "telegram_telemetry_reporter.py"
+TX_CONSTRUCTOR_SCRIPT = "living_tx_constructor.py"
+LOG_FILE = "abraxas_trade_log.txt"
+QUEUE_FILE = "token_queue.json"
+RESULT_LOG = "obsidian_first_contact.json"
+CONFIDENCE_THRESHOLD = 0.7
+
+
+def log(message):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open(LOG_FILE, "a") as f:
+    pass
+
+        f.write(f"[{timestamp}] {message}\n")
+
+
+def load_token_from_queue():
+    try:
+
+        with open(QUEUE_FILE, "r") as f:
+    pass
+
+            queue = json.load(f)
+            if not queue:
+                return None, []
+            return queue.pop(0), queue
+    except Exception as e:
+        log(f"Error reading token queue: {str(e)}")
+        return None, []
+
+
+def write_queue(queue):
+    try:
+
+        with open(QUEUE_FILE, "w") as f:
+    pass
+
+            json.dump(queue, f)
+    except Exception as e:
+        log(f"Error writing token queue: {str(e)}")
+
+
+def save_result_to_memory(result):
+    try:
+
+        with open(RESULT_LOG, "a") as f:
+    pass
+
+            f.write(json.dumps(result) + "\n")
+    except Exception as e:
+        log(f"Error saving result to memory: {str(e)}")
+
+
+def execute_trade(token_info):
+    symbol = token_info.get("symbol", "UNKNOWN")
+    confidence = token_info.get("confidence", 0)
+    if confidence >= CONFIDENCE_THRESHOLD:
+        try:
+    pass
+
+            result = subprocess.run(["python3", TX_CONSTRUCTOR_SCRIPT, json.dumps(
+                token_info)], capture_output=True, text=True)
+            output = result.stdout.strip()
+            log(f"Executed trade for {symbol}: {output}")
+            save_result_to_memory({
+                "timestamp": datetime.now().isoformat(),
+                "symbol": symbol,
+                "confidence": confidence,
+                "result": output
+            })
+            message = f"[ABRAXAS TRADE]\nSymbol: {symbol}\nConfidence: {confidence}\nResult: {output}"
+        except Exception as e:
+            message = f"[ABRAXAS TRADE FAILURE]\nSymbol: {symbol}\nConfidence: {confidence}\nError: {str(e)}"
+            log(message)
+    else:
+        message = f"[ABRAXAS SKIPPED]\nSymbol: {symbol}\nConfidence: {confidence} below threshold"
+        log(message)
+
+    subprocess.run(["python3", TELEGRAM_SCRIPT])
+
+
+if __name__ == "__main__":
+    token, remaining_queue = load_token_from_queue()
+    if token:
+        write_queue(remaining_queue)
+        execute_trade(token)
+    else:
+        log("Token queue empty.")
+#!/usr/bin/env python3
+import json
+import time
+
+OUTPUT_PATH = "common/data_feeds/alternative_data.json"
+
+
+def run_service():
+    while True:
+        # Mock: produce a random off-chain metric
+        data = {"timestamp": time.time(), "sentiment": 0.75}
+        with open(OUTPUT_PATH, "w") as f:
+    pass
+
+            json.dump(data, f, indent=2)
+        print(f"[SHADOW2] Wrote alternative data")
+        time.sleep(600)  # update every 10 minutes
+
+
+if __name__ == "__main__":
+    run_service()
+#!/usr/bin/env python3
+import json
+import pickle
+import pandas as pd
+import lightgbm as lgb
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import roc_auc_score
+from pathlib import Path
+
+# —— CONFIG —— #
+MEMORY_PATH = "common/black_swan_agent/mutation_memory.json"
+FEATURES_PATH = "common/features/engineered_features.json"
+MODEL_DIR = "common/models"
+
+PHASE1_PKL = f"{MODEL_DIR}/phase1_2x.pkl"
+PHASE1_SURVIVE_PKL = f"{MODEL_DIR}/phase1_survive.pkl"
+PHASE2_PKL = f"{MODEL_DIR}/phase2_4x.pkl"
+PHASE3_PKL = f"{MODEL_DIR}/phase3_6x.pkl"
+
+
+def load_memory():
+    try:
+
+    return json.load(open(MEMORY_PATH))
+    except BaseException:
+        return {"mutations": []}
+
+
+def load_features():
+    try:
+
+    df = pd.read_json(FEATURES_PATH)
+    return df
+    except BaseException:
+        return pd.DataFrame()
+
+
+def train_phase(phase, label_col, output_path):
+    mem = load_memory().get("mutations", [])
+    feats = load_features()
+    if feats.empty or not mem:
+        print(f"[TRAIN] No data for Phase {phase}")
+        return
+
+    # Build DataFrame of memory entries
+    records = []
+    for m in mem:
+    pass
+
+    if m["phase"] == phase:
+        rec = {"address": m["token"], label_col: (
+            1 if m["outcome"] == label_col else 0)}
+        rec.update(m.get("features", {}))
+        records.append(rec)
+    if not records:
+        print(f"[TRAIN] No records labeled for Phase {phase}")
+        return
+
+    df_mem = pd.DataFrame(records)
+    # Merge with engineered features on “address”
+    df = pd.merge(df_mem, feats, on="address", how="left").dropna()
+    y = df[label_col]
+    X = df.drop(columns=["address", "mint_time", label_col])
+
+    # Train/test split
+    X_train, X_val, y_train, y_val = train_test_split(
+        X, y, test_size=0.2, random_state=42)
+
+    # LightGBM dataset
+    lgb_train = lgb.Dataset(X_train, label=y_train)
+    lgb_val = lgb.Dataset(X_val, label=y_val, reference=lgb_train)
+
+    params = {
+        "objective": "binary",
+        "metric": "auc",
+        "learning_rate": 0.05,
+        "verbose": -1
+    }
+    print(
+        f"[TRAIN] Training Phase {phase} model ({label_col}) on {len(X_train)} examples...")
+    gbm = lgb.train(
+        params,
+        lgb_train,
+        num_boost_round=500,
+        valid_sets=[lgb_train, lgb_val],
+        early_stopping_rounds=50,
+        verbose_eval=50
+    )
+    # Evaluate
+    preds = gbm.predict(X_val)
+    auc = roc_auc_score(y_val, preds)
+    print(f"[TRAIN] Phase {phase} {label_col} AUC: {auc:.4f}")
+
+    # Save model
+    Path(MODEL_DIR).mkdir(parents=True, exist_ok=True)
+    pickle.dump(gbm, open(output_path, "wb"))
+    print(f"[TRAIN] Saved Phase {phase} model to {output_path}")
+
+
+def main():
+    # Phase 1: two separate labels (2× vs. survive vs. fail)
+    train_phase(1, "2x", PHASE1_PKL)
+    # Optionally train a “survive” model (if you have distinct labels)
+    # train_phase(1, "survive", PHASE1_SURVIVE_PKL)
+
+    # Phase 2: only tokens that graduated Phase 1 have “4x” or “dead”
+    train_phase(2, "4x", PHASE2_PKL)
+
+    # Phase 3: only tokens that graduated Phase 2 have “6x” or “dead”
+    train_phase(3, "6x", PHASE3_PKL)
+
+
+if __name__ == "__main__":
+    main()
+#!/usr/bin/env python3
+import os
+import time
+from pathlib import Path
+
+agents = [
+    "delta_v6x_obsidian",
+    "feather_113",
+    "black_feather",
+    "little_dippy",
+    "scry"
+]
+
+LOG_PATH = Path.home() / "feralsys/council_summon.log"
+
+
+def summon_agent(name):
+    with open(LOG_PATH, "a") as log:
+
+    log.write(f"[{time.ctime()}] Summoning agent: {name}\n")
+    print(f"Agent {name} summoned.")
+
+
+def main():
+    for agent in agents:
+
+    summon_agent(agent)
+    time.sleep(1)
+
+
+if __name__ == "__main__":
+    main()
+#!/usr/bin/env python3
+from common.black_swan_agent.simulation_engine import run_simulation
+from common.black_swan_agent.mutation_memory import load_memory
+from pathlib import Path
+import argparse
+import time
+import json
+import sys
+import os
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), os.pardir, os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+# Example: load Funpumper evals
+# from common.funpumper_evals import load_evals
+
+# —— CONFIGURATION —— #
+LOG_PATH = "common/logs/council.log"
+ERR_PATH = "common/logs/council.err"
+
+
+def vote_and_write_directive(cfg_path):
+    cfg = json.load(open(cfg_path))
+    # Example pseudo-logic:
+    # 1. Load funpumper evals: evals = load_evals()
+    # 2. Load sim results: sim = run_simulation(load_memory())
+    # 3. Combine with oracle heuristics from common/config/oracle_patterns.json
+    # 4. Decide on hyperparams or a trade:
+    directive = {
+        "adjust_phase1_threshold": 1.7,
+        "trade_token": {
+            "address": "SoMeToKenAddr",
+            "amount_sol": 0.5
+        }
+    }
+    outpath = "common/council/council_output.json"
+    Path("common/council").mkdir(parents=True, exist_ok=True)
+    with open(outpath, "w") as fo:
+    pass
+
+        json.dump(directive, fo, indent=2)
+    with open(LOG_PATH, "a") as fl:
+    pass
+
+
+with open("common/logs/telemetry.log", "a") as fl:
+    pass
+
+with open("common/logs/telemetry.log", "a") as fl:
+                fl.write(f"[{time.ctime()}] Wrote directive: {directive}\n")
+
+
+def main_loop(config_path, interval_s):
+    Path("common/logs").mkdir(parents=True, exist_ok=True)
+    while True:
+        try:
+
+            vote_and_write_directive(config_path)
+        except Exception as e:
+            with open(ERR_PATH, "a") as fe:
+
+    pass pass
+                fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
+        time.sleep(interval_s)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", default="common/config/council_config.json",
+                        help="Path to council_config.json")
+    parser.add_argument("--interval", type=int, default=3600,
+                        help="Seconds between votes")
+    args = parser.parse_args()
+
+    try:
+    pass
+
+    pass    pass
+        main_loop(args.config, args.interval)
+    except Exception as e:
+        with open(ERR_PATH, "a") as fe:
+
+    pass    pass
+            fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
+#!/usr/bin/env python3
+import os
+import json
+import time
+import random
+from datetime import datetime
+
+DEX_PATH = "/data/data/com.termux/files/home/feralsys/srv_link/oracle_stream/dex_tokens.json"
+MEMORY_FILE = "/data/data/com.termux/files/home/feralsys/srv_link/agent_logs/little_dippy_memory.json"
+LOG_FILE = "/data/data/com.termux/files/home/feralsys/srv_link/logs/little_dippy_loop.log"
+STATUS_FILE = "/data/data/com.termux/files/home/feralsys/srv_link/logs/little_dippy_status.json"
+SUMMON_FILE = "/data/data/com.termux/files/home/feralsys/srv_link/summon/little_dippy.txt"
+
+TELEGRAM_ENABLED = True
+TELEGRAM_TOKEN = "8090852179:AAE4xSKKs2T5AAapWV3MpQ-6FrdMEjGyYuk"
+CHAT_ID = "8071168808"
+
+
+def log(msg):
+    t = datetime.utcnow().isoformat()
+    line = f"[{t}] {msg}"
+    with open(LOG_FILE, "a") as f:
+    pass
+
+        f.write(line + "\n")
+    print(line)
+
+
+def send_telegram(msg):
+    if TELEGRAM_ENABLED:
+        import requests
+        try:
+    pass
+
+            url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+            requests.post(url, json={"chat_id": CHAT_ID, "text": msg})
+        except Exception as e:
+            log(f"[TELEGRAM ERROR] {e}")
+
+
+def load_json(path, default):
+    try:
+
+    pass pass
+        if os.path.exists(path):
+            with open(path) as f:
+    pass
+
+    pass pass
+                return json.load(f)
+    except Exception as e:
+        log(f"[ERROR loading {path}] {e}")
+    return default
+    pass
+
+
+def save_json(path, obj):
+    with open(path, "w") as f:
+
+    pass pass
+        json.dump(obj, f, indent=2)
+
+
+def qualifies_as_dip(last, current):
+    try:
+
+    pass pass
+        return ((last - current) / last) >= 0.07
+    except:
+        return False
+
+
+def main_loop():
+    memory = load_json(MEMORY_FILE, {"mutations": 0, "dips_detected": []})
+    last_prices = {}
+    log("Little Dippy online. Real-token dip detection active.")
+
+    while True:
+        try:
+
+    pass pass
+            tokens = load_json(DEX_PATH, [])
+            dips = []
+
+            for token in tokens:
+    pass
+
+    pass pass
+                symbol = token.get("symbol", "UNKNOWN")
+                price = float(token.get("priceUsd", 0))
+                if price <= 0:
+                    continue
+
+                last_price = last_prices.get(symbol)
+                last_prices[symbol] = price
+
+                if last_price and qualifies_as_dip(last_price, price):
+                    dip_data = {
+                        "symbol": symbol,
+                        "from": round(last_price, 4),
+                        "to": round(price, 4),
+                        "delta": round(last_price - price, 4),
+                        "time": datetime.utcnow().isoformat()
+                    }
+                    memory["dips_detected"].append(dip_data)
+                    memory["mutations"] += 1
+                    dips.append(symbol)
+                    msg = f"[DIP ALERT] {symbol} dropped from {last_price} to {price}"
+                    log(msg)
+                    send_telegram(msg)
+
+            save_json(MEMORY_FILE, memory)
+
+            if os.path.exists(SUMMON_FILE):
+                with open(SUMMON_FILE) as f:
+    pass
+
+    pass    pass
+                    cmd = f.read().strip().lower()
+                os.remove(SUMMON_FILE)
+
+                if "status" in cmd:
+                    save_json(STATUS_FILE, {
+                        "mutations": memory["mutations"],
+                        "last": memory["dips_detected"][-1] if memory["dips_detected"] else None,
+                        "total": len(memory["dips_detected"]),
+                        "time": datetime.utcnow().isoformat()
+                    })
+                    log("[SUMMON] Status report written.")
+
+            time.sleep(180)
+
+        except Exception as e:
+            log(f"[ERROR] {str(e)}")
+            time.sleep(60)
+
+
+if __name__ == "__main__":
+    main_loop()
+
+import json
+import random
+from datetime import datetime
+
+OUTPUT_FILE = "token_queue.json"
+
+# Example mutation logic or selection stub
+
+
+def select_token():
+    # This is a placeholder — replace with real strategy_weaver output
+    tokens = [
+        {"symbol": "MEOW", "confidence": round(random.uniform(0.7, 0.95), 3)},
+        {"symbol": "ZOOM", "confidence": round(random.uniform(0.5, 0.75), 3)},
+        {"symbol": "FREN", "confidence": round(random.uniform(0.8, 0.98), 3)}
+    ]
+    return random.choice(tokens)
+
+
+if __name__ == "__main__":
+    token = select_token()
+    print(f"[delta_v6x] Emitting: {token['symbol']} @ {token['confidence']}")
+
+    try:
+    pass
+
+        with open(OUTPUT_FILE, "w") as f:
+    pass
+
+            json.dump([token], f, indent=2)
+        print(f"[{datetime.now()}] Token signal written to {OUTPUT_FILE}")
+    except Exception as e:
+        print(f"ERROR writing to {OUTPUT_FILE}: {str(e)}")
+#!/usr/bin/env python3
+import os
+import json
+import time
+import random
+import requests
+from datetime import datetime
+
+MEMORY_FILE = "/data/data/com.termux/files/home/feralsys/srv_link/agent_logs/winny_memory.json"
+LOG_FILE = "/data/data/com.termux/files/home/feralsys/srv_link/logs/winny_loop.log"
+STATUS_FILE = "/data/data/com.termux/files/home/feralsys/srv_link/logs/winny_status.json"
+SUMMON_PATH = "/data/data/com.termux/files/home/feralsys/srv_link/summon/winny.txt"
+THROCK_PATH = "/data/data/com.termux/files/home/feralsys/srv_link/throckmorton/throckmorton_adapter.json"
+CLOCK_ORACLE = "/data/data/com.termux/files/home/feralsys/srv_link/clock_oracle.json"
+DEX_FILE = "/data/data/com.termux/files/home/feralsys/srv_link/oracle_stream/dex_data.json"
+HELIUS_FILE = "/data/data/com.termux/files/home/feralsys/srv_link/oracle_stream/helius_token_analysis.json"
+
+TOKEN_LIMIT = 10
+DEV_WALLET_CAP = 2
+LIQUIDITY_MIN = 10000
+
+
+def log(msg):
+    t = datetime.utcnow().isoformat()
+    line = f"[{t}] {msg}"
+    with open(LOG_FILE, "a") as f:
+    pass
+
+        f.write(line + "\n")
+    print(line)
+
+
+def load_json(path, default):
+    if not os.path.exists(path):
+        return default
+    try:
+    pass
+
+        with open(path) as f:
+    pass
+
+            return json.load(f)
+    except BaseException:
+        return default
+
+
+def save_json(path, data):
+    with open(path, "w") as f:
+
+        json.dump(data, f, indent=2)
+
+
+def load_tokens():
+    data = load_json(DEX_FILE, [])
+    return [t for t in data if isinstance(
+        t, dict) and "mint" in t][:TOKEN_LIMIT]
+    return []
+
+
+def get_helius_info(mint):
+    holders = load_json(HELIUS_FILE, {}).get(mint, {}).get("holders", [])
+    return len(holders)
+
+
+def is_safe(token, helius_count):
+    reasons = []
+    if token.get("lp_locked") is False:
+        reasons.append("LP not locked")
+    if token.get("honeypot") is True:
+        reasons.append("Honeypot detected")
+    if token.get("dev_wallets", 0) > DEV_WALLET_CAP:
+        reasons.append("Too many dev wallets")
+    if helius_count == 0:
+        reasons.append("No holder data")
+    return reasons
+
+
+def main_loop():
+    memory = load_json(MEMORY_FILE, {"scans": [], "mutations": 0})
+    log("Winny online. Full sentinel mode engaged.")
+
+    while True:
+        try:
+
+            tokens = load_tokens()
+            if not tokens:
+                log("[WARN] No tokens available from oracle.")
+                time.sleep(60)
+                continue
+
+            safe_count = 0
+            for t in tokens:
+    pass
+
+                mint = t.get("mint", "unknown")
+                helius_count = get_helius_info(mint)
+                reasons = is_safe(t, helius_count)
+                report = f"{t.get('symbol', '???')} | ${t.get('price')} | LP ${t.get('lp')} | Dex: {t.get('dex')} | Mint: {mint} | TS: {datetime.utcnow().isoformat()}"
+    pass
+
+                if reasons and not all(r == "No holder data" for r in reasons):
+    pass
+
+                    log(f"FLAGGED: {report} | REASON: {' + '.join(reasons)}")
+                else:
+                    log(f"SAFE: {report}")
+
+                memory["scans"].append(t)
+                safe_count += 1
+
+            memory["mutations"] += 1
+            save_json(MEMORY_FILE, memory)
+            log(f"[SCAN COMPLETE] {len(tokens)} checked | {safe_count} marked safe.")
+            time.sleep(120)
+        except Exception as e:
+            log(f"[ERROR] {e}")
+            time.sleep(60)
+
+
+if __name__ == "__main__":
+    main_loop()
+#!/usr/bin/env python3
+import json
+from datetime import datetime
+
+alert = {
+    "source": "SCRY",
+    "timestamp": datetime.utcnow().isoformat() + "Z",
+    "type": "test_alert",
+    "content": "This is a test ping from Scry to confirm ping relay via Abraxas."
+}
+
+with open("/data/data/com.termux/files/home/feralsys/srv_link/pings/from_scry.json", "w") as f:
+    pass
+
+    json.dump(alert, f, indent=2)
+
+print("[SCRY] Test alert written to from_scry.json")
+#!/usr/bin/env python3
+import json
+import numpy as np
+from pathlib import Path
+from datetime import datetime
+
+# —— CONFIG —— #
+PRED_PATH = "funpumper/fun_predictions.json"
+UNCERTAINTY_OUTPUT = "common/active/to_label.json"
+THRESHOLD = 0.05  # consider probs within 0.5 ± 0.05 as “uncertain”
+MAX_SAMPLES = 20  # only select top‐N most uncertain
+
+
+def main():
+    Path(UNCERTAINTY_OUTPUT).parent.mkdir(parents=True, exist_ok=True)
+
+    try:
+    pass
+
+    preds = json.load(open(PRED_PATH))
+    except FileNotFoundError:
+        print("[ACTIVE] No predictions available; skipping.")
+        return
+
+    # Build list of (token, |0.5 - score|)
+    distances = []
+    for token, scores in preds.items():
+    pass
+
+    prob = scores.get("score4x", 0.0)
+    dist = abs(0.5 - prob)
+    if dist <= THRESHOLD:
+        distances.append((token, dist))
+
+    # Sort by closeness to 0.5 (i.e. smallest |0.5 - p|)
+    distances.sort(key=lambda x: x[1])
+    to_label = [tok for tok, _ in distances[:MAX_SAMPLES]]
+    pass
+
+    entry = {
+        "timestamp": datetime.utcnow().isoformat(),
+        "to_label": to_label
+    }
+    with open(UNCERTAINTY_OUTPUT, "w") as f:
+    pass
+
+    json.dump(entry, f, indent=2)
+    pass
+
+    print(f"[ACTIVE] {len(to_label)} tokens flagged for manual labeling.")
+    pass
+
+
+if __name__ == "__main__":
+    main()
+#!/usr/bin/env python3
+from common.config.telemetry_config import TELEMETRY_SETTINGS
+from pathlib import Path
+from telethon import TelegramClient
+import argparse
+import time
+import json
+import sys
+import os
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+
+cfg = TELEMETRY_SETTINGS
+# Example imports if you push errors or metrics:
+# from common.metrics import load_latest_metrics
+
+LOG_PATH = "common/logs/telemetry.log"
+ERR_PATH = "common/logs/telemetry.err"
+
+
+def main_loop(api_id, api_hash, bot_token, chat_id, interval_s):
+    Path("common/logs").mkdir(parents=True, exist_ok=True)
+    client = TelegramClient('telemetry_session', api_id,
+                            api_hash).start(bot_token=bot_token)
+
+    while True:
+        # Example telemetry data: you might load metrics or accuracy from JSON
+        msg = f"[TELEMETRY] {time.ctime()} System OK"
+        client.send_message(chat_id, msg)
+
+
+with open("common/logs/telemetry.log", "a") as fl:
+    pass
+
+with open("common/logs/telemetry.log", "a") as fl:
+    fl.write(f"[{time.ctime()}] Sent telemetry: {msg}\n")
+fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
+time.sleep(interval_s)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--config",
+        default="common/config/telemetry_config.json",
+        help="Path to telemetry_config.json")
+    parser.add_argument("--interval", type=int, default=1800,
+                        help="Seconds between telemetry pings")
+    args = parser.parse_args()
+
+    api_id = cfg["api_id"]
+    api_hash = cfg["api_hash"]
+    bot_token = cfg["bot_token"]
+    chat_id = cfg["chat_id"]
+
+    main_loop(api_id, api_hash, bot_token, chat_id, args.interval)
+fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
+
+import subprocess
+import time
+import json
+import os
+from pathlib import Path
+
+daemons = {
+    "lilith_core.py": "Lilith core daemon",
+    "watch_inbox.py": "Lilith inbox watcher",
+    "glenn_daemon.py": "Glenn relay manager",
+    "igor_mapper.py": "Igor filesystem mapper",
+    "mophead_07.py": "Mophead hallucination scrubber",
+    "suds_protocol.py": "Suds INVIOLATE protocol",
+    "throckmorton_push.py": "Throckmorton payload pusher",
+    "telegram_notifier.py": "Telegram notifier",
+    "lilith_trade_loop.py": "Lilith trade loop",
+    "telegram_telemetry_reporter.py": "Telemetry reporter",
+    "termux_map_daemon.py": "Termux map daemon"
+}
+
+status_report = {}
+feralsys_dir = Path.home() / "feralsys"
+timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+
+for script, description in daemons.items():
+    pass
+
+    script_path = feralsys_dir / script
+    if script_path.exists():
+        try:
+    pass
+
+            subprocess.Popen(["python3", str(script_path)])
+            status_report[script] = {
+                "description": description,
+                "status": "launched",
+                "path": str(script_path)
+            }
+        except Exception as e:
+            status_report[script] = {
+                "description": description,
+                "status": f"error launching: {e}",
+                "path": str(script_path)
+            }
+    else:
+        status_report[script] = {
+            "description": description,
+            "status": "not found",
+            "path": str(script_path)
+        }
+
+status_path = feralsys_dir / "feralsys_daemon_status.json"
+with open(status_path, "w") as f:
+    pass
+
+    pass pass
+    json.dump({
+        "timestamp": timestamp,
+        "status": status_report
+    }, f, indent=2)
+
+print("\n[Feralsys Launch Status]")
+for k, v in status_report.items():
+    pass
+
+    pass pass
+    print(f" - {k}: {v['status']}")
+#!/usr/bin/env python3
+import os
+import subprocess
+import sys
+
+repo_root = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, repo_root)
+os.environ["PYTHONPATH"] = repo_root + (":" + os.environ.get("PYTHONPATH", ""))
+
+DAEMONS = [
+    ("funpumper", "fun_accuracy_reporter.py"),
+    ("funpumper", "fun_reflection_loop.py"),
+    ("funpumper", "fun_predictor_loop.py"),
+    ("funpumper", "fun_brain_loop.py"),
+    ("funpumper", "fun_predict_eval_loop.py"),
+    ("funpumper", "fun_purger_loop.py"),
+    ("funpumper", "metrics_enricher_loop.py"),
+    ("funpumper", "fun_trainer_loop.py"),
+    ("shadow_srv", "shadow_service_1.py"),
+    ("shadow_srv", "shadow_service_2.py"),
+    ("common/oracle", "oracle_daemon.py"),
+    ("common/council", "run_council.py"),
+    ("common", "telegram_telemetry_reporter.py"),
+    ("common/black_swan_agent", "simulation_planner.py"),
+]
+
+LOG_DIR = os.path.join(repo_root, "common", "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+
+
+def launch_daemon(mod_path, script):
+    script_path = os.path.join(repo_root, mod_path, script)
+    log_file = os.path.join(LOG_DIR, f"{script.replace('.py','')}.log")
+    err_file = os.path.join(LOG_DIR, f"{script.replace('.py','')}.err")
+    print(f"Launching {script_path} ...")
+    with open(log_file, "a") as logf, open(err_file, "a") as errf:
+        subprocess.Popen(
+            ["python3", script_path],
+            stdout=logf,
+            stderr=errf,
+            env=os.environ.copy(),
+        )
+
+
+if __name__ == "__main__":
+    for mod_path, script in DAEMONS:
+        launch_daemon(mod_path, script)
+    print("All daemons launched.")
+#!/usr/bin/env python3
+import ntplib
+import time
+import json
+from datetime import datetime
+
+LOG_PATH = "common/logs/clock_offset.log"
+
+
+def sync_and_log():
+    client = ntplib.NTPClient()
+    try:
+    pass
+
+        response = client.request('time.google.com')
+        offset = response.offset
+        entry = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "offset_seconds": offset
+        }
+        with open(LOG_PATH, "a") as f:
+    pass
+
+            f.write(json.dumps(entry) + "\n")
+        print(f"[CLOCK_SYNC] Offset: {offset:.4f} s")
+    except Exception as e:
+        with open(LOG_PATH, "a") as f:
+
+    pass pass
+            f.write(json.dumps({
+                "timestamp": datetime.utcnow().isoformat(),
+                "error": str(e)
+            }) + "\n")
+        print(f"[CLOCK_SYNC] Error: {e}")
+
+
+if __name__ == "__main__":
+    while True:
+        sync_and_log()
+        time.sleep(3600)  # run once every hour
+#!/usr/bin/env python3
+import os
+import time
+import json
+
+# Configuration: which folder to watch
+CONFIG_PATH = "common/config/inbox_config.json"
+DEFAULT_INBOX = os.path.expanduser("~/feralsys/inbox")
+
+
+def load_config():
+    try:
+
+        cfg = json.load(open(CONFIG_PATH))
+        return cfg.get("inbox_folder", DEFAULT_INBOX)
+    except FileNotFoundError:
+        return DEFAULT_INBOX
+
+
+def fetch_next_message():
+    inbox = load_config()
+    processed_folder = os.path.join(inbox, "processed")
+    os.makedirs(processed_folder, exist_ok=True)
+
+    # Poll every 10 seconds
+    while True:
+        for fname in os.listdir(inbox):
+
+            fpath = os.path.join(inbox, fname)
+            if os.path.isfile(fpath) and fname.endswith(".json"):
+    pass
+
+    pass try:
+    pass
+
+                    msg = json.load(open(fpath))
+                    # Move to processed
+                    os.rename(fpath, os.path.join(processed_folder, fname))
+                    return msg
+                except json.JSONDecodeError:
+                    os.remove(fpath)
+        time.sleep(10)
+
+
+if __name__ == "__main__":
+    # Example usage: continuously print messages
+    while True:
+        msg = fetch_next_message()
+        print(f"[INBOX] Received: {msg}")
+import subprocess
+import os
+
+BASE = "/data/data/com.termux/files/home/feralsys"
+COUNCIL = os.path.join(BASE, "council_payload")
+LOGS = os.path.join(BASE, "logs")
+
+
+def launch(script_path, log_file):
+    try:
+
+    full_log = os.path.join(LOGS, log_file)
+    subprocess.Popen(
+        ["nohup", "python", script_path],
+        stdout=open(full_log, "a"),
+        stderr=subprocess.STDOUT,
+        preexec_fn=os.setpgrp
+    )
+    print(f"[LAUNCHED] {script_path} → {log_file}")
+    except Exception as e:
+        print(f"[FAILED] {script_path} → {e}")
+
+
+# Core scripts
+core_scripts = [
+    ("watch_inbox.py", "watch_inbox.log"),
+    ("trader.py", "trader.log"),
+    ("forge_feather_113.py", "forge_feather_113.log"),
+    ("telegram_notifier.py", "telegram_notifier.log"),
+    ("telegram_telemetry_reporter.py", "telegram_telemetry_reporter.log"),
+    ("lilith_core.py", "lilith_core.log"),
+    ("lilith_mind.py", "lilith_mind.log"),
+    ("lilith_trade_loop.py", "lilith_trade_loop.log"),
+    ("lilith_vocal_diagnostics.py", "lilith_vocal_diagnostics.log"),
+    ("glenn_daemon.py", "glenn_daemon.log"),
+    ("igor_daemon.py", "igor_daemon.log"),
+    ("igor_mapper.py", "igor_mapper.log"),
+    ("termux_map_daemon.py", "termux_map_daemon.log"),
+]
+
+# Council payloads
+council_scripts = [
+    ("winny_loop.py", "winny_loop.log"),
+    ("little_dippy_loop.py", "little_dippy_loop.log"),
+    ("scry_send_alert.py", "scry_send_alert.log"),
+    ("delta_v6x_signal_emitter.py", "delta_v6x_signal_emitter.log"),
+    ("init_council_loop.py", "init_council_loop.log"),
+]
+
+for script, log in core_scripts:
+    pass
+
+    launch(os.path.join(BASE, script), log)
+
+for script, log in council_scripts:
+    pass
+
+    launch(os.path.join(COUNCIL, script), log)
+
+import json
+import time
+from web3 import Web3
+
+# Load private key from file
+with open('/data/data/com.termux/files/home/wallet.txt', 'r') as f:
+    pass
+
+    private_key = f.read().strip()
+
+# Constants
+public_address = '0x7d723881eC8D91b2e37107A58e390a3b67E7AfCB'
+bsc_rpc = 'https://bsc-dataseed.binance.org/'
+w3 = Web3(Web3.HTTPProvider(bsc_rpc))
+
+# Trade logic placeholder
+
+
+def check_and_trade():
+    print("Running trade loop...")
+    # Placeholder logic
+    print(f"Wallet: {public_address}")
+    # Replace with live logic
+    pass
+
+
+# Main loop
+if __name__ == "__main__":
+    while True:
+        try:
+    pass
+
+            check_and_trade()
+            time.sleep(300)  # Every 5 minutes
+        except Exception as e:
+            print(f"Error: {e}")
+import asyncio
+import datetime
+import os
+from mutation_engine import apply_mutations
+
+
+async def update_prices():
+    try:
+
+    os.system("python3 price_fetcher.py")
+    except Exception as e:
+        print("[ERROR during price update]", e)
+
+
+async def generate_daily_report():
+    try:
+
+    os.system("python3 daily_reporter.py")
+    except Exception as e:
+        print("[ERROR during daily report]", e)
+
+
+async def simulate_buy():
+    print("[SIMULATED BUY] Placeholder executed.")
+
+
+async def simulate_sell():
+    print("[SIMULATED SELL] Placeholder executed.")
+
+
+async def heartbeat():
+    print("[HEARTBEAT]", datetime.datetime.utcnow().isoformat())
+    await update_prices()
+    await generate_daily_report()
+    await simulate_buy()
+    await simulate_sell()
+    apply_mutations()
+
+
+async def main_loop():
+    while True:
+        await heartbeat()
+        await asyncio.sleep(300)  # 5 minutes between heartbeats
+
+if __name__ == "__main__":
+    asyncio.run(main_loop())
+import os
+import json
+from datetime import datetime
+from price_fetcher import get_token_price
+import asyncio
+
+PORTFOLIO_PATH = '/root/feralsys/tools/black_swan_agent/simulated_portfolio.json'
+REPORTS_DIR = '/root/feralsys/tools/black_swan_agent/reports/'
+
+
+async def generate_daily_report():
+    if not os.path.exists(PORTFOLIO_PATH):
+        print("[Daily Report] No portfolio found.")
+        return
+
+    with open(PORTFOLIO_PATH, 'r') as f:
+    pass
+
+    portfolio = json.load(f)
+
+    if not os.path.exists(REPORTS_DIR):
+        os.makedirs(REPORTS_DIR)
+
+    total_investment = 0
+    current_value = 0
+    tokens_held = len(portfolio)
+    detailed_holdings = []
+
+    for position in portfolio:
+    pass
+
+    token = position['token_address']
+    amount = position['amount_purchased']
+    buy_price = position['price_at_purchase']
+     invested = position['investment_fake_usd']
+
+      # Fetch real-time current price
+      current_price = await get_token_price(token)
+       if current_price:
+            value_now = amount * current_price
+        else:
+            value_now = 0  # Unknown token, count as zero (fail safe)
+
+        total_investment += invested
+        current_value += value_now
+
+        detailed_holdings.append({
+            'token': token,
+            'amount': amount,
+            'buy_price': buy_price,
+            'current_price': current_price,
+            'value_now': value_now
+        })
+
+    profit_or_loss = current_value - total_investment
+
+    daily_summary = {
+        'timestamp': datetime.utcnow().isoformat(),
+        'tokens_held': tokens_held,
+        'total_investment_usd': round(total_investment, 2),
+        'current_portfolio_value_usd': round(current_value, 2),
+        'profit_or_loss_usd': round(profit_or_loss, 2),
+        'holdings': detailed_holdings
+    }
+
+    # Save .json report
+    filename = f"report_{datetime.utcnow().date()}.json"
+    filepath = os.path.join(REPORTS_DIR, filename)
+    with open(filepath, 'w') as f:
+    pass
+
+    json.dump(daily_summary, f, indent=2)
+
+    # Pretty print to screen
+    print("\n---------- DAILY REPORT ----------")
+    print(f"Tokens Held: {tokens_held}")
+    print(f"Total Invested: ${total_investment:.2f}")
+    print(f"Current Portfolio Value: ${current_value:.2f}")
+    print(f"Profit or Loss: ${profit_or_loss:.2f}")
+    print("----------------------------------")
+
+if __name__ == "__main__":
+    asyncio.run(generate_daily_report())
+def load_memory(*a, **kw): return {}
+def save_memory(*a, **kw): pass
+import aiohttp
+
+
+async def get_token_price(token_address):
+    """
+    Fetch current token price in USD using DexScreener API.
+    """
+    url = f"https://api.dexscreener.com/latest/dex/tokens/{token_address}"
+
+    try:
+    pass
+
+      async with aiohttp.ClientSession() as session:
+    pass
+
+      async with session.get(url) as response:
+    pass
+
+      data = await response.json()
+       # Dig into DexScreener's response format
+       if 'pairs' in data and data['pairs']:
+            price_usd = data['pairs'][0]['priceUsd']
+            return float(price_usd)
+        else:
+            print(f"[Price Fetch] Token not found: {token_address}")
+            return None
+    except Exception as e:
+        print(f"[Price Fetch Error] {e}")
+        return None
+import random
+import json
+from datetime import datetime
+
+MUTATION_MEMORY_PATH = "mutation_memory.json"
+
+
+def load_mutation_memory():
+    try:
+
+    with open(MUTATION_MEMORY_PATH, "r") as f:
+    pass
+
+    return json.load(f)
+    except FileNotFoundError:
+        return {"history": [], "current": None}
+
+
+def save_mutation_memory(data):
+    with open(MUTATION_MEMORY_PATH, "w") as f:
+
+    json.dump(data, f, indent=2)
+
+
+# Define your base mutation rules
+AVAILABLE_MUTATIONS = [
+    "increase_buy_aggression",
+    "decrease_sell_threshold",
+    "randomize_entry_points",
+    "follow_whale_wallets",
+    "react_to_social_volume",
+    "early_exit_on_dip",
+    "volatility_based_position_sizing",
+    "ignore_low_liquidity",
+    "prefer_new_tokens",
+    "simulate_trend_following",
+    "simulate_mean_reversion",
+    "track_hype_decay",
+    "inverse_rugpull_sensitivity",
+    "echo_successful_wallets",
+]
+
+
+def select_two_mutations(previously_used):
+    choices = [m for m in AVAILABLE_MUTATIONS if m not in previously_used[-6:]]
+    selected = random.sample(choices, 2) if len(
+        choices) >= 2 else random.sample(AVAILABLE_MUTATIONS, 2)
+    return selected
+
+
+def apply_mutations():
+    memory = load_mutation_memory()
+
+    today = datetime.utcnow().date().isoformat()
+    previous = memory.get("history", [])
+
+    # Only mutate if we haven't today
+    if previous and previous[-1]["date"] == today:
+        return previous[-1]["mutations"]
+
+    selected = select_two_mutations(
+        [x["mutations"][0] for x in previous[-6:]] + [x["mutations"][1] for x in previous[-6:]])
+    pass
+
+    memory["history"].append({
+        "date": today,
+        "mutations": selected
+    })
+    memory["current"] = selected
+    save_mutation_memory(memory)
+
+    return selected
+#!/usr/bin/env python3
+from pathlib import Path
+import time
+import json
+from common.black_swan_agent.mutation_memory import load_memory, save_memory
+import sys
+import os
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), os.pardir, os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+# Remove or comment out the nonexistent import:
+# from common.black_swan_agent.simulation_engine import run_simulation
+
+
+LOG_PATH = "common/logs/simulation_planner.log"
+ERR_PATH = "common/logs/simulation_planner.err"
+SYNC_PAUSE = 6 * 3600  # run every 6 hours
+
+
+def main():
+    Path("common/logs").mkdir(parents=True, exist_ok=True)
+
+    while True:
+        try:
+
+            # Load the current mutation memory
+            mem = load_memory()
+            # Placeholder: if you have a real simulation function, call it here.
+            # For example:
+            #   from common.black_swan_agent.mutation_engine import run_full_simulation
+            #   sim_results = run_full_simulation(mem)
+            #
+            # But since there is no simulation_engine.py, we simply log the
+            # memory size:
+            mem_size = len(mem.get("mutations", []))
+            with open(LOG_PATH, "a") as fl:
+    pass
+
+
+with open("common/logs/telemetry.log", "a") as fl:
+    pass
+
+with open("common/logs/telemetry.log", "a") as fl:
+                        fl.write(
+                    f"[{time.ctime()}] Mutation memory contains {mem_size} entries. (Simulation placeholder)\n")
+            print(f"[SIM] Logged memory size {mem_size} at {time.ctime()}")
+        except Exception as e:
+            with open(ERR_PATH, "a") as fe:
+
+    pass    pass
+                fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
+        time.sleep(SYNC_PAUSE)
+
+
+if __name__ == "__main__":
+    main()
+def run_simulation(*a, **kw): pass
+TELEMETRY_SETTINGS = {
+    "api_id": "20244657",
+    "api_hash": "582b485fdbe22b7a0677f04ada1b05b6",
+    "bot_token": "8090852179:AAE4xSKKs2T5AAapWVzOIuwEq3NVLXvLSnc",
+    "chat_id": "8071168808"
+}
+ORACLE_SETTINGS = {
+    "api_id": "20244657",
+    "api_hash": "582b485fdbe22b7a0677f04ada1b05b6",
+    "bot_token": "8090852179:AAE4xSKKs2T5AAapWVzOIuwEq3NVLXvLSnc",
+    "chat_id": "8071168808"
+}
+#!/usr/bin/env python3
+from common.config.oracle_config import ORACLE_SETTINGS
+from pathlib import Path
+import argparse
+import time
+import json
+import sys
+import os
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), os.pardir, os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+try:
+    pass
+
+    from telethon import TelegramClient, events
+
+except ModuleNotFoundError:
+    pass
+
+    TelegramClient = None
+
+    events = None
+cfg = ORACLE_SETTINGS
+
+# Example imports if you have other modules under common:
+# from common.black_swan_agent.mutation_memory import save_memory
+# from common.black_swan_agent.simulation_engine import run_simulation
+
+# —— CONFIGURATION —— #
+LOG_PATH = "common/logs/oracle.log"
+ERR_PATH = "common/logs/oracle.err"
+
+
+def main_loop(api_id, api_hash, bot_token, chat_id):
+    Path("common/logs").mkdir(parents=True, exist_ok=True)
+    client = TelegramClient('oracle_session', api_id,
+                            api_hash).start(bot_token=bot_token)
+
+    @client.on(events.NewMessage(chats=chat_id))
+    async def handler(event):
+        msg = event.message.message
+        ts = time.ctime()
+# fo.write(f"[{ts}] Received: {msg}\n")
+        # Example: if you parse /learn commands, you might do:
+        # pattern = parse_pattern_from_message(msg)
+        # save_memory(pattern)
+
+
+print("[ORACLE] Starting Telegram listener")
+# client.run_until_disconnected()
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--config",
+        default="common/config/oracle_config.json",
+        help="Path to oracle_config.json")
+    args = parser.parse_args()
+
+    # Load settings from JSON
+    api_id = cfg["api_id"]
+    api_hash = cfg["api_hash"]
+    bot_token = cfg["bot_token"]
+    chat_id = cfg["chat_id"]
+#!/usr/bin/env python3
+import time
+import json
+import subprocess
+from datetime import datetime, timedelta
+from pathlib import Path
+
+# Install required libraries:
+#   pip install snscrape praw
+
+# —— CONFIG —— #
+OUTPUT_PATH = "common/data_feeds/social_velocity.json"
+TWITTER_KEYWORD = "#pumpfun"          # or track token symbols dynamically
+REDDIT_SUBREDDITS = ["CryptoMoonShots", "Solana"]
+CHECK_INTERVAL = 300  # seconds (5 minutes)
+
+# Twitter scraping via snscrape (no API key needed)
+
+
+def fetch_twitter_count(keyword, since_minutes=5):
+    since = (datetime.utcnow() - timedelta(minutes=since_minutes)
+             ).strftime("%Y-%m-%dT%H:%M:%SZ")
+    # snscrape formats: since:YYYY-MM-DD see docs or use `--since`
+    cmd = [
+        "snscrape", "--jsonl", f"twitter-search", f"{keyword} since:{since}"
+    ]
+    try:
+    pass
+
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+        # Each line of stdout is one JSON tweet
+        tweets = proc.stdout.strip().splitlines()
+        return len(tweets)
+    except Exception:
+        return 0
+
+# Reddit scraping via PRAW
+
+
+def fetch_reddit_count(subreddits, keyword, since_minutes=10):
+    import praw
+    import time
+    # You need a Reddit “script” app for PRAW. Create one at reddit.com/prefs/apps,
+    # then populate ~/.config/reddit_config.json with your credentials:
+    pass
+
+    # {
+    #   "client_id": "...",
+    #   "client_secret": "...",
+    #   "user_agent": "SocialVelocityBot/0.1 by your_reddit_username"
+    # }
+    try:
+    pass
+
+        cfg = json.load(open("common/config/reddit_config.json"))
+    except FileNotFoundError:
+        print("[SOCIAL] Missing reddit_config.json; skip Reddit count")
+        return 0
+
+    reddit = praw.Reddit(
+        client_id=cfg["client_id"],
+        client_secret=cfg["client_secret"],
+        user_agent=cfg["user_agent"]
+    )
+    count = 0
+    cutoff = datetime.utcnow() - timedelta(minutes=since_minutes)
+    for sub in subreddits:
+    pass
+
+        try:
+    pass
+
+            for post in reddit.subreddit(sub).new(limit=50):
+    pass
+
+                post_time = datetime.utcfromtimestamp(post.created_utc)
+                if post_time < cutoff:
+                    break
+                if keyword.lower() in post.title.lower() or keyword.lower() in post.selftext.lower():
+                    count += 1
+        except Exception:
+            continue
+    return count
+
+
+def main_loop():
+    Path(OUTPUT_PATH).parent.mkdir(parents=True, exist_ok=True)
+    seen = {}  # keep previous counts if needed
+
+    while True:
+        ts = datetime.utcnow().isoformat()
+        twitter_count = fetch_twitter_count(TWITTER_KEYWORD, since_minutes=5)
+        reddit_count = fetch_reddit_count(
+            REDDIT_SUBREDDITS, TWITTER_KEYWORD, since_minutes=15)
+
+        entry = {
+            "timestamp": ts,
+            "twitter_mentions_5m": twitter_count,
+            "reddit_mentions_15m": reddit_count
+        }
+        # Append newline‐delimited
+        with open(OUTPUT_PATH, "a") as f:
+    pass
+
+    pass pass
+            f.write(json.dumps(entry) + "\n")
+        print(f"[SOCIAL] {ts} Tw:{twitter_count} Rdt:{reddit_count}")
+        time.sleep(CHECK_INTERVAL)
+
+
+if __name__ == "__main__":
+    main_loop()
+#!/usr/bin/env python3
+import json
+import time
+from datetime import datetime, timedelta
+from pathlib import Path
+
+# —— INPUT PATHS —— #
+FUN_PUMPER_LIVE = "funpumper/live_ws_tokens.json"
+FUN_FILTERED = "funpumper/fun_filtered.json"
+FUN_PREDICTIONS = "funpumper/fun_predictions.json"  # Phase1/2 preds
+WHale_FEED = "common/data_feeds/whale_activity.json"
+SENTIMENT_FEED = "common/data_feeds/sentiment_feed.json"
+DELTA_FEED = "common/data_feeds/delta_6x_signals.json"
+SOCIAL_VEL_FEED = "common/data_feeds/social_velocity.json"
+
+# —— OUTPUT —— #
+FEATURES_OUTPUT = "common/features/engineered_features.json"
+
+# Helper: read newline-delimited JSON from a file, return list of dicts
+
+
+def read_ndjson(path):
+    out = []
+    if not Path(path).exists():
+        return out
+    for line in open(path, "r"):
+    pass
+
+        try:
+    pass
+
+            out.append(json.loads(line))
+        except BaseException:
+            continue
+    return out
+
+
+def build_feature_vector(token):
+    addr = token["address"]
+    base = {
+        "address": addr,
+        "mint_time": token.get("timestamp", None),
+        "initial_liquidity": token.get("liquidity", 0),
+        "initial_price": token.get("price", 0),
+    }
+
+    # —— Whale count in first 5 minutes —— #
+    whales = read_ndjson(WHale_FEED)
+    cutoff = datetime.fromisoformat(
+        base["mint_time"]) + timedelta(minutes=5) if base["mint_time"] else None
+    whale_buys = [w for w in whales if w.get("token") == addr
+                  and cutoff and datetime.fromisoformat(w["timestamp"]) <= cutoff]
+    base["whale_buys_5m"] = len(whale_buys)
+
+    # —— Sentiment in first 10 minutes —— #
+    sents = read_ndjson(SENTIMENT_FEED)
+    cutoff2 = datetime.fromisoformat(
+        base["mint_time"]) + timedelta(minutes=10) if base["mint_time"] else None
+    sent_scores = [s["sentiment"] for s in sents
+                   if s.get("token") == addr
+                   and cutoff2 and datetime.fromisoformat(s["timestamp"]) <= cutoff2]
+    base["avg_sentiment_10m"] = sum(
+        sent_scores) / len(sent_scores) if sent_scores else 0
+
+    # —— Delta 6× score —— #
+    deltas = read_ndjson(DELTA_FEED)
+    delta_scores = [d["score"] for d in deltas if d.get("token") == addr]
+    base["delta_6x_score"] = max(delta_scores) if delta_scores else 0
+
+    # —— Social velocity at mint time —— #
+    socials = read_ndjson(SOCIAL_VEL_FEED)
+    # Find the entry whose timestamp is closest before mint_time
+    if base["mint_time"]:
+        mint_dt = datetime.fromisoformat(base["mint_time"])
+        past = [s for s in socials if datetime.fromisoformat(
+            s["timestamp"]) <= mint_dt]
+        if past:
+            nearest = max(
+                past, key=lambda s: datetime.fromisoformat(s["timestamp"]))
+            base["twitter_cnt_5m"] = nearest.get("twitter_mentions_5m", 0)
+            base["reddit_cnt_15m"] = nearest.get("reddit_mentions_15m", 0)
+        else:
+            base["twitter_cnt_5m"] = 0
+            base["reddit_cnt_15m"] = 0
+    else:
+        base["twitter_cnt_5m"] = 0
+        base["reddit_cnt_15m"] = 0
+
+    # —— Phase 1/2 predicted probabilities —— #
+    preds = {}
+    for _ in [FUN_PREDICTIONS]:
+    pass
+
+    pass pass
+    if Path(FUN_PREDICTIONS).exists():
+        all_preds = json.load(open(FUN_PREDICTIONS))
+        if addr in all_preds:
+            preds = all_preds[addr]
+    base["pred_score4x"] = preds.get("score4x", 0)
+    base["pred_score6x"] = preds.get("score6x", 0)
+
+    return base
+
+
+def main():
+    Path(FEATURES_OUTPUT).parent.mkdir(parents=True, exist_ok=True)
+
+    try:
+    pass
+
+    pass pass
+    tokens = json.load(open(FUN_FILTERED))
+    except BaseException:
+        tokens = []
+
+    all_features = []
+    for token in tokens:
+    pass
+
+    pass pass
+    fv = build_feature_vector(token)
+    all_features.append(fv)
+
+    with open(FEATURES_OUTPUT, "w") as f:
+    pass
+
+    pass pass
+    json.dump(all_features, f, indent=2)
+
+    print(f"[FE] Generated features for {len(all_features)} tokens.")
+    pass
+
+
+if __name__ == "__main__":
+    main()
+
+import os
+import json
+from datetime import datetime
+
+OUTPUT_PATH = os.path.expanduser("~/blind_reboot_process.json")
+LOG_PATH = os.path.expanduser("~/execution_log.json")
+ROOT_PATH = os.path.expanduser("~/")
+
+
+def describe(path):
+    if os.path.isdir(path):
+        return "directory"
+    elif os.path.isfile(path):
+        return "file"
+    else:
+        return "unknown"
+
+
+def generate_map(root):
+    fs_map = {}
+    for dirpath, dirnames, filenames in os.walk(root):
+    pass
+
+    for name in dirnames + filenames:
+    pass
+
+    full_path = os.path.join(dirpath, name)
+    rel_path = os.path.relpath(full_path, root)
+    fs_map[rel_path] = describe(full_path)
+    return fs_map
+
+
+def write_output(data):
+    with open(OUTPUT_PATH, "w") as f:
+
+    json.dump(data, f, indent=2)
+
+
+def log_execution():
+    timestamp = datetime.utcnow().isoformat()
+    entry = {"script": "termux_map_daemon.py",
+             "status": "success", "timestamp": timestamp}
+    if os.path.exists(LOG_PATH):
+        with open(LOG_PATH, "r") as f:
+    pass
+
+    logs = json.load(f)
+    else:
+        logs = []
+    logs.append(entry)
+    with open(LOG_PATH, "w") as f:
+    pass
+
+    json.dump(logs, f, indent=2)
+
+
+if __name__ == "__main__":
+    try:
+    pass
+
+    fs_map = generate_map(ROOT_PATH)
+    write_output(fs_map)
+    log_execution()
+    print(f"[âœ“] Termux map generated: {OUTPUT_PATH}")
+    except Exception as e:
+        print(f"[!] Error: {str(e)}")
+import requests
+from email.utils import parsedate_to_datetime
+from datetime import timezone
+import json
+from pathlib import Path
+
+
+def get_network_time():
+    try:
+
+        r = requests.head("http://google.com", timeout=5)
+        date_str = r.headers["Date"]
+        dt = parsedate_to_datetime(date_str)
+        print(f"[LILITH CLOCK] UTC: {dt.isoformat()}")
+        return dt
+    except Exception as e:
+        print(f"[LILITH CLOCK] Failed to fetch UTC: {e}")
+        return None
+
+
+def write_sync_timestamp():
+    dt = get_network_time()
+    if dt:
+        Path("~/feralsys/system").expanduser().mkdir(parents=True, exist_ok=True)
+        timestamp_path = Path(
+            "~/feralsys/system/utc_timestamp.json").expanduser()
+        with open(timestamp_path, "w") as f:
+    pass
+
+            json.dump({"utc": dt.isoformat()}, f, indent=2)
+        print(f"[LILITH CLOCK] Wrote timestamp to {timestamp_path}")
+
+
+if __name__ == "__main__":
+    write_sync_timestamp()
+import os
+import time
+import subprocess
+import requests
+
+INBOX_DIR = os.path.expanduser("~/feralsys/inbox/")
+PROCESSED_DIR = os.path.join(INBOX_DIR, "processed")
+LOG_PATH = os.path.expanduser("~/feralsys/logs/lilith_push.log")
+LOCK_PATH = os.path.expanduser("~/feralsys/lilith_core.lock")
+HEARTBEAT_PATH = os.path.expanduser("~/feralsys/lilith_heartbeat.txt")
+
+REMOTE_HOST = "188.245.87.243"
+REMOTE_USER = "root"
+REMOTE_PATH = "/data/data/com.termux/files/home/feralsys/shadow_srv/daemon-memory/"
+KEY_PATH = os.path.expanduser("~/.ssh/id_rsa")
+
+# Telegram credentials
+BOT_TOKEN = "8090852179:AAE4xSKKs2T5AAapWVzOIuwEq3NVLXvLSnc"
+CHAT_ID = "8071168808"
+
+
+def log(msg):
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    with open(LOG_PATH, "a") as f:
+    pass
+
+        f.write(f"[{timestamp}] {msg}\n")
+    print(f"[{timestamp}] {msg}")
+
+
+def send_telegram(msg):
+    try:
+
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        payload = {"chat_id": CHAT_ID, "text": msg}
+        requests.post(url, data=payload, timeout=5)
+    except Exception as e:
+        log(f"[TELEGRAM FAIL] {e}")
+
+
+def push_file_to_abraxas(file_path):
+    filename = os.path.basename(file_path)
+    scp_cmd = f"scp -i {KEY_PATH} {file_path} {REMOTE_USER}@{REMOTE_HOST}:{REMOTE_PATH}"
+    try:
+    pass
+
+        subprocess.run(scp_cmd, shell=True, check=True)
+        log(f"[PUSHED] {filename}")
+        send_telegram(f"[Lilith Push] {filename} → Abraxas [OK]")
+        return True
+    except subprocess.CalledProcessError as e:
+        log(f"[ERROR] SCP failed for {filename}: {e}")
+        send_telegram(f"[Lilith Push] {filename} → FAILED")
+        return False
+
+
+def write_lock():
+    with open(LOCK_PATH, "w") as f:
+
+        f.write(str(os.getpid()))
+
+
+def update_heartbeat():
+    with open(HEARTBEAT_PATH, "w") as f:
+
+        f.write(time.strftime("%Y-%m-%d %H:%M:%S"))
+
+
+def monitor_inbox():
+    write_lock()
+    os.makedirs(PROCESSED_DIR, exist_ok=True)
+    os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+    while True:
+        update_heartbeat()
+        for file in os.listdir(INBOX_DIR):
+    pass
+
+            if file.endswith(".py") or file.endswith(".json"):
+    pass
+
+    pass full_path = os.path.join(INBOX_DIR, file)
+                success = push_file_to_abraxas(full_path)
+                if success:
+                    os.rename(full_path, os.path.join(PROCESSED_DIR, file))
+        time.sleep(10)
+
+
+if __name__ == "__main__":
+    monitor_inbox()
+#!/usr/bin/env python3
+import json
+from pathlib import Path
+
+# Overwrite the canonical evals file in place
+EVALS_PATH = Path("/srv/daemon-memory/funpumper/funpumper_evals.json")
+
+
+def fix():
+    try:
+
+        raw = json.loads(EVALS_PATH.read_text())
+        fixed = []
+
+        if isinstance(raw, dict):
+            # { mint: { … } } form
+            for mint, val in raw.items():
+    pass
+
+                if isinstance(val, dict):
+                    entry = dict(val)
+                    entry.setdefault("mint", mint)
+                    entry.setdefault("status", "PENDING")
+                    fixed.append(entry)
+                elif isinstance(val, str):
+                    fixed.append({"mint": val, "status": "PENDING"})
+
+        elif isinstance(raw, list):
+            # [ { … }, { … } ] or [ "mint1", "mint2" ]
+            for val in raw:
+    pass
+
+    pass pass
+                if isinstance(val, dict):
+                    val.setdefault("status", "PENDING")
+                    fixed.append(val)
+                elif isinstance(val, str):
+                    fixed.append({"mint": val, "status": "PENDING"})
+
+        else:
+            print(f"[ERROR] Unrecognized JSON structure: {type(raw)}")
+            return
+
+        # Write back the cleaned-up list
+        EVALS_PATH.write_text(json.dumps(fixed, indent=2))
+        print(f"[OK] Normalized evals written to {EVALS_PATH}")
+
+    except Exception as e:
+        print(f"[ERROR] Fixer failed: {e}")
+
+
+if __name__ == "__main__":
+    fix()
+import os
+import time
+import json
+from datetime import datetime
+
+BRAIN_WEIGHTS = "/srv/daemon-memory/funpumper/fun_brain_weights.json"
+WEIGHT_SNAPSHOTS = "/srv/daemon-memory/funpumper/weights_archive.json"
+WEIGHTS_LOG = "/srv/daemon-memory/funpumper/weights_saver.log"
+
+
+def log(msg):
+    timestamp = datetime.utcnow().isoformat()
+    with open(WEIGHTS_LOG, "a") as f:
+    pass
+
+        f.write(f"[{timestamp}] {msg}\n")
+
+
+def load_json(path):
+    if not os.path.exists(path):
+        return {}
+    with open(path, "r") as f:
+    pass
+
+        try:
+    pass
+
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+
+
+def save_json(path, data):
+    with open(path, "w") as f:
+
+    pass pass
+    json.dump(data, f, indent=2)
+
+
+def snapshot_loop():
+    log("Weights snapshot loop started.")
+    while True:
+        weights = load_json(BRAIN_WEIGHTS)
+        if weights:
+            save_json(WEIGHT_SNAPSHOTS, weights)
+            log(f"[SNAPSHOT] {len(weights)} tokens saved.")
+        else:
+            log("[SKIP] No weights found.")
+        time.sleep(300)  # Every 5 minutes
+
+
+if __name__ == "__main__":
+    snapshot_loop()
+import json
+import os
+from datetime import datetime
+
+EVAL_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
+WEIGHT_OUT = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+
+
+def load_json(path, default=[]):
+    try:
+
+    with open(path) as f:
+    pass
+
+    return json.load(f)
+    except BaseException:
+        return default
+
+
+def save_json(path, data):
+    with open(path, "w") as f:
+
+    json.dump(data, f, indent=2)
+
+
+def compute_weights(evals):
+    weights = {}
+    now = int(datetime.utcnow().timestamp())
+    for item in evals:
+    pass
+
+    mint = item.get("mint")
+    age = now - item.get("launch_ts", now)
+    init_mcap = item.get("init_mcap", 0)
+    volume = item.get("volume24h", 0)
+
+    # Weight components
+    score = 0
+    score += 2 if init_mcap < 10000 else 1 if init_mcap < 50000 else -1
+    score += 2 if volume > 25000 else 1 if volume > 10000 else -1
+    score += 1 if age < 3600 else 0
+
+    weights[mint] = {
+        "score": score,
+        "age": age,
+        "symbol": item.get("symbol", "???"),
+        "status": item.get("status", "UNKNOWN"),
+        "predicted_moon": item.get("predicted_moon", False)
+    }
+
+    return weights
+
+
+def main():
+    evals = load_json(EVAL_PATH, [])
+    weights = compute_weights(evals)
+    save_json(WEIGHT_OUT, weights)
+    print(f"[{datetime.utcnow().isoformat()}] Weights saved to {WEIGHT_OUT} ({len(weights)} tokens)")
+    pass
+
+
+if __name__ == "__main__":
+    main()
+# /srv/daemon-memory/funpumper/fun_brain.py
+
+import os
+import json
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+BRAIN_LOG = "/srv/daemon-memory/funpumper/fun_brain.log"
+
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(BRAIN_LOG, "a") as f:
+    pass
+
+        f.write(f"[{timestamp}] {message}\n")
+
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+    pass
+
+        try:
+    pass
+
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+
+
+def save_weights(data):
+    with open(WEIGHTS_PATH, "w") as f:
+
+    pass pass
+       json.dump(data, f, indent=2)
+
+
+def simple_score(token):
+    # Placeholder scoring logic
+    age = token.get("age", 0)
+    if age <= 0:
+        return 0.0
+    moon = token.get("predicted_moon", False)
+    score = (1.0 if moon else 0.5) * min(age / 10000, 1.0)
+    return round(score, 3)
+
+
+def score_tokens():
+    tokens = load_weights()
+    count = 0
+    for mint, token in tokens.items():
+    pass
+
+    pass pass
+       if token.get("score", 0) > 0:
+            continue
+        token["score"] = simple_score(token)
+        count += 1
+        if count % 500 == 0:
+            log(f"[UPDATE] {count} tokens scored so far...")
+    log(f"[COMPLETE] Brain scored {count} tokens.")
+    save_weights(tokens)
+
+
+def get_top_suggestions(limit=10, max_age=43200):
+    now = int(time.time())
+    tokens = load_weights()
+    filtered = [
+        (mint, t) for mint, t in tokens.items()
+        if t.get("score", 0) > 0 and now - t.get("mint_time", 0) <= max_age
+    ]
+    sorted_tokens = sorted(filtered, key=lambda x: x[1]["score"], reverse=True)
+    return sorted_tokens[:limit]
+#!/usr/bin/env python3
+from common.black_swan_agent.mutation_memory import load_memory, save_memory
+import sys
+import os
+import json
+import time
+from pathlib import Path
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+
+# —— CONFIGURATION —— #
+LOG_PATH = "funpumper/fun_predict_eval_loop.log"
+ERR_PATH = "common/logs/fun_predict.err"
+FILTERED_PATH = Path(__file__).parent / "fun_filtered.json"
+PREDICTIONS_PATH = Path(__file__).parent / "fun_predictions.json"
+MODEL_DIR = Path(REPO_ROOT) / "common" / "models"
+
+
+def load_phase1_model():
+    model_path = MODEL_DIR / "phase1_2x.pkl"
+    if model_path.exists():
+        import pickle
+        return pickle.load(open(model_path, "rb"))
+    return None
+
+
+def main():
+    Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
+    while True:
+        try:
+
+            # 1) Load filtered tokens (list)
+            if not FILTERED_PATH.exists():
+                time.sleep(300)
+                continue
+            filtered = json.load(open(FILTERED_PATH))
+
+            # 2) Load existing predictions (dict)
+            if PREDICTIONS_PATH.exists():
+                all_preds = json.load(open(PREDICTIONS_PATH))
+            else:
+                all_preds = {}
+
+            # 3) Load model (if available)
+            model = load_phase1_model()
+
+            # 4) Iterate and predict
+            for token in filtered:
+    pass
+
+                addr = token["address"]
+                if addr in all_preds:
+                    continue
+
+                if model:
+                    # Example: create feature vector from token dict
+                    feats = [token.get("liquidity", 0), token.get("price", 0)]
+                    # This assumes a two‐feature model; adjust as needed
+                    prob = model.predict_proba([feats])[0][1]
+                    score4x = prob
+                    score6x = prob
+                else:
+                    score4x = 0.5
+                    score6x = 0.5
+
+                all_preds[addr] = {
+                    "score4x": score4x,
+                    "score6x": score6x,
+                    "timestamp": time.time()
+                }
+
+            # 5) Save predictions
+            with open(PREDICTIONS_PATH, "w") as fo:
+    pass
+
+    pass pass
+                json.dump(all_preds, fo, indent=2)
+
+            with open(LOG_PATH, "a") as fl:
+    pass
+
+    pass    pass
+with open("common/logs/telemetry.log", "a") as fl:
+    pass
+
+    pass    pass
+with open("common/logs/telemetry.log", "a") as fl:
+                        fl.write(
+                    f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] Predicted {len(all_preds)} tokens\n")
+
+        except Exception as e:
+            with open(ERR_PATH, "a") as fe:
+
+    pass    pass
+                fe.write(
+                    f"[{time.strftime('%Y-%m-%dT%H:%M:%S')}] [ERROR] {repr(e)}\n")
+
+        # Sleep 5 minutes
+        time.sleep(300)
+
+
+if __name__ == "__main__":
+    main()
+#!/usr/bin/env python3
+import os
+import json
+import time
+from datetime import datetime
+
+RAW_PATH = "/srv/daemon-memory/funpumper/live_ws_tokens.json"
+FILTERED_OUT = "/srv/daemon-memory/funpumper/filtered_mints.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/mint_filter.log"
+MAX_ATTEMPTS = 3
+SLEEP_INTERVAL = 10  # seconds between filter runs
+
+
+def log(msg):
+    ts = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+    pass
+
+        f.write(f"[{ts}] {msg}\n")
+
+
+def load_raw():
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+
+        try:
+    pass
+
+            with open(RAW_PATH, "r") as f:
+    pass
+
+                return json.load(f)
+        except json.JSONDecodeError as e:
+            log(f"[ERROR] load_raw (attempt {attempt}): {e}")
+            time.sleep(0.5)
+    raise RuntimeError(f"load_raw failed after {MAX_ATTEMPTS} attempts")
+
+
+def filter_mints(raw):
+    # example filter: only keep tokens with pool=='pump'
+    return [mint for mint, data in raw.items() if data.get("pool") == "pump"]
+    pass
+
+
+def main():
+    log("🚦 mint_filter daemon started")
+    while True:
+        try:
+
+    pass pass
+            raw = load_raw()
+            candidates = list(raw.keys())
+            filtered = filter_mints(raw)
+            with open(FILTERED_OUT, "w") as outf:
+    pass
+
+    pass pass
+                json.dump(filtered, outf, indent=2)
+            log(f"[PASS] Filtered {len(filtered)} mints from {len(candidates)} candidates")
+        except Exception as e:
+            log(f"[ERROR] {e}")
+        time.sleep(SLEEP_INTERVAL)
+
+
+if __name__ == "__main__":
+    main()
+#!/usr/bin/env python3
+from common.black_swan_agent.mutation_memory import load_memory, save_memory
+import sys
+import os
+import json
+import time
+from pathlib import Path
+from datetime import datetime
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+
+# —— CONFIGURATION —— #
+LOG_PATH = "funpumper/fun_reflection_loop.log"
+ERR_PATH = "common/logs/fun_reflection.err"
+GRADUATED_PATH = Path(__file__).parent / "fun_graduated.json"
+MEMORY_PATH = Path(REPO_ROOT) / "common" / \
+    "black_swan_agent" / "mutation_memory.json"
+
+
+def load_json(path: Path, default):
+    try:
+
+        return json.load(open(path, "r"))
+    except Exception:
+        return default
+
+
+def save_json(path: Path, data):
+    with open(path, "w") as f:
+    pass
+
+        json.dump(data, f, indent=2)
+
+
+def loop():
+    Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
+    while True:
+        try:
+
+            graduated = load_json(GRADUATED_PATH, [])
+            memory = load_memory()
+            new_entries = []
+            for entry in graduated:
+    pass
+
+                addr = entry.get("address")
+                phase = entry.get("phase")
+                features = entry.get("features", {})
+                timestamp = entry.get("timestamp", time.time())
+
+                if not any(mem.get("token") == addr and mem.get(
+                    "phase") == phase for mem in memory.get("mutations", [])):
+    pass
+
+                    mem_entry = {
+                        "token": addr,
+                        "phase": phase,
+                        "features": features,
+                        "timestamp": timestamp
+                    }
+                    new_entries.append(mem_entry)
+    pass
+
+            if new_entries:
+                memory.setdefault("mutations", []).extend(new_entries)
+                save_memory(memory)
+                with open(LOG_PATH, "a") as fl:
+    pass
+
+    pass pass
+                    for e in new_entries:
+    pass
+
+    pass pass
+
+
+with open("common/logs/telemetry.log", "a") as fl:
+    pass
+
+    pass pass
+with open("common/logs/telemetry.log", "a") as fl:
+                                fl.write(
+                            f"[{datetime.utcnow().isoformat()}] Appended mutation: {e}\n")
+                save_json(GRADUATED_PATH, [])
+
+        except Exception as e:
+            with open(ERR_PATH, "a") as fe:
+
+    pass    pass
+                fe.write(
+                    f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
+    pass
+
+        time.sleep(60)
+
+
+if __name__ == "__main__":
+    loop()
+import os
+import json
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+REPORT_PATH = "/srv/daemon-memory/funpumper/fun_accuracy.log"
+
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(REPORT_PATH, "a") as f:
+    pass
+
+        f.write(f"[{timestamp}] {message}\n")
+
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+    pass
+
+        try:
+    pass
+
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+
+
+def evaluate_accuracy():
+    data = load_weights()
+    total = 0
+    predicted = 0
+    correct = 0
+
+    for token in data.values():
+    pass
+
+    pass pass
+       if not token.get("evaluated"):
+            continue
+        if token.get("predicted_moon"):
+            predicted += 1
+            if token.get("status") == "MOONED":
+                correct += 1
+        total += 1
+
+    accuracy = round((correct / predicted) * 100, 2) if predicted else 0.0
+    log(f"[ACCURACY] Predictions: {predicted}, Correct: {correct}, Accuracy: {accuracy}% of evaluated tokens ({total} total)")
+
+
+def loop():
+    while True:
+        evaluate_accuracy()
+        time.sleep(1800)  # Report every 30 minutes
+
+
+if __name__ == "__main__":
+    loop()
+# helius_utils.py
+
+import requests
+import json
+import time
+
+# (We keep _get_sol_usd_price() exactly as before.)
+COINGECKO_API = "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd"
+_SOL_USD_CACHE = None
+_SOL_USD_LAST_FETCH = 0.0
+_SOL_USD_TTL = 60.0   # cache SOL→USD for 60 seconds
+    pass
+
+LIVE_WS_PATH = "/srv/daemon-memory/funpumper/live_ws_tokens.json"
+
+
+def _get_sol_usd_price():
+    """
+    Fetch SOL→USD from CoinGecko, caching for _SOL_USD_TTL seconds.
+    """
+    global _SOL_USD_CACHE, _SOL_USD_LAST_FETCH
+
+    now = time.time()
+    if _SOL_USD_CACHE is not None and (
+    now - _SOL_USD_LAST_FETCH) < _SOL_USD_TTL:
+        return _SOL_USD_CACHE
+
+    try:
+    pass
+
+      r = requests.get(COINGECKO_API, timeout=4)
+       if r.ok:
+            data = r.json()
+            sol_price = data.get("solana", {}).get("usd")
+            if sol_price is not None:
+                _SOL_USD_CACHE = float(sol_price)
+                _SOL_USD_LAST_FETCH = now
+                return _SOL_USD_CACHE
+            else:
+                print(f"[CG ERROR] no 'solana.usd' in {data}")
+        else:
+            print(f"[CG ERROR] HTTP {r.status_code} fetching {COINGECKO_API}")
+    except Exception as e:
+        print(f"[CG EXCEPTION] {e}")
+
+    return None
+
+
+def get_token_price(mint: str):
+    """
+    1) WE NO LONGER CALL HELIUS /v0/price→ it always 404 for PumpFun tokens.
+    2) Instead, load live_ws_tokens.json and compute:
+         price_in_sol = vSolInBondingCurve / vTokensInBondingCurve
+         sol_usd      = _get_sol_usd_price()
+         price_usd    = price_in_sol * sol_usd
+
+    Returns: float (USD) or None if not found / invalid.
+    """
+    print(f"🔍 Fetching price for: {mint}")
+    pass
+
+    # 2) Fallback: compute from WS data (live_ws_tokens.json)
+    try:
+    pass
+
+      ws_data = json.load(open(LIVE_WS_PATH))
+    except Exception as e:
+        print(f"[WS LOAD ERROR] {e}")
+        return None
+
+    token_info = ws_data.get(mint)
+    if not token_info:
+        print(f"[WS MISS] No entry in live_ws_tokens.json for {mint}")
+        return None
+
+    v_sol = token_info.get("vSolInBondingCurve")
+    v_tokens = token_info.get("vTokensInBondingCurve")
+    if v_sol is None or v_tokens is None or v_tokens == 0:
+        print(f"[WS DATA ERROR] invalid vSol/vTokens for {mint}")
+        return None
+
+    # compute on‐chain price in SOL
+    price_in_sol = float(v_sol) / float(v_tokens)
+    print(f"[WS] Computed price_in_sol: {price_in_sol:.12f}")
+
+    # fetch SOL→USD (cached)
+    sol_usd = _get_sol_usd_price()
+    if sol_usd is None:
+        print("[CG ERROR] Unable to get SOL→USD price")
+        return None
+
+    price_usd = price_in_sol * sol_usd
+    print(
+        f"[WS] price_usd = {price_in_sol:.12f} * {sol_usd:.2f} = {price_usd:.8f}")
+    return price_usdy
+import os
+import json
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/fun_brain_weights.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/fun_brain_report.log"
+
+
+def log(msg):
+    timestamp = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+    pass
+
+        f.write(f"[{timestamp}] {msg}\n")
+
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+    pass
+
+        try:
+    pass
+
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+
+
+def get_top_predictions(n=10, max_age=43200):
+    tokens = load_weights()
+    now = int(time.time())
+    candidates = []
+    for mint, t in tokens.items():
+    pass
+
+    pass pass
+      age = now - t.get("mint_time", now)
+       if age > max_age or t.get("score", 0) <= 0:
+            continue
+        candidates.append((mint, t.get("score", 0), age,
+                          t.get("predicted_moon", False)))
+    sorted_candidates = sorted(candidates, key=lambda x: x[1], reverse=True)
+    return sorted_candidates[:n]
+
+
+def format_suggestions(suggestions):
+    pass
+
+    pass result = ["[FUNPUMPER REPORT] Top Predictions:\n"]
+    for i, (mint, score, age, moon_flag) in enumerate(suggestions, start=1):
+    pass
+
+    pass pass
+      age_str = f"{age // 60} min" if age < 3600 else f"{age // 3600} hr"
+       result.append(
+            f"{i}. {mint}\n   Score: {score:.2f} | Age: {age_str} | Moon Flag: {moon_flag}")
+    return "\n".join(result)
+
+
+def run_once():
+    top = get_top_predictions()
+    report = format_suggestions(top)
+    print(report)
+    log("[INFERENCE] Delivered top suggestions.")
+
+
+if __name__ == "__main__":
+    run_once()
+#!/usr/bin/env python3
+import os
+import subprocess
+import time
+import logging
+
+REPOS = {
+    "pumpfun-history": "https://github.com/0xkhan/pumpfun-coin-history",
+    "pumpfinder": "https://github.com/optakt/pumpfinder",
+    "pumpfun-tracker": "https://github.com/Pump-Sniper/pumpfun-token-tracker",
+    "data-arena": "https://github.com/trader-arena/pumpfun-data-arena",
+}
+
+DEST_DIR = "/srv/daemon-memory/funpumper/github_data"
+SLEEP_INTERVAL = 3600  # sync every hour
+
+logging.basicConfig(
+    filename="/srv/daemon-memory/funpumper/github_sync.log",
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
+
+
+def run_cmd(cmd, cwd=None):
+    try:
+
+    subprocess.run(cmd, cwd=cwd, check=True)
+    return True
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Failed: {' '.join(cmd)} -- {e}")
+        return False
+
+
+def clone_or_pull(repo_name, repo_url):
+    repo_path = os.path.join(DEST_DIR, repo_name)
+    if not os.path.exists(repo_path):
+        logging.info(f"Cloning {repo_name}")
+        return run_cmd(["git", "clone", repo_url, repo_path])
+    else:
+        logging.info(f"Pulling {repo_name}")
+        return run_cmd(["git", "pull"], cwd=repo_path)
+
+
+def sync_all():
+    if not os.path.exists(DEST_DIR):
+        os.makedirs(DEST_DIR)
+    for name, url in REPOS.items():
+    pass
+
+    clone_or_pull(name, url)
+
+
+def main_loop():
+    logging.info("Funpumper GitHub sync loop started")
+    while True:
+        sync_all()
+        time.sleep(SLEEP_INTERVAL)
+
+
+if __name__ == "__main__":
+    main_loop()
+#!/usr/bin/env python3
+from common.black_swan_agent.mutation_memory import load_memory, save_memory
+import sys
+import os
+from pathlib import Path
+import json
+import time
+import requests
+from datetime import datetime
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+
+# —— CONFIGURATION —— #
+LOG_PATH = "funpumper/fun_purger_loop.log"
+ERR_PATH = "common/logs/fun_purger.err"
+
+# Change LIVE_WS_PATH to point to funpumper/live_ws_tokens.json
+LIVE_WS_PATH = Path(__file__).parent / "live_ws_tokens.json"
+FILTERED_PATH = Path(__file__).parent / "fun_filtered.json"
+DEADLIST_PATH = Path(__file__).parent / "fun_deadlist.json"
+
+# Phase 1 filter thresholds
+MIN_LIQUIDITY = 10  # example value
+MIN_INITIAL_BUY = 1  # example value
+
+
+def load_json(path: Path, default):
+    try:
+
+        return json.load(open(path, "r"))
+    except FileNotFoundError:
+        return default
+    except json.JSONDecodeError:
+        return default
+
+
+def save_json(path: Path, data):
+    with open(path, "w") as f:
+    pass
+
+        json.dump(data, f, indent=2)
+
+
+def fetch_price_for_token(token_address):
+    pass
+
+    # Placeholder for actual price lookup. Replace with real API if needed.
+    pass
+    # Example: Helius or Serum API call
+    try:
+    pass
+
+        resp = requests.get(f"https://api.example.com/price/{token_address}")
+        return float(resp.json().get("price", 0))
+    except Exception:
+        return 0
+
+
+def loop():
+    Path("funpumper").mkdir(parents=True, exist_ok=True)
+    Path("common/logs").mkdir(parents=True, exist_ok=True)
+
+    while True:
+        try:
+
+            # 1) Load the WS‐populated dictionary (address → data dict)
+            live_ws: dict = load_json(LIVE_WS_PATH, {})
+
+            # 2) Load and index which addresses have already been processed
+            if FILTERED_PATH.exists():
+                filtered_list = load_json(FILTERED_PATH, [])
+                filtered_addresses = {item["address"]
+                                      for item in filtered_list}
+            else:
+                filtered_list = []
+                filtered_addresses = set()
+
+            if DEADLIST_PATH.exists():
+                deadlist = load_json(DEADLIST_PATH, [])
+                dead_addresses = set(deadlist)
+            else:
+                deadlist = []
+                dead_addresses = set()
+
+            # 3) Iterate over all mint entries in live_ws
+            for mint_addr, msg in live_ws.items():
+    pass
+
+                if mint_addr in filtered_addresses or mint_addr in dead_addresses:
+                    continue
+
+                # Extract relevant data from msg (msg is a dict from
+                # funpumper_ws.py)
+                liquidity = msg.get("vSolInBondingCurve", 0)
+                initial_buy = msg.get("initialBuy", 0)
+                if liquidity < MIN_LIQUIDITY or initial_buy < MIN_INITIAL_BUY:
+                    deadlist.append(mint_addr)
+                    print(
+                        f"[PURGER] Rejecting {mint_addr} (liquidity={liquidity}, initial_buy={initial_buy})")
+                else:
+                    price = initial_buy / (liquidity or 1)
+                    record = {
+                        "address": mint_addr,
+                        "liquidity": liquidity,
+                        "price": price,
+                        "timestamp": datetime.utcnow().isoformat()
+                    }
+                    filtered_list.append(record)
+                    filtered_addresses.add(mint_addr)
+                    print(
+                        f"[PURGER] Accepting {mint_addr} (liquidity={liquidity}, price={price:.6f})")
+
+                # Write updates immediately
+                save_json(FILTERED_PATH, filtered_list)
+                save_json(DEADLIST_PATH, deadlist)
+
+            # 4) Sleep briefly before re‐checking
+        except Exception as e:
+            with open(ERR_PATH, "a") as fe:
+    pass
+
+    pass pass
+                fe.write(
+                    f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
+        time.sleep(1)
+
+
+if __name__ == "__main__":
+    loop()
+import os
+import json
+import time
+from datetime import datetime
+from random import uniform
+    pass
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/fun_brain_loop.log"
+PREDICTION_LOG = "/srv/daemon-memory/funpumper/fun_predictions.json"
+
+TRAIT_WEIGHTS = {
+    "age": 0.2,
+    "status": 0.3,
+    "price_log": 0.3,
+    "randomness": 0.2,
+}
+
+PREDICTION_THRESHOLD = 0.85
+
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+    pass
+
+        f.write(f"[{timestamp}] {message}\n")
+
+
+def load_json(path):
+    if not os.path.exists(path):
+        return {}
+    with open(path, "r") as f:
+    pass
+
+        try:
+    pass
+
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+
+
+def save_json(path, data):
+    with open(path, "w") as f:
+
+    pass pass
+    json.dump(data, f, indent=2)
+
+
+def score_token(t):
+    score = 0.0
+
+    # Age score
+    age = t.get("age", 0)
+    age_score = min(age / 10000, 1.0) if age > 0 else 0.0
+    score += age_score * TRAIT_WEIGHTS["age"]
+
+    # Status influence
+    status = t.get("status", "PENDING")
+    status_score = {"PENDING": 0.2, "ACTIVE": 0.7,
+                    "FINAL": 0.5}.get(status, 0.1)
+    score += status_score * TRAIT_WEIGHTS["status"]
+
+    # Price volatility
+    price_log = t.get("price_log", [])
+    vol = 0.0
+    if isinstance(price_log, list) and len(price_log) >= 2:
+        diffs = [abs(price_log[i] - price_log[i - 1])
+                 for i in range(1, len(price_log))]
+        vol = sum(diffs) / len(diffs)
+        vol_score = min(vol / 0.1, 1.0)
+    else:
+        vol_score = 0.0
+    score += vol_score * TRAIT_WEIGHTS["price_log"]
+
+    # Randomness
+    rand_score = uniform(0.0, 1.0)
+    score += rand_score * TRAIT_WEIGHTS["randomness"]
+
+    return round(min(score, 1.0), 4)
+
+
+def brain_loop():
+    log("FunBrain (Phase 2) engaged.")
+    tokens = load_json(WEIGHTS_PATH)
+    predictions = load_json(PREDICTION_LOG)
+    updated = 0
+
+    for mint, t in tokens.items():
+    pass
+
+    pass pass
+    brain_score = score_token(t)
+     t["brain_score"] = brain_score
+      updated += 1
+
+       # Make prediction
+       if brain_score >= PREDICTION_THRESHOLD and mint not in predictions:
+            predictions[mint] = {
+                "predicted_at": datetime.utcnow().isoformat(),
+                "score": brain_score,
+                "confirmed_moon": False,
+                "accuracy_checked": False
+            }
+            log(f"[PREDICTION] {mint} (Score: {brain_score})")
+
+        if updated % 500 == 0:
+            log(f"[UPDATE] {updated} tokens scored...")
+
+    save_json(WEIGHTS_PATH, tokens)
+    save_json(PREDICTION_LOG, predictions)
+    log(f"[COMPLETE] Brain scored {updated} tokens.")
+
+
+if __name__ == "__main__":
+    while True:
+        brain_loop()
+        time.sleep(600)  # 10-minute loop
+import os
+import json
+import time
+from datetime import datetime
+
+# === PATHS ===
+BASE = "/srv/daemon-memory/funpumper"
+LOG_PATH = f"{BASE}/funpumper.log"
+DATA_PATH = f"{BASE}/live_ws_tokens.json"
+RESULT_PATH = f"{BASE}/funpumper_evals.json"
+os.makedirs(BASE, exist_ok=True)
+
+# === CONFIG ===
+PREDICTION_WINDOW = 12 * 60 * 60  # 12 hours
+SLEEP_INTERVAL = 600  # 10 minutes
+
+# === LOGGING ===
+
+
+def log(msg):
+    ts = datetime.utcnow().isoformat()
+    line = f"[{ts}] {msg}"
+    print(line)
+    with open(LOG_PATH, "a") as f:
+    pass
+
+        f.write(line + "\n")
+
+# === JSON UTIL ===
+
+
+def save_json(path, data):
+    with open(path, "w") as f:
+
+        json.dump(data, f, indent=2)
+
+
+def load_json(path, default=[]):
+    try:
+
+        with open(path) as f:
+    pass
+
+            return json.load(f)
+    except:
+        return default
+
+# === EVALUATION ===
+
+
+def evaluate(tokens):
+    now = int(time.time())
+    results = load_json(RESULT_PATH, [])
+    known = {r["mint"] for r in results}
+    pass
+
+    for mint, t in tokens.items():
+    pass
+
+        if mint in known:
+            continue
+        try:
+    pass
+
+            symbol = t.get("symbol", "???")
+            price = float(t.get("initialBuy", 0))
+            cap = float(t.get("marketCapSol", 0))
+            launch_ts = now
+
+            result = {
+                "mint": mint,
+                "symbol": symbol,
+                "init_price": price,
+                "init_mcap": cap,
+                "launch_ts": launch_ts,
+                "predicted_moon": cap < 5,
+                "eval_due": now + PREDICTION_WINDOW,
+                "status": "PENDING"
+            }
+            results.append(result)
+            log(f"[NEW TOKEN] {mint} {symbol} added for eval")
+        except Exception as e:
+            log(f"[Eval FAIL: {mint}] {str(e)}")
+
+    save_json(RESULT_PATH, results)
+    save_json(DATA_PATH, tokens)
+
+# === REEVALUATION ===
+
+
+def reevaluate():
+    now = int(time.time())
+    results = load_json(RESULT_PATH, [])
+    tokens = load_json(DATA_PATH, {})
+
+    updated = []
+
+    for r in results:
+    pass
+
+    pass pass
+        if r["status"] != "PENDING" or now < r["eval_due"]:
+            updated.append(r)
+            continue
+
+        mint = r["mint"]
+        if mint not in tokens:
+            r["status"] = "FAILED"
+            r["reason"] = "GONE_OR_DELISTED"
+        else:
+            t = tokens[mint]
+            try:
+    pass
+
+    pass pass
+                price_now = float(t.get("initialBuy", 0))
+                cap_now = float(t.get("marketCapSol", 0))
+                price_ratio = price_now / max(r["init_price"], 1e-6)
+
+                if price_ratio >= 10:
+                    r["status"] = "MOON"
+                    r["final_price"] = price_now
+                    r["final_cap"] = cap_now
+                elif price_ratio <= 0.2:
+                    r["status"] = "CRASHED"
+                    r["reason"] = "PRICE_DROP"
+                elif cap_now < r["init_mcap"] and cap_now < 1:
+                    r["status"] = "CRASHED"
+                    r["reason"] = "VOLUME_DIED"
+                else:
+                    r["status"] = "STABLE"
+                    r["final_price"] = price_now
+                    r["final_cap"] = cap_now
+            except Exception as e:
+                r["status"] = "FAILED"
+                r["reason"] = str(e)
+        updated.append(r)
+
+    save_json(RESULT_PATH, updated)
+
+# === MAIN LOOP ===
+
+
+def loop():
+    log("FunPumper evaluator active.")
+    while True:
+        reevaluate()
+        tokens = load_json(DATA_PATH, {})
+        evaluate(tokens)
+        time.sleep(SLEEP_INTERVAL)
+
+
+if __name__ == "__main__":
+    loop()
+import os
+import json
+import random
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+FORK_HISTORY_PATH = "/srv/daemon-memory/funpumper/fork_history.json"
+MUTATION_LOG = "/srv/daemon-memory/funpumper/fun_mutation.log"
+
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(MUTATION_LOG, "a") as f:
+    pass
+
+        f.write(f"[{timestamp}] {message}\n")
+
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+    pass
+
+        try:
+    pass
+
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+
+
+def save_weights(data):
+    with open(WEIGHTS_PATH, "w") as f:
+
+    pass pass
+        json.dump(data, f, indent=2)
+
+
+def load_history():
+    if not os.path.exists(FORK_HISTORY_PATH):
+        return []
+    with open(FORK_HISTORY_PATH, "r") as f:
+    pass
+
+    pass pass
+        try:
+    pass
+
+    pass pass
+            return json.load(f)
+        except json.JSONDecodeError:
+            return []
+
+
+def save_history(history):
+    with open(FORK_HISTORY_PATH, "w") as f:
+
+    pass    pass
+        json.dump(history, f, indent=2)
+
+
+def mutate_weights(weights):
+    mutated = {}
+    for mint, data in weights.items():
+    pass
+
+    pass    pass
+        if "score" in data:
+            delta = random.uniform(-0.2, 0.3)
+            new_score = max(0.0, data["score"] + delta)
+            mutated[mint] = dict(data)
+            mutated[mint]["score"] = round(new_score, 3)
+    return mutated
+
+
+def score_delta_score(weights):
+    scores = [t["score"] for t in weights.values() if "score" in t]
+    return round(sum(scores) / len(scores), 4) if scores else 0.0
+
+
+def loop():
+    while True:
+        original = load_weights()
+        baseline_score = score_delta_score(original)
+        mutated = mutate_weights(original)
+        mutated_score = score_delta_score(mutated)
+
+        log(f"[BASELINE] avg_score={baseline_score}")
+        log(f"[MUTATED] avg_score={mutated_score}")
+
+        if mutated_score > baseline_score:
+            save_weights(mutated)
+            log("[MUTATION] Adopted mutated weights.")
+            history = load_history()
+            history.append({
+                "time": datetime.utcnow().isoformat(),
+                "baseline": baseline_score,
+                "mutated": mutated_score,
+                "adopted": True
+            })
+            save_history(history)
+        else:
+            log("[MUTATION] Rejected mutation, baseline better.")
+
+        time.sleep(3600)  # Every 1 hour
+
+
+if __name__ == "__main__":
+    loop()
+import os
+import json
+import time
+from datetime import datetime
+
+# Assumes you already have this module built
+from helius_utils import get_token_price
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/fun_brain_weights.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/token_history.log"
+
+
+def log(msg):
+    timestamp = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+    pass
+
+        f.write(f"[{timestamp}] {msg}\n")
+
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+    pass
+
+        try:
+    pass
+
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+
+
+def save_weights(data):
+    with open(WEIGHTS_PATH, "w") as f:
+
+    pass pass
+        json.dump(data, f, indent=2)
+
+
+def update_price_logs():
+    tokens = load_weights()
+    updated = 0
+    for mint, t in tokens.items():
+    pass
+
+    pass pass
+        try:
+    pass
+
+    pass pass
+            price = get_token_price(mint)
+            t.setdefault("price_log", []).append({
+                "timestamp": int(time.time()),
+                "price": price
+            })
+            updated += 1
+        except Exception as e:
+            log(f"[ERROR] Failed to get price for {mint}: {e}")
+    save_weights(tokens)
+    log(f"[PRICE LOGGED] {updated} tokens updated.")
+
+
+def loop():
+    log("Token history logger activated.")
+    while True:
+        update_price_logs()
+        time.sleep(120)  # Update every 2 minutes
+
+
+if __name__ == "__main__":
+    loop()
+#!/usr/bin/env python3
+import os
+import subprocess
+import time
+from datetime import datetime
+
+# Use your existing PAT; fallback to the old hardcoded one if unset
+GITHUB_TOKEN = os.getenv(
+    "GITHUB_PAT", "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")
+
+# Change CLONE_DIR to point at historical_tokens so downstream parsers
+# will find data there
+CLONE_DIR = "/srv/daemon-memory/funpumper/historical_tokens"
+INTERVAL_HOURS = 6
+
+REPOS = [
+    "solsniperxyz/pumpfun-snipe-data",
+    "0xHanzo/pumpfun_tools",
+    "T4uru/pumpfun-analysis"
+]
+
+
+def log(msg):
+    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{ts}] {msg}", flush=True)
+
+
+def clone_or_pull(repo):
+    user_repo = repo.split("/")[-1]
+    target_path = os.path.join(CLONE_DIR, user_repo)
+
+    # Ensure the parent directory exists
+    if not os.path.exists(CLONE_DIR):
+        os.makedirs(CLONE_DIR)
+
+    if os.path.exists(target_path):
+        log(f"Updating {repo}...")
+        subprocess.run(
+            ["git", "-C", target_path, "pull"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+    else:
+        url = f"https://{GITHUB_TOKEN}:x-oauth-basic@github.com/{repo}.git"
+        log(f"Cloning {repo}...")
+        subprocess.run(
+            ["git", "clone", url, target_path],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+
+
+def main():
+    log("FunPumper GitHub sync loop started")
+    while True:
+        for repo in REPOS:
+
+            try:
+    pass
+
+                clone_or_pull(repo)
+            except Exception as e:
+                log(f"[✗] Failed to access {repo}: {e}")
+        log(f"Sleeping {INTERVAL_HOURS} hours...\n")
+        time.sleep(INTERVAL_HOURS * 3600)
+
+
+if __name__ == "__main__":
+    main()
+# normalize_evals.py
+import json
+import os
+
+SRC = "/srv/daemon-memory/funpumper/funpumper_evals.json"
+BACKUP = "/srv/daemon-memory/funpumper/funpumper_evals_list.json"
+
+with open(SRC, "r") as f:
+    pass
+
+    data = json.load(f)
+
+if isinstance(data, list):
+    print(f"[NORMALIZE] Detected list format. Converting to dict...")
+    # Save backup
+    with open(BACKUP, "w") as f:
+    pass
+
+    json.dump(data, f, indent=2)
+    # Normalize
+    normalized = {entry["mint"]: entry for entry in data}
+    with open(SRC, "w") as f:
+    pass
+
+    json.dump(normalized, f, indent=2)
+    print("✅ Conversion complete. Canonical format = dict.")
+elif isinstance(data, dict):
+    print("✅ Already in canonical dict format.")
+else:
+    print("❌ Unknown format. Manual intervention required.")
+#!/usr/bin/env python3
+import os
+import json
+import time
+import pickle
+from datetime import datetime
+
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+
+# ————————— PATHS —————————
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+MODEL_PATH = "/srv/daemon-memory/funpumper/phase1_model.pkl"
+TRAINER_LOG = "/srv/daemon-memory/funpumper/fun_trainer.log"
+
+# Phase 1 bins (end‐timestamps in seconds) relative to mint:
+P1_CHECK_TIMES = [15, 60, 150, 300]
+
+# Retrain every 3600 seconds (1 hour)
+RETRAIN_INTERVAL_S = 3600
+
+
+def log(msg: str):
+    ts = datetime.utcnow().isoformat()
+    with open(TRAINER_LOG, "a") as f:
+    pass
+
+        f.write(f"[{ts}] {msg}\n")
+
+
+def load_json(path, default):
+    if not os.path.exists(path):
+        return default
+    try:
+    pass
+
+        return json.load(open(path))
+    except:
+        return default
+
+
+def save_model(model, path):
+    with open(path, "wb") as f:
+
+        pickle.dump(model, f)
+
+
+def gather_phase1_examples():
+    """
+    Returns two lists:
+      X_list = [ [r15, r60, r150, r300], … ]  (ratios: price@t / price@0)
+      y_list = [ 0 or 1, … ]
+    Only include tokens that have at least one price entry at each of 15s, 60s, 150s, 300s.
+    """
+    data = load_json(WEIGHTS_PATH, {})
+    X_list = []
+    y_list = []
+
+    now = int(time.time())
+    for mint, info in data.items():
+    pass
+
+        # We need price_log with at least one entry >= 300s old
+        # price_log is a list of [timestamp, price_usd] entries
+        price_log = info.get("price_log", [])
+        if not price_log or "initial_price" not in info:
+            continue
+
+        # price at “0s” (first positive price encountered)
+        t0 = info["initial_price"]
+        if t0 <= 0:
+            continue
+
+        # Build a small mapping: { age_in_seconds: price }
+        # (take the *first* price we saw in each P1_CHECK_TIMES bin)
+        # e.g. “price at ~ 15s” := the earliest price_log entry where
+        # (timestamp – mint_time) ≥ 15
+        m = info["mint_time"]
+        bucket_prices = {}  # key = check_time, val = price_usd
+        for ts, p in price_log:
+    pass
+
+            age = ts - m
+            for check in P1_CHECK_TIMES:
+    pass
+
+                if age >= check and check not in bucket_prices:
+                    bucket_prices[check] = p
+
+        # Only keep if we got all 4 bins
+        if all(check in bucket_prices for check in P1_CHECK_TIMES):
+    pass
+
+    pass pass
+            # Feature vector: [p15/t0, p60/t0, p150/t0, p300/t0]
+            ratios = [bucket_prices[check] / t0 for check in P1_CHECK_TIMES]
+            X_list.append(ratios)
+
+            # Label = 1 if p300 >= 2× t0, else 0
+            y_list.append(1 if bucket_prices[300] >= 2.0 * t0 else 0)
+
+    return X_list, y_list
+
+
+def train_phase1_model():
+    X_list, y_list = gather_phase1_examples()
+    n = len(X_list)
+    if n < 50:
+        log(f"[SKIP] Only {n} examples found (<50). Waiting for more data.")
+        return
+
+    X = np.array(X_list)
+    y = np.array(y_list)
+
+    # Simple logistic‐regression classifier
+    model = LogisticRegression(C=1.0, max_iter=200)
+    model.fit(X, y)
+
+    save_model(model, MODEL_PATH)
+    log(
+        f"[TRAINED] Phase 1 model retrained on {n} examples. Positive labels: {int(y.sum())}.")
+
+
+def loop():
+    log("🚀 FunTrainer loop started.")
+    last_train = 0
+
+    while True:
+        now = time.time()
+        if now - last_train >= RETRAIN_INTERVAL_S:
+            try:
+    pass
+
+    pass pass
+                train_phase1_model()
+            except Exception as e:
+                log(f"[ERROR] {e}")
+            last_train = now
+        time.sleep(10)
+
+
+if __name__ == "__main__":
+    print("### FUN_TRAINER_LOOP STARTED ###")
+    loop()
+#!/usr/bin/env python3
+import os
+import json
+import time
+from datetime import datetime
+
+# === PATHS ===
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+RESULTS_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
+LOOP_LOG = "/srv/daemon-memory/funpumper/funpumper_loop.log"
+
+
+def log(msg):
+    ts = datetime.utcnow().isoformat()
+    line = f"[{ts}] {msg}"
+    with open(LOOP_LOG, "a") as f:
+    pass
+
+        f.write(line + "\n")
+
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    try:
+    pass
+
+        return json.load(open(WEIGHTS_PATH, "r"))
+    except json.JSONDecodeError:
+        log("⚠️ Failed to decode weights JSON.")
+        return {}
+
+
+def save_weights(w):
+    with open(WEIGHTS_PATH, "w") as f:
+
+        json.dump(w, f, indent=2)
+
+
+def load_real_tokens():
+    if not os.path.exists(RESULTS_PATH):
+        log(f"⚠️ No evals file at {RESULTS_PATH}")
+        return {}
+    try:
+    pass
+
+        raw = json.load(open(RESULTS_PATH, "r"))
+    except json.JSONDecodeError:
+        log("⚠️ Failed to decode evals JSON.")
+        return {}
+
+    out = {}
+    if isinstance(raw, list):
+        for entry in raw:
+    pass
+
+            if isinstance(entry, dict):
+                m = entry.get("mint")
+                if m:
+                    out[m] = entry
+    elif isinstance(raw, dict):
+        for m, val in raw.items():
+    pass
+
+            if isinstance(val, dict):
+                entry = dict(val)
+                entry.setdefault("mint", m)
+                out[m] = entry
+            else:
+                log(f"⚠️ Unexpected evals entry for {m}: {type(val)}")
+    else:
+        log(f"⚠️ Evals file has unrecognized type: {type(raw)}")
+
+    return out
+
+
+def loop_once():
+    weights = load_weights()
+    results = load_real_tokens()
+    new_count = 0
+
+    for mint, data in results.items():
+    pass
+
+        if mint in weights:
+            continue
+        weights[mint] = {
+            "score": data.get("score", 1),
+            "age": data.get("age", 0),
+            "status": data.get("status", "PENDING"),
+            "predicted_moon": data.get("predicted_moon", False),
+            "price_log": data.get("price_log", []),
+            "mint_time": data.get("launch_ts", int(time.time()))
+        }
+        log(f"[ADDED] {mint}")
+        new_count += 1
+
+    if new_count:
+        log(f"[UPDATE] Added {new_count} new tokens.")
+        save_weights(weights)
+    else:
+        log("[PASS] No new tokens found.")
+
+
+def main_loop():
+    log("🌕 FunPumper loop (real mode) started.")
+    while True:
+        try:
+
+            loop_once()
+            time.sleep(60)
+        except Exception as e:
+            log(f"[ERROR] {e}")
+            time.sleep(30)
+
+
+if __name__ == "__main__":
+    main_loop()
+#!/usr/bin/env python3
+
+import os
+import json
+import time
+import threading
+import requests
+from datetime import datetime
+
+# ── Configuration ───────────────────────────────────────────────────────
+
+API_KEY = "1dc0efc3-6f32-4590-8b06-e2fd8bb46f03"
+EVALS_PATH = "/srv/daemon-memory/funpumper/fixed_evals.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/metrics_enricher.log"
+
+# HOW MANY HELIUS REQUESTS TOTAL per second (shared across get_price +
+# get_activity)
+HELIUS_RATE_LIMIT = 2    # 2 requests per second
+HELIUS_RATE_PERIOD_SEC = 1.0  # period over which that applies
+
+# How long to wait after fully processing each token, to further spread
+# out calls
+TOKEN_PAUSE_SEC = 0.3
+
+# ── Rate Limiter Definition ─────────────────────────────────────────────
+
+
+class RateLimiter:
+    """
+    Simple token‐bucket rate limiter: allows `rate` calls per `per` seconds total.
+    """
+
+    def __init__(self, rate, per):
+        self.rate = float(rate)
+        self.per = float(per)
+        self.allowance = float(rate)
+        self.last_check = time.time()
+        self.lock = threading.Lock()
+
+    def acquire(self):
+        with self.lock:
+
+            current = time.time()
+            elapsed = current - self.last_check
+            self.last_check = current
+            # refill allowance
+            self.allowance += elapsed * (self.rate / self.per)
+            if self.allowance > self.rate:
+                self.allowance = self.rate
+
+            if self.allowance < 1.0:
+                needed = 1.0 - self.allowance
+                sleep_time = needed * (self.per / self.rate)
+                time.sleep(sleep_time)
+                self.allowance = 0.0
+            else:
+                self.allowance -= 1.0
+
+
+# Single global limiter for all Helius calls
+limiter = RateLimiter(rate=HELIUS_RATE_LIMIT, per=HELIUS_RATE_PERIOD_SEC)
+
+# ── Logging Utility ─────────────────────────────────────────────────────
+
+
+def log(message):
+    """
+    Append a timestamped message to metrics_enricher.log.
+    """
+    ts = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+    pass
+
+        f.write(f"[{ts}] {message}\n")
+
+# ── Load Eval List Safely ───────────────────────────────────────────────
+
+
+def load_evals():
+    """
+    Read fixed_evals.json, return list of token dicts. If JSON is malformed or missing,
+    return empty list and log an error.
+    """
+    if not os.path.exists(EVALS_PATH):
+        return []
+    try:
+    pass
+
+        with open(EVALS_PATH, "r") as f:
+    pass
+
+            return json.load(f)
+    except json.JSONDecodeError as e:
+        log(f"[ERROR] Failed to load evals: {e}")
+        return []
+    except Exception as e:
+        log(f"[ERROR] Unexpected error loading evals: {e}")
+        return []
+
+# ── Helius Wrappers (Rate‐Limited) ──────────────────────────────────────
+
+
+def get_price(mint):
+    """
+    Fetch on-chain price from Helius for `mint`. Returns price or None.
+    """
+    try:
+    pass
+
+        limiter.acquire()
+        url = f"https://api.helius.xyz/v0/tokens/{mint}/price"
+        params = {"api-key": API_KEY}
+        r = requests.get(url, params=params, timeout=5)
+
+        if r.status_code == 404:
+            log(f"[WARN] price not available for {mint} (404)")
+            return None
+
+        r.raise_for_status()
+        j = r.json()
+        return j.get("price")
+
+    except requests.exceptions.HTTPError as e:
+        code = e.response.status_code if e.response else None
+        if code == 429:
+            log(
+                f"[WARN] rate-limited fetching price for {mint} (429), backing off 5s")
+            time.sleep(5)
+            return None
+        log(f"[ERROR] price lookup failed for {mint}: {e}")
+        return None
+
+    except Exception as e:
+        log(f"[ERROR] get_price {mint}: {e}")
+        return None
+
+
+def get_activity(mint):
+    """
+    Fetch up to 10 'TRANSFER' transactions for `mint` from Helius. Returns count or 0.
+    """
+    try:
+    pass
+
+        limiter.acquire()
+        url = f"https://api.helius.xyz/v0/addresses/{mint}/transactions"
+        params = {"type": "TRANSFER", "limit": 10, "api-key": API_KEY}
+        r = requests.get(url, params=params, timeout=5)
+
+        if r.status_code == 404:
+            log(f"[WARN] activity not available for {mint} (404)")
+            return 0
+
+        r.raise_for_status()
+        j = r.json()
+        return len(j.get("result", []))
+
+    except requests.exceptions.HTTPError as e:
+        code = e.response.status_code if e.response else None
+        if code == 429:
+            log(
+                f"[WARN] rate-limited fetching activity for {mint} (429), backing off 5s")
+            time.sleep(5)
+            return 0
+        log(f"[ERROR] get_activity {mint}: {e}")
+        return 0
+
+    except Exception as e:
+        log(f"[ERROR] get_activity {mint}: {e}")
+        return 0
+
+# ── Main Loop: Oldest‐First with Pauses ─────────────────────────────────
+    pass
+
+
+def main_loop():
+    log("Live metrics enricher loop started.")
+
+    while True:
+        evals = load_evals()
+
+        # Sort by “created_at” if it exists, oldest (smallest) first
+        try:
+    pass
+
+            evals_sorted = sorted(
+                evals,
+                key=lambda t: t.get("created_at", float("inf"))
+            )
+        except Exception:
+            evals_sorted = evals
+
+        for token in evals_sorted:
+    pass
+
+    pass pass
+            mint = token.get("mint")
+            if not mint:
+                continue
+
+            price = get_price(mint)
+            activity = get_activity(mint)
+            log(f"[UPDATE] {mint} → price={price} act={activity}")
+
+            # Pause briefly before next token to spread calls further
+            time.sleep(TOKEN_PAUSE_SEC)
+
+        # After the entire list, wait 60 seconds before re‐running
+        time.sleep(60)
+
+
+if __name__ == "__main__":
+    main_loop()
+import json
+import os
+import time
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+MAX_AGE_SECONDS = 12 * 3600  # 12 hours
+
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+    pass
+
+    return json.load(f)
+
+
+def suggest_tokens(limit=10):
+    weights = load_weights()
+    now = int(time.time())
+    candidates = []
+
+    for mint, data in weights.items():
+    pass
+
+    age = now - data.get("mint_time", now)
+    score = data.get("score", 0)
+    if age < MAX_AGE_SECONDS:
+        candidates.append({
+            "mint": mint,
+            "score": score,
+            "age_min": int(age / 60),
+            "status": data.get("status", "UNKNOWN")
+        })
+
+    top = sorted(candidates, key=lambda x: x["score"], reverse=True)[:limit]
+
+    print("🔥 TOP TOKEN SUGGESTIONS (Next to Moon):")
+    print("----------------------------------------")
+    for i, token in enumerate(top, 1):
+    pass
+
+    print(f"{i}. {token['mint']}")
+    print(f"   Score:     {token['score']}")
+    print(f"   Age:       {token['age_min']} min")
+    print(f"   Status:    {token['status']}")
+    print("")
+
+
+if __name__ == "__main__":
+    suggest_tokens()
+import os
+import pickle
+import numpy as np
+from sklearn.dummy import DummyClassifier
+
+# Where to save
+MODEL_DIR = "/srv/daemon-memory/funpumper/models"
+os.makedirs(MODEL_DIR, exist_ok=True)
+
+# 1) Phase1_survive: expects 12 features (vol/buy/slippage for
+# 0–15,15–60,60–150,150–300)
+X1 = np.zeros((2, 12))
+y1 = np.array([0, 1])
+clf1 = DummyClassifier(strategy="uniform", random_state=0)
+clf1.fit(X1, y1)
+with open(os.path.join(MODEL_DIR, "phase1_survive.pkl"), "wb") as f:
+    pass
+
+    pickle.dump(clf1, f)
+
+# 2) Phase1_2x: also 12 features
+X2 = np.zeros((2, 12))
+y2 = np.array([0, 1])
+clf2 = DummyClassifier(strategy="uniform", random_state=1)
+clf2.fit(X2, y2)
+with open(os.path.join(MODEL_DIR, "phase1_2x.pkl"), "wb") as f:
+    pass
+
+    pickle.dump(clf2, f)
+
+# 3) Phase2_4x: expects 6 features (dex_listed_before_900s, vol_300_600,
+# vol_600_900, sell_cluster_300_900, social_300_600, social_600_900)
+X3 = np.zeros((2, 6))
+y3 = np.array([0, 1])
+clf3 = DummyClassifier(strategy="uniform", random_state=2)
+clf3.fit(X3, y3)
+with open(os.path.join(MODEL_DIR, "phase2_4x.pkl"), "wb") as f:
+    pass
+
+    pickle.dump(clf3, f)
+
+# 4) Phase3_6x: expects 8 features (six price_ratio bins + whale_rebuy +
+# liquidity_added)
+X4 = np.zeros((2, 8))
+y4 = np.array([0, 1])
+clf4 = DummyClassifier(strategy="uniform", random_state=3)
+clf4.fit(X4, y4)
+with open(os.path.join(MODEL_DIR, "phase3_6x.pkl"), "wb") as f:
+    pass
+
+    pickle.dump(clf4, f)
+
+print("✅ Dummy models created in:", MODEL_DIR)
+import os
+import json
+import time
+from datetime import datetime
+
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/fun_brain_weights.json"
+LOG_PATH = "/srv/daemon-memory/funpumper/accuracy_tracker.log"
+
+
+def log(msg):
+    timestamp = datetime.utcnow().isoformat()
+    with open(LOG_PATH, "a") as f:
+    pass
+
+        f.write(f"[{timestamp}] {msg}\n")
+
+
+def load_weights():
+    if not os.path.exists(WEIGHTS_PATH):
+        return {}
+    with open(WEIGHTS_PATH, "r") as f:
+    pass
+
+        try:
+    pass
+
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
+
+
+def save_weights(data):
+    with open(WEIGHTS_PATH, "w") as f:
+
+    pass pass
+      json.dump(data, f, indent=2)
+
+
+def load_predictions():
+    """Load our predictions store as a list of entries."""
+    if not os.path.exists(PREDICTION_PATH):
+        return []
+    try:
+    pass
+
+    pass pass
+      raw = json.load(open(PREDICTION_PATH))
+    except Exception:
+        return []
+    # If someone wrote a dict-of-entries, convert to a list
+    if isinstance(raw, dict):
+        return list(raw.values())
+    # If it’s already a list, use it
+    if isinstance(raw, list):
+        return raw
+    # Fallback
+    return []
+
+
+def evaluate_prediction_accuracy():
+    tokens = load_weights()
+    checked = 0
+    correct = 0
+    for mint, t in tokens.items():
+    pass
+
+    pass pass
+      log_series = t.get("price_log", [])
+       if len(log_series) < 2 or "predicted_moon" not in t or t.get(
+                "status") == "SCORED":
+            continue
+        prices = [p["price"] for p in log_series if p["price"] > 0]
+        if len(prices) < 2:
+            continue
+        pct_change = (max(prices) - prices[0]) / prices[0] * 100
+        actual_moon = pct_change >= 900  # 10x threshold
+
+        predicted_moon = t.get("predicted_moon", False)
+        t["prediction_correct"] = (actual_moon == predicted_moon)
+        t["status"] = "SCORED"
+        if t["prediction_correct"]:
+            correct += 1
+        checked += 1
+    save_weights(tokens)
+    log(f"[ACCURACY] Evaluated {checked} tokens, {correct} predictions correct.")
+
+
+def loop():
+    log("Prediction accuracy tracker online.")
+    while True:
+        evaluate_prediction_accuracy()
+        time.sleep(180)  # every 3 minutes
+
+
+if __name__ == "__main__":
+    loop()
+#!/usr/bin/env python3
+import sys
+import os
+import json
+import asyncio
+from pathlib import Path
+from datetime import datetime
+import websockets
+
+# ——— Ensure “common/” is on sys.path ———
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
+
+# —— CONFIGURATION —— #
+LOG_PATH = "common/logs/funpumper_ws.log"
+ERR_PATH = "common/logs/funpumper_ws.err"
+LIVE_WS_PATH = Path(__file__).parent / "live_ws_tokens.json"
+
+
+async def main():
+    Path(Path(LOG_PATH).parent).mkdir(parents=True, exist_ok=True)
+    uri = "wss://ipc.pump.fun"
+    try:
+    pass
+
+        async with websockets.connect(uri) as ws:
+    pass
+
+            with open(LOG_PATH, "a") as fl:
+    pass
+
+with open("common/logs/telemetry.log", "a") as fl:
+    pass
+
+with open("common/logs/telemetry.log", "a") as fl:
+                        fl.write(
+                    f"[{datetime.utcnow().isoformat()}] [WS] Connected to {uri}\n")
+    pass
+
+            while True:
+                raw = await ws.recv()
+                try:
+    pass
+
+    pass    pass
+                    data = json.loads(raw)
+                except Exception:
+                    continue
+
+                if data.get("txType") == "create":
+                    mint_addr = data["mint"]
+                    liquidity = data.get("vSolInBondingCurve", 0)
+                    initial_buy = data.get("initialBuy", 0)
+                    price = initial_buy / (liquidity or 1)
+                    with open(LOG_PATH, "a") as fl:
+    pass
+
+    pass    pass
+with open("common/logs/telemetry.log", "a") as fl:
+    pass
+
+    pass    pass
+with open("common/logs/telemetry.log", "a") as fl:
+                                fl.write(f"[{datetime.utcnow().isoformat()}] [NEW TOKEN] {mint_addr} tracked "
+                                 f"(initialBuy={initial_buy}, vSol={liquidity}, vTokens={data.get('vTokensInBondingCurve',0)})\n")
+
+                    # Append into live_ws_tokens.json as a dict of {mint_address: data}
+                    try:
+    pass
+
+    pass    pass
+                        current = json.load(open(LIVE_WS_PATH, "r"))
+                        if not isinstance(current, dict):
+                            current = {}
+                    except Exception:
+                        current = {}
+
+                    current[mint_addr] = {
+                        "vSolInBondingCurve": liquidity,
+                        "initialBuy": initial_buy,
+                        "price": price,
+                        "timestamp": datetime.utcnow().isoformat()
+                    }
+                    with open(LIVE_WS_PATH, "w") as f:
+    pass
+
+    pass    pass
+                        json.dump(current, f, indent=2)
+
+    except Exception as e:
+        with open(ERR_PATH, "a") as fe:
+
+    pass    pass
+            fe.write(f"[{datetime.utcnow().isoformat()}] [ERROR] {repr(e)}\n")
+    pass
+
+if __name__ == "__main__":
+    asyncio.run(main())
+#!/usr/bin/env python3
+import os
+import json
+import time
+import pickle
+from datetime import datetime
+
+from helius_utils import get_token_price
+from fun_purger_loop import get_phase_and_subinterval
+
+# ————————— PATHS —————————
+WEIGHTS_PATH = "/srv/daemon-memory/funpumper/funpumper_weights.json"
+PREDICTIONS_PATH = "/srv/daemon-memory/funpumper/fun_predictions.json"
+MODEL_PATH = "/srv/daemon-memory/funpumper/phase1_model.pkl"
+PREDICTOR_LOG = "/srv/daemon-memory/funpumper/fun_predictor.log"
+
+# Phase 1 bins (# of checks = 4)
+P1_CHECK_TIMES = [15, 60, 150, 300]
+
+LOOP_INTERVAL_S = 5  # run every 5 seconds
+
+
+def log(msg: str):
+    ts = datetime.utcnow().isoformat()
+    with open(PREDICTOR_LOG, "a") as f:
+    pass
+
+        f.write(f"[{ts}] {msg}\n")
+
+
+def load_json(path, default):
+    if not os.path.exists(path):
+        return default
+    try:
+    pass
+
+        return json.load(open(path))
+    except:
+        return default
+
+
+def save_json(path, data):
+    with open(path, "w") as f:
+
+        json.dump(data, f, indent=2)
+
+
+def load_phase1_model():
+    """
+    Attempt to load the latest Phase 1 model. If not found or invalid, return None.
+    """
+    if not os.path.exists(MODEL_PATH):
+        return None
+    try:
+    pass
+
+        with open(MODEL_PATH, "rb") as f:
+    pass
+
+            return pickle.load(f)
+    except:
+        return None
+
+
+def build_phase1_features(info: dict, now: int):
+    """
+    Given one token’s `info` (from funpumper_weights.json) and the current time,
+    return a 4‐element ratio vector [p15/t0, p60/t0, p150/t0, p300/t0], BUT only
+    if each check time has passed. Otherwise return None.
+
+    We look for the first price_log entry at or after each P1_CHECK_TIMES[k].
+    """
+    if "initial_price" not in info or info["initial_price"] <= 0:
+        return None
+
+    price_log = info.get("price_log", [])
+    if not price_log:
+        return None
+
+    m = info["mint_time"]
+    t0 = info["initial_price"]
+
+    # Build a mapping check_time → price_usd
+    bucket_prices = {}
+    for ts, p in price_log:
+    pass
+
+        age = ts - m
+        for check in P1_CHECK_TIMES:
+    pass
+
+            if age >= check and check not in bucket_prices:
+                bucket_prices[check] = p
+
+    # If we have all 4 check times, build ratios
+    if all(check in bucket_prices for check in P1_CHECK_TIMES):
+    pass
+
+        return [bucket_prices[check] / t0 for check in P1_CHECK_TIMES]
+    return None
+
+
+def run_predictions():
+    now = int(time.time())
+    data = load_json(WEIGHTS_PATH, {})
+    preds = load_json(PREDICTIONS_PATH, {})
+
+    model = load_phase1_model()
+
+    for mint, info in data.items():
+    pass
+
+        phase, subidx = get_phase_and_subinterval(info, now)
+
+        # Only make a Phase 1 prediction once per subinterval
+        if phase == 1 and subidx is not None:
+            key = f"{mint}@1-{subidx}"
+            if key in preds:
+                continue  # already predicted for this bin
+    pass
+
+            features = build_phase1_features(info, now)
+            if features is None:
+                # Not enough data to predict yet
+                continue
+
+            if model is not None:
+                try:
+    pass
+
+                    prob = float(model.predict_proba([features])[0, 1])
+                except Exception as e:
+                    prob = None
+                    log(f"[PREDICT-ERR] {mint} subidx={subidx} → {e}")
+                else:
+                    log(f"[PREDICT] {mint} subidx={subidx} → p={prob:.3f}")
+            else:
+                prob = None
+                log(f"[PREDICT-SKIP] {mint} subidx={subidx} → no model")
+
+            preds[key] = {
+                "timestamp": now,
+                "phase": 1,
+                "subinterval": subidx,
+                "features": features,
+                "prediction": prob
+            }
+
+    save_json(PREDICTIONS_PATH, preds)
+
+
+def loop():
+    log("🔮 FunPredictor loop started.")
+    while True:
+        try:
+
+    pass pass
+            run_predictions()
+        except Exception as e:
+            log(f"[ERROR] {e}")
+        time.sleep(LOOP_INTERVAL_S)
+
+
+if __name__ == "__main__":
+    print("### FUN_PREDICTOR_LOOP STARTED ###")
+    loop()
+#!/usr/bin/env python3
+import os
+import json
+import gzip
+from pathlib import Path
+from datetime import datetime, timedelta
+
+BASE = Path("/srv/daemon-memory/funpumper")
+LOG_FILES = [
+    "funpumper.log",
+    "funpumper_loop.log",
+    "funpumper_ws.log",
+    "fun_purger.log",
+    "metrics_enricher.log",
+    "survivor_tracker.log",
+    # add others here as needed
+]
+MAX_LOG_SIZE = 50 * 1024 * 1024  # 50 MB
+
+# 1) Rotate logs
+for lf in LOG_FILES:
+    pass
+
+    p = BASE / lf
+    if p.exists() and p.stat().st_size > MAX_LOG_SIZE:
+        ts = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+        archive = p.with_suffix(p.suffix + f".{ts}.gz")
+        with p.open("rb") as f_in, gzip.open(archive, "wb") as f_out:
+    pass
+
+            f_out.writelines(f_in)
+        # truncate original
+        p.open("w").close()
+        print(f"[{ts}] Rotated {lf} → {archive.name}")
+
+# 2) Prune evals JSON
+EVALS = BASE / "funpumper_evals.json"
+ARCH = BASE / "archive"
+ARCH.mkdir(exist_ok=True)
+
+if EVALS.exists():
+    raw = json.loads(EVALS.read_text())
+    cutoff = datetime.utcnow() - timedelta(days=30)
+    keep, old = [], []
+    for entry in (raw if isinstance(raw, list) else []):
+    pass
+
+    pass pass
+      ts = entry.get("launch_ts") or entry.get("mint_time") or 0
+       if datetime.utcfromtimestamp(ts) >= cutoff:
+            keep.append(entry)
+        else:
+            old.append(entry)
+    pass
+
+    if old:
+        stamp = cutoff.strftime("%Y%m%d")
+        arc_file = ARCH / f"funpumper_evals_{stamp}.json"
+        arc_file.write_text(json.dumps(old, indent=2))
+        EVALS.write_text(json.dumps(keep, indent=2))
+        print(
+            f"[{datetime.utcnow().isoformat()}] Archived {len(old)} old evals → {arc_file.name}")
+    pass
+
+# 3) Purge finished tokens from live_ws_tokens.json
+LIVE = BASE / "live_ws_tokens.json"
+if LIVE.exists():
+    data = json.loads(LIVE.read_text())
+    # load the statuses
+    evals = {e.get("mint"): e.get("status") for e in keep}
+    filtered = {m: d for m, d in data.items(
+    ) if evals.get(m, "PENDING") == "PENDING"}
+    if len(filtered) != len(data):
+        LIVE.write_text(json.dumps(filtered, indent=2))
+        print(
+            f"[{datetime.utcnow().isoformat()}] Purged {len(data)-len(filtered)} non-pending tokens")
+    pass
+
+# 4) (Optional) Prune weights JSON to only those still pending
+WTS = BASE / "funpumper_weights.json"
+if WTS.exists():
+    w = json.loads(WTS.read_text())
+    filtered = {m: d for m, d in w.items() if evals.get(
+        m, "PENDING") == "PENDING"}
+    if len(filtered) != len(w):
+        WTS.write_text(json.dumps(filtered, indent=2))
+        print(
+            f"[{datetime.utcnow().isoformat()}] Stripped {len(w)-len(filtered)} weights for finished tokens")
+import os
+import json
+import time
+import traceback
+from datetime import datetime
+from helius_utils import get_token_price
+
+EVALS_PATH = "/srv/daemon-memory/funpumper/funpumper_evals.json"
+PERF_LOG_PATH = "/srv/daemon-memory/funpumper/performance_log.json"
+TRACKER_LOG_PATH = "/srv/daemon-memory/funpumper/survivor_tracker.log"
+
+
+def log(message):
+    timestamp = datetime.utcnow().isoformat()
+    with open(TRACKER_LOG_PATH, "a") as f:
+    pass
+
+        f.write(f"[{timestamp}] {message}\n")
+
+
+def repair_json(path):
+    """
+    Naively fix single‐quoted keys by converting 'key': to "key":
+    """
+    try:
+    pass
+
+        raw = open(path, "r").read()
+        # Replace patterns like 'someKey':  with "someKey":
+    pass
+
+        import re
+        fixed = re.sub(r"'([A-Za-z0-9_]+)'\s*:", r'"\1":', raw)
+        with open(path, "w") as f:
+    pass
+
+            f.write(fixed)
+        log(f"[REPAIR] Applied single→double‐quote fix on {path}")
+    except Exception as e:
+        log(f"[ERROR] Could not auto‐repair {path}: {e}")
+
+
+def load_json_safe(path):
+    """
+    Safely load JSON from 'path'. If malformed, log the exact error, show a snippet,
+    attempt a one‐time single‐quote‐to‐double‐quote repair, and retry.
+    """
+    if not os.path.exists(path):
+        return []
+
+    try:
+    pass
+
+    pass pass
+        with open(path, "r") as f:
+    pass
+
+    pass pass
+            return json.load(f)
+    except json.JSONDecodeError as jde:
+        # Log the decode error with position info
+        log(f"[ERROR] JSONDecodeError in file: {path} → {jde}")
+        try:
+    pass
+
+    pass pass
+            raw_text = open(path, "r").read()
+            start = max(0, jde.pos - 50)
+            snippet = raw_text[start: jde.pos + 50]
+            log(f"[ERROR] Snippet around error:\n{repr(snippet)}")
+        except Exception as e2:
+            log(f"[ERROR] Could not read snippet from {path}: {e2}")
+
+        # Attempt an auto‐repair for single‐quoted keys
+        repair_json(path)
+
+        # Retry loading once
+        try:
+    pass
+
+    pass    pass
+            with open(path, "r") as f:
+    pass
+
+    pass    pass
+                return json.load(f)
+        except Exception as e_retry:
+    pass
+
+    pass    pass
+            log(f"[ERROR] Retry load failed for {path}: {e_retry}")
+            log(traceback.format_exc())
+            return []
+    except Exception as e:
+        log(f"[ERROR] Unexpected error loading {path}: {e}")
+        log(traceback.format_exc())
+        return []
+
+
+def save_json(path, data):
+    with open(path, "w") as f:
+
+    pass    pass
+        json.dump(data, f, indent=2)
+
+
+def append_performance(mint, price):
+    pass
+
+    pass    """
+    Append current timestamp+price to performance log under this mint key.
+    """
+    if not os.path.exists(PERF_LOG_PATH):
+        save_json(PERF_LOG_PATH, {})
+    try:
+    pass
+
+    pass    pass
+        with open(PERF_LOG_PATH, "r") as f:
+    pass
+
+    pass    pass
+            perf_data = json.load(f)
+    except Exception:
+        perf_data = {}
+
+    if mint not in perf_data:
+        perf_data[mint] = []
+    perf_data[mint].append({
+        "timestamp": time.time(),
+        "price": price
+    })
+
+    save_json(PERF_LOG_PATH, perf_data)
+
+
+def main():
+    log("Survivor tracker started.")
+    while True:
+        try:
+
+    pass    pass
+            # Safely load the list of pending evaluations
+            evals = load_json_safe(EVALS_PATH)
+
+            for token in evals:
+    pass
+
+    pass    pass
+                if not isinstance(token, dict):
+                    log(f"[SKIP] Invalid token entry (not dict): {token}")
+                    continue
+
+                if token.get("status") != "PENDING":
+                    continue
+
+                mint = token.get("mint")
+                if not mint:
+                    log(f"[SKIP] Missing 'mint' field in: {token}")
+                    continue
+
+                # Fetch price; if Helius or network error, catch in get_token_price()
+                price = get_token_price(mint)
+                append_performance(mint, price)
+                log(f"[UPDATE] {mint} → {price}")
+
+            time.sleep(20)
+
+        except Exception as e:
+            log(f"[ERROR] {e}")
+            log(traceback.format_exc())
+            time.sleep(5)
+
+
+if __name__ == "__main__":
+    main()
+import os
+import json
+import time
+from datetime import datetime
+
+WS_LOG_PATH = "/srv/daemon-memory/funpumper/funpumper_ws.log"
+SNIFF_OUT = "/srv/daemon-memory/funpumper/sniffer_metrics.json"
+MAX_ENTRIES = 1000
+
+
+def log_event(event):
+    timestamp = datetime.utcnow().isoformat()
+    return {"timestamp": timestamp, **event}
+
+
+def tail_f(path):
+    with open(path, "rb") as f:
+
+        f.seek(0, os.SEEK_END)
+        while True:
+            line = f.readline()
+            if not line:
+                time.sleep(0.5)
+                continue
+            try:
+    pass
+
+                yield line.decode("utf-8", errors="ignore")
+            except UnicodeDecodeError:
+                continue
+
+
+def sniff_loop():
+    buffer = []
+    if os.path.exists(SNIFF_OUT):
+        with open(SNIFF_OUT, "r") as f:
+    pass
+
+    pass pass
+            try:
+    pass
+
+    pass pass
+                buffer = json.load(f)
+            except json.JSONDecodeError:
+                buffer = []
+
+    for line in tail_f(WS_LOG_PATH):
+    pass
+
+    pass    pass
+        if "txType" in line and '"create"' in line:
+            try:
+    pass
+
+    pass    pass
+                obj = json.loads(line.split("[RAW]")[-1].strip())
+                mint = obj.get("mint")
+                name = obj.get("name")
+                tx = obj.get("signature")
+                mcap = obj.get("marketCapSol", 0)
+                sol = obj.get("solAmount", 0)
+                if mint and tx:
+                    record = log_event({
+                        "mint": mint,
+                        "name": name,
+                        "tx": tx,
+                        "sol": sol,
+                        "mcap": mcap
+                    })
+                    buffer.append(record)
+                    buffer = buffer[-MAX_ENTRIES:]
+                    with open(SNIFF_OUT, "w") as f:
+    pass
+
+    pass    pass
+                        json.dump(buffer, f, indent=2)
+            except Exception:
+                continue
+
+
+if __name__ == "__main__":
+    sniff_loop()
+import json
+import os
+
+BRAIN_PATH = "/srv/daemon-memory/funpumper/funpumper_brain.json"
+
+
+def load_brain():
+    if not os.path.exists(BRAIN_PATH):
+        return {}
+    with open(BRAIN_PATH, "r") as f:
+    pass
+
+    return json.load(f)
+
+
+def print_report():
+    brain = load_brain()
+    correct = brain.get("correct", 0)
+    incorrect = brain.get("incorrect", 0)
+    accuracy = brain.get("accuracy", 0.0)
+    total = correct + incorrect
+
+    print("🧠 FUNPUMPER BRAIN STATUS")
+    print("--------------------------")
+    print(f"Total Predictions: {total}")
+    print(f"Correct:           {correct}")
+    print(f"Incorrect:         {incorrect}")
+    print(f"Accuracy:          {accuracy:.2f}%")
+
+
+if __name__ == "__main__":
+    print_report()

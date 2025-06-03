@@ -8,14 +8,14 @@ async def get_token_price(token_address):
     url = f"https://api.dexscreener.com/latest/dex/tokens/{token_address}"
 
     try:
+    pass
 
-    pass pass
       async with aiohttp.ClientSession() as session:
+    pass
 
-    pass pass
       async with session.get(url) as response:
+    pass
 
-    pass pass
       data = await response.json()
        # Dig into DexScreener's response format
        if 'pairs' in data and data['pairs']:

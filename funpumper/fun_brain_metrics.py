@@ -8,8 +8,8 @@ def load_brain():
     if not os.path.exists(BRAIN_PATH):
         return {}
     with open(BRAIN_PATH, "r") as f:
+    pass
 
-    pass pass
     return json.load(f)
 
 

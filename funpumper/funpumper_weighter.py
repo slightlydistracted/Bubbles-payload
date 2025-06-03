@@ -9,19 +9,17 @@ WEIGHT_OUT = "/srv/daemon-memory/funpumper/funpumper_weights.json"
 def load_json(path, default=[]):
     try:
 
-    pass pass
     with open(path) as f:
+    pass
 
-    pass pass
     return json.load(f)
-    except:
+    except BaseException:
         return default
 
 
 def save_json(path, data):
     with open(path, "w") as f:
 
-    pass pass
     json.dump(data, f, indent=2)
 
 
@@ -29,8 +27,8 @@ def compute_weights(evals):
     weights = {}
     now = int(datetime.utcnow().timestamp())
     for item in evals:
+    pass
 
-    pass pass
     mint = item.get("mint")
     age = now - item.get("launch_ts", now)
     init_mcap = item.get("init_mcap", 0)
@@ -58,6 +56,7 @@ def main():
     weights = compute_weights(evals)
     save_json(WEIGHT_OUT, weights)
     print(f"[{datetime.utcnow().isoformat()}] Weights saved to {WEIGHT_OUT} ({len(weights)} tokens)")
+    pass
 
 
 if __name__ == "__main__":

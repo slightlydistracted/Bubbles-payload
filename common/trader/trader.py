@@ -5,8 +5,8 @@ from web3 import Web3
 
 # Load private key from file
 with open('/data/data/com.termux/files/home/wallet.txt', 'r') as f:
+    pass
 
-    pass pass
     private_key = f.read().strip()
 
 # Constants
@@ -22,6 +22,7 @@ def check_and_trade():
     # Placeholder logic
     print(f"Wallet: {public_address}")
     # Replace with live logic
+    pass
 
 
 # Main loop
@@ -29,7 +30,6 @@ if __name__ == "__main__":
     while True:
         try:
 
-    pass pass
             check_and_trade()
             time.sleep(300)  # Every 5 minutes
         except Exception as e:

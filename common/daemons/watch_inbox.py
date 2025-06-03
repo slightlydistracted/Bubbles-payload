@@ -11,7 +11,6 @@ DEFAULT_INBOX = os.path.expanduser("~/feralsys/inbox")
 def load_config():
     try:
 
-    pass pass
         cfg = json.load(open(CONFIG_PATH))
         return cfg.get("inbox_folder", DEFAULT_INBOX)
     except FileNotFoundError:
@@ -27,13 +26,13 @@ def fetch_next_message():
     while True:
         for fname in os.listdir(inbox):
 
-    pass pass
             fpath = os.path.join(inbox, fname)
             if os.path.isfile(fpath) and fname.endswith(".json"):
+    pass
 
     pass try:
+    pass
 
-    pass pass
                     msg = json.load(open(fpath))
                     # Move to processed
                     os.rename(fpath, os.path.join(processed_folder, fname))

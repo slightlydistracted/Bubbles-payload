@@ -33,7 +33,6 @@ def main():
     while True:
         try:
 
-    pass pass
             # 1) Load filtered tokens (list)
             if not FILTERED_PATH.exists():
                 time.sleep(300)
@@ -51,8 +50,8 @@ def main():
 
             # 4) Iterate and predict
             for token in filtered:
+    pass
 
-    pass pass
                 addr = token["address"]
                 if addr in all_preds:
                     continue
@@ -76,14 +75,17 @@ def main():
 
             # 5) Save predictions
             with open(PREDICTIONS_PATH, "w") as fo:
+    pass
 
-    pass    pass
+    pass
                 json.dump(all_preds, fo, indent=2)
 
             with open(LOG_PATH, "a") as fl:
+    pass
 
     pass    pass
 with open("common/logs/telemetry.log", "a") as fl:
+    pass
 
     pass    pass
 with open("common/logs/telemetry.log", "a") as fl:

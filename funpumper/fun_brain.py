@@ -12,8 +12,8 @@ BRAIN_LOG = "/srv/daemon-memory/funpumper/fun_brain.log"
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(BRAIN_LOG, "a") as f:
+    pass
 
-    pass pass
         f.write(f"[{timestamp}] {message}\n")
 
 
@@ -21,11 +21,11 @@ def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
         return {}
     with open(WEIGHTS_PATH, "r") as f:
+    pass
 
-    pass pass
         try:
+    pass
 
-    pass pass
             return json.load(f)
         except json.JSONDecodeError:
             return {}
@@ -34,8 +34,8 @@ def load_weights():
 def save_weights(data):
     with open(WEIGHTS_PATH, "w") as f:
 
-    pass    pass
-        json.dump(data, f, indent=2)
+    pass
+       json.dump(data, f, indent=2)
 
 
 def simple_score(token):
@@ -52,9 +52,10 @@ def score_tokens():
     tokens = load_weights()
     count = 0
     for mint, token in tokens.items():
+    pass
 
-    pass    pass
-        if token.get("score", 0) > 0:
+    pass
+       if token.get("score", 0) > 0:
             continue
         token["score"] = simple_score(token)
         count += 1

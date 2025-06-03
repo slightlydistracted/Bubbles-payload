@@ -3,3 +3,7 @@ python3: can't open file '/root/projects/Bubbles-payload/funpumper/fun_purger_lo
     pass pass
     ^
 IndentationError: expected an indented block after 'try' statement on line 32
+  File "/root/projects/Bubbles-payload/funpumper/fun_purger_loop.py", line 54
+    pass
+    ^
+IndentationError: expected an indented block after 'try' statement on line 53

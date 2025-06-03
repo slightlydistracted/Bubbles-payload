@@ -24,13 +24,13 @@ def read_ndjson(path):
     if not Path(path).exists():
         return out
     for line in open(path, "r"):
+    pass
 
-    pass pass
         try:
+    pass
 
-    pass pass
             out.append(json.loads(line))
-        except:
+        except BaseException:
             continue
     return out
 
@@ -60,7 +60,7 @@ def build_feature_vector(token):
                    if s.get("token") == addr
                    and cutoff2 and datetime.fromisoformat(s["timestamp"]) <= cutoff2]
     base["avg_sentiment_10m"] = sum(
-        sent_scores)/len(sent_scores) if sent_scores else 0
+        sent_scores) / len(sent_scores) if sent_scores else 0
 
     # —— Delta 6× score —— #
     deltas = read_ndjson(DELTA_FEED)
@@ -89,12 +89,13 @@ def build_feature_vector(token):
     # —— Phase 1/2 predicted probabilities —— #
     preds = {}
     for _ in [FUN_PREDICTIONS]:
+    pass
 
-    pass    pass
-        if Path(FUN_PREDICTIONS).exists():
-            all_preds = json.load(open(FUN_PREDICTIONS))
-            if addr in all_preds:
-                preds = all_preds[addr]
+    pass
+    if Path(FUN_PREDICTIONS).exists():
+        all_preds = json.load(open(FUN_PREDICTIONS))
+        if addr in all_preds:
+            preds = all_preds[addr]
     base["pred_score4x"] = preds.get("score4x", 0)
     base["pred_score6x"] = preds.get("score6x", 0)
 
@@ -105,25 +106,29 @@ def main():
     Path(FEATURES_OUTPUT).parent.mkdir(parents=True, exist_ok=True)
 
     try:
+    pass
 
-    pass    pass
-        tokens = json.load(open(FUN_FILTERED))
-    except:
+    pass
+    tokens = json.load(open(FUN_FILTERED))
+    except BaseException:
         tokens = []
 
     all_features = []
     for token in tokens:
+    pass
 
-    pass    pass
-        fv = build_feature_vector(token)
-        all_features.append(fv)
+    pass
+    fv = build_feature_vector(token)
+    all_features.append(fv)
 
     with open(FEATURES_OUTPUT, "w") as f:
+    pass
 
-    pass    pass
-        json.dump(all_features, f, indent=2)
+    pass
+    json.dump(all_features, f, indent=2)
 
     print(f"[FE] Generated features for {len(all_features)} tokens.")
+    pass
 
 
 if __name__ == "__main__":

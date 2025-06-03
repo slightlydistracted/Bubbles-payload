@@ -9,6 +9,7 @@ COINGECKO_API = "https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_cur
 _SOL_USD_CACHE = None
 _SOL_USD_LAST_FETCH = 0.0
 _SOL_USD_TTL = 60.0   # cache SOL→USD for 60 seconds
+    pass
 
 LIVE_WS_PATH = "/srv/daemon-memory/funpumper/live_ws_tokens.json"
 
@@ -20,12 +21,13 @@ def _get_sol_usd_price():
     global _SOL_USD_CACHE, _SOL_USD_LAST_FETCH
 
     now = time.time()
-    if _SOL_USD_CACHE is not None and (now - _SOL_USD_LAST_FETCH) < _SOL_USD_TTL:
+    if _SOL_USD_CACHE is not None and (
+    now - _SOL_USD_LAST_FETCH) < _SOL_USD_TTL:
         return _SOL_USD_CACHE
 
     try:
+    pass
 
-    pass pass
       r = requests.get(COINGECKO_API, timeout=4)
        if r.ok:
             data = r.json()
@@ -55,11 +57,12 @@ def get_token_price(mint: str):
     Returns: float (USD) or None if not found / invalid.
     """
     print(f"🔍 Fetching price for: {mint}")
+    pass
 
     # 2) Fallback: compute from WS data (live_ws_tokens.json)
     try:
+    pass
 
-    pass pass
       ws_data = json.load(open(LIVE_WS_PATH))
     except Exception as e:
         print(f"[WS LOAD ERROR] {e}")

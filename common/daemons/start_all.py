@@ -9,7 +9,6 @@ LOGS = os.path.join(BASE, "logs")
 def launch(script_path, log_file):
     try:
 
-    pass pass
     full_log = os.path.join(LOGS, log_file)
     subprocess.Popen(
         ["nohup", "python", script_path],
@@ -49,11 +48,11 @@ council_scripts = [
 ]
 
 for script, log in core_scripts:
+    pass
 
-    pass pass
     launch(os.path.join(BASE, script), log)
 
 for script, log in council_scripts:
+    pass
 
-    pass pass
     launch(os.path.join(COUNCIL, script), log)

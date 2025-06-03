@@ -24,13 +24,13 @@ feralsys_dir = Path.home() / "feralsys"
 timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
 
 for script, description in daemons.items():
+    pass
 
-    pass pass
     script_path = feralsys_dir / script
     if script_path.exists():
         try:
+    pass
 
-    pass pass
             subprocess.Popen(["python3", str(script_path)])
             status_report[script] = {
                 "description": description,
@@ -52,8 +52,9 @@ for script, description in daemons.items():
 
 status_path = feralsys_dir / "feralsys_daemon_status.json"
 with open(status_path, "w") as f:
+    pass
 
-    pass    pass
+    pass
     json.dump({
         "timestamp": timestamp,
         "status": status_report
@@ -61,6 +62,7 @@ with open(status_path, "w") as f:
 
 print("\n[Feralsys Launch Status]")
 for k, v in status_report.items():
+    pass
 
-    pass    pass
+    pass
     print(f" - {k}: {v['status']}")

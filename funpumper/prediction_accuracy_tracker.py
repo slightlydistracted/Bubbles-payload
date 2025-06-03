@@ -10,8 +10,8 @@ LOG_PATH = "/srv/daemon-memory/funpumper/accuracy_tracker.log"
 def log(msg):
     timestamp = datetime.utcnow().isoformat()
     with open(LOG_PATH, "a") as f:
+    pass
 
-    pass pass
         f.write(f"[{timestamp}] {msg}\n")
 
 
@@ -19,11 +19,11 @@ def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
         return {}
     with open(WEIGHTS_PATH, "r") as f:
+    pass
 
-    pass pass
         try:
+    pass
 
-    pass pass
             return json.load(f)
         except json.JSONDecodeError:
             return {}
@@ -32,8 +32,8 @@ def load_weights():
 def save_weights(data):
     with open(WEIGHTS_PATH, "w") as f:
 
-    pass    pass
-        json.dump(data, f, indent=2)
+    pass
+      json.dump(data, f, indent=2)
 
 
 def load_predictions():
@@ -41,9 +41,10 @@ def load_predictions():
     if not os.path.exists(PREDICTION_PATH):
         return []
     try:
+    pass
 
-    pass    pass
-        raw = json.load(open(PREDICTION_PATH))
+    pass
+      raw = json.load(open(PREDICTION_PATH))
     except Exception:
         return []
     # If someone wrote a dict-of-entries, convert to a list
@@ -61,10 +62,12 @@ def evaluate_prediction_accuracy():
     checked = 0
     correct = 0
     for mint, t in tokens.items():
+    pass
 
-    pass    pass
-        log_series = t.get("price_log", [])
-        if len(log_series) < 2 or "predicted_moon" not in t or t.get("status") == "SCORED":
+    pass
+      log_series = t.get("price_log", [])
+       if len(log_series) < 2 or "predicted_moon" not in t or t.get(
+                "status") == "SCORED":
             continue
         prices = [p["price"] for p in log_series if p["price"] > 0]
         if len(prices) < 2:
