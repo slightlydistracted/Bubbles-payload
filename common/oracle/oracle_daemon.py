@@ -45,7 +45,7 @@ fo.write(f"[{ts}] Received: {msg}\n")
         # save_memory(pattern)
 
 print("[ORACLE] Starting Telegram listener")
-    client.run_until_disconnected()
+client.run_until_disconnected()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
