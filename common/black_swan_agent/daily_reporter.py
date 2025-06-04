@@ -1,8 +1,3 @@
-import sys
-import os; sys.path.append(
-    os.path.abspath(
-        os.path.dirname(__file__) +
-         "/../../"))
 import os
 import json
 from datetime import datetime
@@ -12,16 +7,13 @@ import asyncio
 PORTFOLIO_PATH = '/root/feralsys/tools/black_swan_agent/simulated_portfolio.json'
 REPORTS_DIR = '/root/feralsys/tools/black_swan_agent/reports/'
 
-
 async def generate_daily_report():
     if not os.path.exists(PORTFOLIO_PATH):
         print("[Daily Report] No portfolio found.")
         return
 
     with open(PORTFOLIO_PATH, 'r') as f:
-    pass
-
-    portfolio = json.load(f)
+        portfolio = json.load(f)
 
     if not os.path.exists(REPORTS_DIR):
         os.makedirs(REPORTS_DIR)
@@ -32,16 +24,14 @@ async def generate_daily_report():
     detailed_holdings = []
 
     for position in portfolio:
-    pass
+        token = position['token_address']
+        amount = position['amount_purchased']
+        buy_price = position['price_at_purchase']
+        invested = position['investment_fake_usd']
 
-    token = position['token_address']
-    amount = position['amount_purchased']
-    buy_price = position['price_at_purchase']
-     invested = position['investment_fake_usd']
-
-      # Fetch real-time current price
-      current_price = await get_token_price(token)
-       if current_price:
+        # Fetch real-time current price
+        current_price = await get_token_price(token)
+        if current_price:
             value_now = amount * current_price
         else:
             value_now = 0  # Unknown token, count as zero (fail safe)
@@ -72,9 +62,7 @@ async def generate_daily_report():
     filename = f"report_{datetime.utcnow().date()}.json"
     filepath = os.path.join(REPORTS_DIR, filename)
     with open(filepath, 'w') as f:
-    pass
-
-    json.dump(daily_summary, f, indent=2)
+        json.dump(daily_summary, f, indent=2)
 
     # Pretty print to screen
     print("\n---------- DAILY REPORT ----------")

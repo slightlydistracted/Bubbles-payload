@@ -1,65 +1,49 @@
-import sys
-import os; sys.path.append(
-    os.path.abspath(
-        os.path.dirname(__file__) +
-         "/../../"))
-#!/usr/bin/env python3
-from pathlib import Path
-import time
 import json
-from common.black_swan_agent.mutation_memory import load_memory, save_memory
-import sys
 import os
+from datetime import datetime
+from mutation_memory import load_memory
 
-# ——— Ensure “common/” is on sys.path ———
-REPO_ROOT = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.pardir, os.pardir))
-if REPO_ROOT not in sys.path:
-    sys.path.insert(0, REPO_ROOT)
-
-# Remove or comment out the nonexistent import:
-# from common.black_swan_agent.simulation_engine import run_simulation
+SIMULATION_LOG = os.path.expanduser("~/feralsys/tools/black_swan_agent/reports/simulation_log.json")
 
 
-LOG_PATH = "common/logs/simulation_planner.log"
-ERR_PATH = "common/logs/simulation_planner.err"
-SYNC_PAUSE = 6 * 3600  # run every 6 hours
+def load_simulation_log():
+    if os.path.exists(SIMULATION_LOG):
+        with open(SIMULATION_LOG, 'r') as f:
+            try:
+                return json.load(f)
+            except json.JSONDecodeError:
+                return []
+    return []
 
 
-def main():
-    Path("common/logs").mkdir(parents=True, exist_ok=True)
-
-    while True:
-        try:
-
-            # Load the current mutation memory
-            mem = load_memory()
-            # Placeholder: if you have a real simulation function, call it here.
-            # For example:
-            #   from common.black_swan_agent.mutation_engine import run_full_simulation
-            #   sim_results = run_full_simulation(mem)
-            #
-            # But since there is no simulation_engine.py, we simply log the
-            # memory size:
-            mem_size = len(mem.get("mutations", []))
-            with open(LOG_PATH, "a") as fl:
-    pass
+def save_simulation_log(log):
+    with open(SIMULATION_LOG, 'w') as f:
+        json.dump(log, f, indent=2)
 
 
-with open("common/logs/telemetry.log", "a") as fl:
-    pass
+def simulate_run(memory, portfolio_value_snapshot):
+    """Perform a dry-run forward simulation using past mutation data."""
+    timestamp = datetime.utcnow().isoformat()
+    mutations = memory.get("mutations", [])
+    simulation_result = {
+        "timestamp": timestamp,
+        "initial_value": portfolio_value_snapshot,
+        "mutation_count": len(mutations),
+        "score": 0.0,
+        "notes": []
+    }
 
-with open("common/logs/telemetry.log", "a") as fl:
-                        fl.write(
-                    f"[{time.ctime()}] Mutation memory contains {mem_size} entries. (Simulation placeholder)\n")
-            print(f"[SIM] Logged memory size {mem_size} at {time.ctime()}")
-        except Exception as e:
-            with open(ERR_PATH, "a") as fe:
+    for mutation in mutations:
+        score = mutation.get("performance_score", 0)
+        simulation_result["score"] += score
+        if score < 0:
+            simulation_result["notes"].append(f"Weak mutation: {mutation.get('description', '')}")
 
-    pass    pass
-                fe.write(f"[ERROR] {time.ctime()}: {repr(e)}\n")
-        time.sleep(SYNC_PAUSE)
+    simulation_result["score"] = round(simulation_result["score"], 4)
 
+    log = load_simulation_log()
+    log.append(simulation_result)
+    save_simulation_log(log)
 
-if __name__ == "__main__":
-    main()
+    print(f"[SIMULATION PLANNER] Simulated score: {simulation_result['score']} (mutations: {len(mutations)})")
+    return simulation_result
