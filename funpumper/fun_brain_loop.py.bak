@@ -27,8 +27,8 @@ PREDICTION_THRESHOLD = 0.85
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(LOG_PATH, "a") as f:
-    with open(LOG_PATH, "a") as f:    # TODO: implement
-    with open(LOG_PATH, "a") as f:    
+    pass
+
         f.write(f"[{timestamp}] {message}\n")
 
 
@@ -36,8 +36,8 @@ def load_json(path):
     if not os.path.exists(path):
         return {}
     with open(path, "r") as f:
-    with open(path, "r") as f:    # TODO: implement
-    with open(path, "r") as f:    
+    pass
+
         try:
     pass
 

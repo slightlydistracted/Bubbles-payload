@@ -28,8 +28,8 @@ RETRAIN_INTERVAL_S = 3600
 def log(msg: str):
     ts = datetime.utcnow().isoformat()
     with open(TRAINER_LOG, "a") as f:
-    with open(TRAINER_LOG, "a") as f:    # TODO: implement
-    with open(TRAINER_LOG, "a") as f:    
+    pass
+
         f.write(f"[{ts}] {msg}\n")
 
 

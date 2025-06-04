@@ -28,8 +28,8 @@ LOOP_INTERVAL_S = 5  # run every 5 seconds
 def log(msg: str):
     ts = datetime.utcnow().isoformat()
     with open(PREDICTOR_LOG, "a") as f:
-    with open(PREDICTOR_LOG, "a") as f:    # TODO: implement
-    with open(PREDICTOR_LOG, "a") as f:    
+    pass
+
         f.write(f"[{ts}] {msg}\n")
 
 
@@ -59,8 +59,8 @@ def load_phase1_model():
     pass
 
         with open(MODEL_PATH, "rb") as f:
-        with open(MODEL_PATH, "rb") as f:    # TODO: implement
-        with open(MODEL_PATH, "rb") as f:    
+    pass
+
             return pickle.load(f)
     except:
         return None

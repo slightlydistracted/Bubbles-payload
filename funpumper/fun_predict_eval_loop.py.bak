@@ -80,18 +80,18 @@ def main():
 
             # 5) Save predictions
             with open(PREDICTIONS_PATH, "w") as fo:
-            with open(PREDICTIONS_PATH, "w") as fo:    # TODO: implement
-            with open(PREDICTIONS_PATH, "w") as fo:    
+    pass
+
     pass
                 json.dump(all_preds, fo, indent=2)
 
             with open(LOG_PATH, "a") as fl:
-            with open(LOG_PATH, "a") as fl:    # TODO: implement
-            with open(LOG_PATH, "a") as fl:    
+    pass
+
     pass    pass
 with open("common/logs/telemetry.log", "a") as fl:
-with open("common/logs/telemetry.log", "a") as fl:    # TODO: implement
-with open("common/logs/telemetry.log", "a") as fl:    
+    pass
+
     pass    pass
 with open("common/logs/telemetry.log", "a") as fl:
                         fl.write(

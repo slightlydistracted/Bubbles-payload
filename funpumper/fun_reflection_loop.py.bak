@@ -73,8 +73,8 @@ def loop():
                 memory.setdefault("mutations", []).extend(new_entries)
                 save_memory(memory)
                 with open(LOG_PATH, "a") as fl:
-                with open(LOG_PATH, "a") as fl:    # TODO: implement
-                with open(LOG_PATH, "a") as fl:    
+    pass
+
     pass
                     for e in new_entries:
     pass
@@ -83,8 +83,8 @@ def loop():
 
 
 with open("common/logs/telemetry.log", "a") as fl:
-with open("common/logs/telemetry.log", "a") as fl:    # TODO: implement
-with open("common/logs/telemetry.log", "a") as fl:    
+    pass
+
     pass
 with open("common/logs/telemetry.log", "a") as fl:
                                 fl.write(

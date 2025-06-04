@@ -15,8 +15,8 @@ REPORT_PATH = "/srv/daemon-memory/funpumper/fun_accuracy.log"
 def log(message):
     timestamp = datetime.utcnow().isoformat()
     with open(REPORT_PATH, "a") as f:
-    with open(REPORT_PATH, "a") as f:    # TODO: implement
-    with open(REPORT_PATH, "a") as f:    
+    pass
+
         f.write(f"[{timestamp}] {message}\n")
 
 
@@ -24,8 +24,8 @@ def load_weights():
     if not os.path.exists(WEIGHTS_PATH):
         return {}
     with open(WEIGHTS_PATH, "r") as f:
-    with open(WEIGHTS_PATH, "r") as f:    # TODO: implement
-    with open(WEIGHTS_PATH, "r") as f:    
+    pass
+
         try:
     pass
 
