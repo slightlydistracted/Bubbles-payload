@@ -10,8 +10,8 @@ def run_service():
         # Mock: produce a random liquidity snapshot
         snapshot = {"timestamp": time.time(), "liquidity": 1000}
         with open(OUTPUT_PATH, "w") as f:
-        with open(OUTPUT_PATH, "w") as f:    # TODO: implement
-        with open(OUTPUT_PATH, "w") as f:    
+    pass
+
             json.dump(snapshot, f, indent=2)
         print(f"[SHADOW1] Wrote liquidity snapshot")
         time.sleep(300)  # update every 5 minutes

@@ -1,0 +1,117 @@
+{
+  "scans": [
+    {
+      "token": "NEW_6860",
+      "honeypot": false,
+      "dev_wallets": 1,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T20:30:14.047640"
+    },
+    {
+      "token": "NEW_5891",
+      "honeypot": false,
+      "dev_wallets": 1,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T20:48:52.719956"
+    },
+    {
+      "token": "NEW_7325",
+      "honeypot": false,
+      "dev_wallets": 2,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T21:03:49.310619"
+    },
+    {
+      "token": "NEW_6497",
+      "honeypot": false,
+      "dev_wallets": 1,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T21:05:12.354688"
+    },
+    {
+      "token": "NEW_1286",
+      "honeypot": false,
+      "dev_wallets": 1,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T21:21:21.892757"
+    },
+    {
+      "token": "NEW_7722",
+      "honeypot": false,
+      "dev_wallets": 2,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T21:23:27.980734"
+    },
+    {
+      "token": "NEW_5671",
+      "honeypot": false,
+      "dev_wallets": 2,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T21:27:18.137548"
+    },
+    {
+      "token": "NEW_3945",
+      "honeypot": false,
+      "dev_wallets": 1,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T21:38:03.493873"
+    },
+    {
+      "token": "NEW_8071",
+      "honeypot": false,
+      "dev_wallets": 2,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T21:49:24.946814"
+    },
+    {
+      "token": "NEW_4079",
+      "honeypot": false,
+      "dev_wallets": 1,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T21:52:09.992792"
+    },
+    {
+      "token": "NEW_4387",
+      "honeypot": false,
+      "dev_wallets": 2,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T21:58:30.256734"
+    },
+    {
+      "token": "NEW_9353",
+      "honeypot": false,
+      "dev_wallets": 1,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T22:00:15.357329"
+    },
+    {
+      "token": "NEW_1252",
+      "honeypot": false,
+      "dev_wallets": 2,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T22:10:56.732151"
+    },
+    {
+      "token": "NEW_7016",
+      "honeypot": false,
+      "dev_wallets": 1,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T22:15:29.836783"
+    },
+    {
+      "token": "NEW_3074",
+      "honeypot": false,
+      "dev_wallets": 1,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T22:16:56.882994"
+    },
+    {
+      "token": "NEW_2030",
+      "honeypot": false,
+      "dev_wallets": 1,
+      "lp_locked": true,
+      "timestamp": "2025-05-22T22:21:37.067930"
+    }
+  ],
+  "mutations": 83
+}

@@ -44,16 +44,16 @@ def vote_and_write_directive(cfg_path):
     outpath = "common/council/council_output.json"
     Path("common/council").mkdir(parents=True, exist_ok=True)
     with open(outpath, "w") as fo:
-    with open(outpath, "w") as fo:    # TODO: implement
-    with open(outpath, "w") as fo:    
+    pass
+
         json.dump(directive, fo, indent=2)
     with open(LOG_PATH, "a") as fl:
-    with open(LOG_PATH, "a") as fl:    # TODO: implement
-    with open(LOG_PATH, "a") as fl:    
+    pass
+
 
 with open("common/logs/telemetry.log", "a") as fl:
-with open("common/logs/telemetry.log", "a") as fl:    # TODO: implement
-with open("common/logs/telemetry.log", "a") as fl:    
+    pass
+
 with open("common/logs/telemetry.log", "a") as fl:
                 fl.write(f"[{time.ctime()}] Wrote directive: {directive}\n")
 

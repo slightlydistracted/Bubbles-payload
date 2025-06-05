@@ -7,3 +7,7 @@ IndentationError: expected an indented block after 'with' statement on line 25
     pass
     ^
 IndentationError: expected an indented block after 'with' statement on line 25
+  File "/root/projects/Bubbles-payload/funpumper/fun_predictor_loop.py", line 31
+    pass
+    ^
+IndentationError: expected an indented block after 'with' statement on line 30

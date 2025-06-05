@@ -50,3 +50,6 @@ IndentationError: expected an indented block after 'try' statement on line 28
   File "/root/projects/Bubbles-payload/common/black_swan_agent/simulation_planner.py", line 41
     pass
 IndentationError: expected an indented block after 'with' statement on line 40
+  File "/root/projects/Bubbles-payload/common/black_swan_agent/simulation_planner.py", line 46
+    pass
+IndentationError: expected an indented block after 'with' statement on line 45

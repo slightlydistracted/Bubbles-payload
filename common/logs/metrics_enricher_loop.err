@@ -6,3 +6,7 @@ IndentationError: expected an indented block after 'with' statement on line 39
     pass
     ^
 IndentationError: expected an indented block after 'try' statement on line 85
+  File "/root/projects/Bubbles-payload/funpumper/metrics_enricher_loop.py", line 91
+    pass
+    ^
+IndentationError: expected an indented block after 'try' statement on line 90

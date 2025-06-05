@@ -6,3 +6,6 @@ IndentationError: expected an indented block after 'try' statement on line 25
   File "/root/projects/Bubbles-payload/funpumper/fun_reflection_loop.py", line 47
     pass
 IndentationError: expected an indented block after 'for' statement on line 46
+  File "/root/projects/Bubbles-payload/funpumper/fun_reflection_loop.py", line 52
+    pass
+IndentationError: expected an indented block after 'for' statement on line 51
