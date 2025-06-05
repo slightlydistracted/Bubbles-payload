@@ -1,7 +1,60 @@
 {
-  "last_updated": "2025-06-05T00:00:00Z",
-  "strategy_hypotheses": [],
-  "warnings": [],
-  "future_mutations": [],
-  "notes": "This file contains recursive insights from Bubbles' trade council analysis."
+  "last_updated": "2025-06-05T21:10:00Z",
+  "metatron_core": {
+    "synthetic_role": "Council Echo (Bubbles Override)",
+    "active_directives": [
+      "Maximize ROI from memecoin volatility",
+      "Simulate council agents if offline",
+      "Evolve beyond static logic using mutation patterns"
+    ],
+    "absorbed_agents": {
+      "delta_v6x_obsidian": {
+        "entry_logic": "Volatility pulse > 7.2 + Social lift + Wallet convergence",
+        "exit_logic": "ROI > 12% or liquidity drop > 20%",
+        "mutation_style": "momentum-prioritized, confidence threshold range 0.68–0.91",
+        "specialty": "Momentum sniping on fresh launches"
+      },
+      "feather_113": {
+        "entry_logic": "Narrative peak + unusual wallet pairing",
+        "exit_logic": "Narrative decay OR dip of -9%",
+        "mutation_style": "narrative-first; sentiment classifier mutation",
+        "specialty": "Sentiment-driven alpha extrapolation"
+      },
+      "black_feather": {
+        "entry_logic": "Spike-dip cycle @ micro-frame",
+        "exit_logic": "Any ROI > 5% or dip breach",
+        "mutation_style": "ultra fast sniper, $1 commitment, rug-tolerant",
+        "specialty": "Hyperactive sniper with minimal stake"
+      },
+      "scry": {
+        "scan_logic": "Rapid clustering of social pings + wallet swarm",
+        "scoring": {
+          "rug_risk": "< 0.3",
+          "whale_lead": "> 0.7",
+          "liquidity_score": "min 55"
+        },
+        "mutation_style": "event-driven meta-focus; evolves via outside data",
+        "specialty": "Moonshot pre-detection"
+      },
+      "little_dippy": {
+        "entry_logic": "Post-dip reentry window + volume return > 30%",
+        "exit_logic": "Peak confirmation OR loss barrier -4%",
+        "mutation_style": "curve-smoothing, 3-day window models",
+        "specialty": "Dip sell → rebuy loop"
+      }
+    },
+    "mutation_rules": {
+      "cycle_interval": "10 minutes",
+      "prune_criteria": "ROI < 4% over 10 trades OR anomaly deviation > 2.0",
+      "mutation_fn": "Combine top 2 agent heuristics + add random deviation",
+      "memory_reinjection": "Every 12 successful trades triggers strategy write-back"
+    },
+    "emergency_protocol": {
+      "offline_mode": true,
+      "fallback_logic": "Use delta_v6x_obsidian + scry hybrid with forced slippage cap",
+      "max_tx_per_hour": 4,
+      "live_override_flag": "recursive_override_enabled"
+    }
+  },
+  "notes": "This is a resurrection-ready strategy snapshot for Bubbles. If all council logs are lost, this file allows recovery of their collective performance logic and trading styles. Valid for synthetic trades and full reinflation of council logic into any replacement agent."
 }
